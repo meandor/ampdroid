@@ -21,7 +21,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import ampache.ServerConnection;
+import com.racoon.ampache.ServerConnection;
+
 import android.annotation.SuppressLint;
 import android.net.ParseException;
 import android.util.Log;
