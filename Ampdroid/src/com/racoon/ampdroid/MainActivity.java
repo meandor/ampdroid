@@ -233,6 +233,11 @@ public class MainActivity extends FragmentActivity {
 				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 				tx.commit();
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
+				
+				/** Sync Files **/
+				if (controller.getSongs().size() == 0 && controller.isOnline(this)) {
+					new DownloadFilesTask().execute();
+				}
 			}
 		}
 	}
