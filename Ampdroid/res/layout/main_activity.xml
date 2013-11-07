@@ -4,6 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/load_progressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/load_progressbar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lade alle Dateien vom Server"
+            android:textColor="#969696" />
+    </LinearLayout>
+
     <!-- The main content view -->
 
     <FrameLayout
@@ -16,18 +35,6 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="MainActivity" >
-
-        <ProgressBar
-            android:id="@+id/load_progressbar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/load_progressbar_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lade alle Dateien" />
     </FrameLayout>
     <!-- The navigation drawer -->
 
