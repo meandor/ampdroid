@@ -18,7 +18,7 @@ import android.widget.ListView;
 import com.racoon.ampache.Playlist;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
-import com.racoon.ampdroid.ServerConnector;
+//import com.racoon.ampdroid.ServerConnector;
 import com.racoon.ampdroid.StableArrayAdapter;
 
 /**
@@ -27,7 +27,7 @@ import com.racoon.ampdroid.StableArrayAdapter;
  */
 public class PlaylistsView extends Fragment {
 
-	private String urlString;
+	//private String urlString;
 	private Controller controller;
 
 	/**
@@ -48,14 +48,11 @@ public class PlaylistsView extends Fragment {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.ampache_playlists, null);
 		ListView listview = (ListView) root.findViewById(R.id.playlists_listview);
 		if (controller.getServer() != null) {
-			ServerConnector server = controller.getServer();
-			urlString = server.getServer() + "/server/xml.server.php?action=playlists&auth=" + server.getAuthKey();
-			if (controller.getServer().getAmpacheConnection() == null) {
-				Log.d("bug", "null");
-			}
-			if (controller.getPlaylists().size() != controller.getServer().getAmpacheConnection().getPlaylists()) {
-				controller.parsePlaylists(urlString);
-			}
+			// ServerConnector server = controller.getServer();
+			// urlString = server.getServer() + "/server/xml.server.php?action=playlists&auth=" + server.getAuthKey();
+			// if (controller.getPlaylists().size() != controller.getServer().getAmpacheConnection().getPlaylists()) {
+			// controller.parsePlaylists(urlString);
+			// }
 			ArrayList<String> list = new ArrayList<String>();
 			for (Playlist p : controller.getPlaylists()) {
 				list.add(p.toString());

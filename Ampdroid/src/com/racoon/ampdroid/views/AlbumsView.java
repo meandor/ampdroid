@@ -20,7 +20,7 @@ import com.racoon.ampache.Album;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
-import com.racoon.ampdroid.ServerConnector;
+//import com.racoon.ampdroid.ServerConnector;
 import com.racoon.ampdroid.StableArrayAdapter;
 
 /**
@@ -29,7 +29,7 @@ import com.racoon.ampdroid.StableArrayAdapter;
  */
 public class AlbumsView extends Fragment {
 
-	private String urlString;
+//	private String urlString;
 	private Controller controller;
 
 	/**
@@ -50,11 +50,11 @@ public class AlbumsView extends Fragment {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.ampache_songs, null);
 		ListView listview = (ListView) root.findViewById(R.id.songs_listview);
 		if (controller.getServer() != null) {
-			ServerConnector server = controller.getServer();
-			urlString = server.getServer() + "/server/xml.server.php?action=albums&auth=" + server.getAuthKey();
-			if (controller.getAlbums().size() != controller.getServer().getAmpacheConnection().getAlbums()) {
-				controller.parseAlbums(urlString);
-			}
+//			ServerConnector server = controller.getServer();
+//			urlString = server.getServer() + "/server/xml.server.php?action=albums&auth=" + server.getAuthKey();
+			// if (controller.getAlbums().size() != controller.getServer().getAmpacheConnection().getAlbums()) {
+			// controller.parseAlbums(urlString);
+			// }
 			ArrayList<String> list = new ArrayList<String>();
 			for (Album a : controller.getAlbums()) {
 				list.add(a.toString());
