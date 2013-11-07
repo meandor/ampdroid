@@ -50,12 +50,10 @@ public class MainActivity extends FragmentActivity {
 
 		/** Media Control **/
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
+		/** Connection established **/
 		if (controller.getServerConfig(this) != null
 				&& controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
-
 			Log.d("bugs", controller.getServer().getAmpacheConnection().getAuth());
-			// controller.saveServer(getApplicationContext());
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 			tx.commit();
@@ -69,7 +67,7 @@ public class MainActivity extends FragmentActivity {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
 			tx.commit();
-			mTitle = controller.getFragmentsNames()[6];
+			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
 			Context context = getApplicationContext();
 			CharSequence text = "Verbindung zum Server ist nicht möglich";
@@ -235,4 +233,5 @@ public class MainActivity extends FragmentActivity {
 	public void previous(View view) {
 
 	}
+
 }
