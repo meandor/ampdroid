@@ -20,10 +20,11 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import ampache.Album;
-import ampache.Artist;
-import ampache.Playlist;
-import ampache.Song;
+import com.racoon.ampache.Album;
+import com.racoon.ampache.Artist;
+import com.racoon.ampache.Playlist;
+import com.racoon.ampache.Song;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.AudioManager;
@@ -50,6 +51,7 @@ public class Controller {
 	private ArrayList<Song> playNow;
 	private Song playingNow;
 	private MediaPlayer mediaPlayer;
+	private int progress = 0;
 
 	/**
 	 * 
@@ -84,7 +86,7 @@ public class Controller {
 		this.artists = new ArrayList<Artist>();
 		this.albums = new ArrayList<Album>();
 		this.server = new ServerConnector("", "", "");
-		
+
 		this.mediaPlayer = new MediaPlayer();
 		this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 	}
@@ -221,24 +223,25 @@ public class Controller {
 
 	public ArrayList<Song> findSongs(Artist artist) {
 		ArrayList<Song> result = new ArrayList<Song>();
-			for (Song s : songs) {
-				if (s.getArtist().equals(artist.getName())) {
-					result.add(s);
-				}
+		for (Song s : songs) {
+			if (s.getArtist().equals(artist.getName())) {
+				result.add(s);
+				this.progress++;
 			}
+		}
 		return result;
 	}
-	
+
 	public ArrayList<Song> findSongs(Album album) {
 		ArrayList<Song> result = new ArrayList<Song>();
-			for (Song s : songs) {
-				if (s.getAlbum().equals(album.getName())) {
-					result.add(s);
-				}
+		for (Song s : songs) {
+			if (s.getAlbum().equals(album.getName())) {
+				result.add(s);
 			}
+		}
 		return result;
 	}
-	
+
 	/**
 	 * @return the server
 	 */
@@ -335,6 +338,7 @@ public class Controller {
 				name = parser.getName();
 				if (name.equalsIgnoreCase("playlist") && currentPlaylist != null) {
 					this.playlists.add(currentPlaylist);
+					this.progress++;
 				}
 			}
 			eventType = parser.next();
@@ -388,6 +392,7 @@ public class Controller {
 				name = parser.getName();
 				if (name.equalsIgnoreCase("song") && currentSong != null) {
 					this.songs.add(currentSong);
+					this.progress++;
 				}
 			}
 			eventType = parser.next();
@@ -451,6 +456,7 @@ public class Controller {
 				name = parser.getName();
 				if (name.equalsIgnoreCase("album") && currentAlbum != null) {
 					this.albums.add(currentAlbum);
+					this.progress++;
 				}
 			}
 			eventType = parser.next();
@@ -511,6 +517,7 @@ public class Controller {
 				name = parser.getName();
 				if (name.equalsIgnoreCase("artist") && currentArtist != null) {
 					this.artists.add(currentArtist);
+					this.progress++;
 				}
 			}
 			eventType = parser.next();
@@ -614,6 +621,13 @@ public class Controller {
 	 */
 	public void setMediaPlayer(MediaPlayer mediaPlayer) {
 		this.mediaPlayer = mediaPlayer;
+	}
+
+	/**
+	 * @return the progress
+	 */
+	public int getProgress() {
+		return progress;
 	}
 
 }
