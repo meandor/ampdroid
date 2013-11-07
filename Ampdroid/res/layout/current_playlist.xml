@@ -11,7 +11,7 @@
         android:fastScrollEnabled="true" />
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/playNow_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
