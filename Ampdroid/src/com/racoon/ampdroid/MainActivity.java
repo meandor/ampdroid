@@ -3,6 +3,7 @@ package com.racoon.ampdroid;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -20,7 +21,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.racoon.ampache.ServerConnection;
 
 public class MainActivity extends FragmentActivity {
 
@@ -31,6 +36,9 @@ public class MainActivity extends FragmentActivity {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private Controller controller;
+	private int mProgressStatus = 0;
+	private ProgressBar mProgress;
+	private TextView loadingText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,11 @@ public class MainActivity extends FragmentActivity {
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setTitle(mTitle);
 
+		mProgress = (ProgressBar) findViewById(R.id.load_progressbar);
+		mProgress.setVisibility(ProgressBar.GONE);
+		loadingText = (TextView) findViewById(R.id.load_progressbar_text);
+		loadingText.setVisibility(TextView.GONE);
+
 		/** Media Control **/
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		/** Connection established **/
@@ -62,6 +75,12 @@ public class MainActivity extends FragmentActivity {
 			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
+
+			/** Sync Files **/
+			if (controller.getSongs().size() == 0 && controller.isOnline(this)) {
+				new DownloadFilesTask().execute();
+			}
+
 		} else if (controller.getServerConfig(this) != null
 				&& !controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
@@ -232,6 +251,86 @@ public class MainActivity extends FragmentActivity {
 
 	public void previous(View view) {
 
+	}
+
+	private class DownloadFilesTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			mProgress.setVisibility(ProgressBar.VISIBLE);
+			loadingText.setVisibility(TextView.VISIBLE);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override
+		protected Void doInBackground(Void... params) {
+			String urlString = controller.getServer().getServer() + "/server/xml.server.php?action=albums&auth="
+					+ controller.getServer().getAuthKey();
+			controller.parseAlbums(urlString);
+			publishProgress();
+			urlString = controller.getServer().getServer() + "/server/xml.server.php?action=songs&auth="
+					+ controller.getServer().getAuthKey();
+			controller.parseSongs(urlString);
+			publishProgress();
+			urlString = controller.getServer().getServer() + "/server/xml.server.php?action=playlists&auth="
+					+ controller.getServer().getAuthKey();
+			controller.parsePlaylists(urlString);
+			publishProgress();
+			urlString = controller.getServer().getServer() + "/server/xml.server.php?action=artists&auth="
+					+ controller.getServer().getAuthKey();
+			controller.parseArtists(urlString);
+			publishProgress();
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... params) {
+			ServerConnection ampache = controller.getServer().getAmpacheConnection();
+			int count = ampache.getAlbums() + ampache.getSongs() + ampache.getPlaylists() + ampache.getArtists();
+			mProgressStatus = ((int) ((((double) (controller.getProgress()) / ((double) (count))) * 100)));
+			Log.d("progress", String.valueOf(controller.getProgress()));
+			Log.d("progress prozent", String.valueOf(mProgressStatus));
+			mProgress.setProgress(mProgressStatus);
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			mProgress.setVisibility(ProgressBar.GONE);
+			loadingText.setVisibility(TextView.GONE);
+			Log.d("sync", "done");
+		}
+
+	}
+
+	/**
+	 * @return the mProgress
+	 */
+	public ProgressBar getmProgress() {
+		return mProgress;
+	}
+
+	/**
+	 * @param mProgress the mProgress to set
+	 */
+	public void setmProgress(ProgressBar mProgress) {
+		this.mProgress = mProgress;
+	}
+
+	/**
+	 * @return the loadingText
+	 */
+	public TextView getLoadingText() {
+		return loadingText;
+	}
+
+	/**
+	 * @param loadingText the loadingText to set
+	 */
+	public void setLoadingText(TextView loadingText) {
+		this.loadingText = loadingText;
 	}
 
 }
