@@ -267,13 +267,13 @@ public class MainActivity extends FragmentActivity {
 		 */
 		@Override
 		protected Void doInBackground(Void... params) {
-			String urlString = controller.getServer().getServer() + "/server/xml.server.php?action=albums&auth="
-					+ controller.getServer().getAuthKey();
-			controller.parseAlbums(urlString);
-			publishProgress();
-			urlString = controller.getServer().getServer() + "/server/xml.server.php?action=songs&auth="
+			String urlString = controller.getServer().getServer() + "/server/xml.server.php?action=songs&auth="
 					+ controller.getServer().getAuthKey();
 			controller.parseSongs(urlString);
+			publishProgress();
+			urlString = controller.getServer().getServer() + "/server/xml.server.php?action=albums&auth="
+					+ controller.getServer().getAuthKey();
+			controller.parseAlbums(urlString);
 			publishProgress();
 			urlString = controller.getServer().getServer() + "/server/xml.server.php?action=playlists&auth="
 					+ controller.getServer().getAuthKey();
