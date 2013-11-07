@@ -5,8 +5,6 @@ package com.racoon.ampdroid.views;
 
 import java.util.ArrayList;
 
-import ampache.Album;
-import ampache.Song;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.racoon.ampache.Album;
+import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
 import com.racoon.ampdroid.ServerConnector;
