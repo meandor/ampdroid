@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.racoon.ampache.Playlist;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
-//import com.racoon.ampdroid.ServerConnector;
 import com.racoon.ampdroid.StableArrayAdapter;
+
+//import com.racoon.ampdroid.ServerConnector;
 
 /**
  * @author Daniel Schruhl
@@ -27,7 +29,7 @@ import com.racoon.ampdroid.StableArrayAdapter;
  */
 public class PlaylistsView extends Fragment {
 
-	//private String urlString;
+	// private String urlString;
 	private Controller controller;
 
 	/**
@@ -63,7 +65,19 @@ public class PlaylistsView extends Fragment {
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+					Playlist selected = controller.getPlaylists().get(position);
 
+					String urlString = controller.getServer().getHost()
+							+ "/server/xml.server.php?action=playlist_songs&auth="
+							+ controller.getServer().getAuthKey() + "&filter=" + String.valueOf(selected.getId());
+					Log.d("url", urlString);
+					controller.parsePlaylistSongs(urlString);
+
+					Context context = view.getContext();
+					CharSequence text = "Playlist zur Wiedergabe hinzugefügt";
+					int duration = Toast.LENGTH_SHORT;
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
 				}
 
 			});

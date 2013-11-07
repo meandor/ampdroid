@@ -283,6 +283,85 @@ public class Controller {
 		}
 	}
 
+	public void parsePlaylistSongs(String urlString) {
+		Log.d("playlist Songs", urlString);
+		URL url;
+		try {
+			url = new URL(urlString);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.connect();
+			XmlPullParserFactory pullParserFactory;
+			try {
+				pullParserFactory = XmlPullParserFactory.newInstance();
+				XmlPullParser parser = pullParserFactory.newPullParser();
+				InputStream in_s = con.getInputStream();
+				parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+				parser.setInput(in_s, null);
+				parsePlaylistSongsXML(parser);
+			} catch (XmlPullParserException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			Log.d("error", "keine Verbindung möglich");
+			e.printStackTrace();
+		}
+	}
+
+	private void parsePlaylistSongsXML(XmlPullParser parser) throws XmlPullParserException, IOException {
+		int eventType = parser.getEventType();
+		Song currentSong = null;
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+			String name = null;
+			switch (eventType) {
+			case XmlPullParser.START_TAG:
+				name = parser.getName();
+				Log.d("playlist songs titles:", name);
+				if (name.equals("song")) {
+					currentSong = new Song();
+					currentSong.setId(Integer.parseInt((parser.getAttributeValue(null, "id"))));
+				} else if (currentSong != null) {
+					if (name.equals("title")) {
+						currentSong.setTitle(parser.nextText());
+					} else if (name.equals("artist")) {
+						currentSong.setArtist(parser.nextText());
+						// currentSong.setArtistId(Integer.parseInt((parser.getAttributeValue(null, "id"))));
+					} else if (name.equals("album")) {
+						currentSong.setAlbum(parser.nextText());
+						// currentSong.setAlbumId(Integer.parseInt((parser.getAttributeValue(null, "id"))));
+					} else if (name.equals("track")) {
+						currentSong.setTrackNumber(Integer.parseInt(parser.nextText()));
+					} else if (name.equals("time")) {
+						currentSong.setTime(Integer.parseInt(parser.nextText()));
+					} else if (name.equals("year")) {
+						currentSong.setYear(Integer.parseInt(parser.nextText()));
+					} else if (name.equals("bitrate")) {
+						currentSong.setBitrate(Integer.parseInt(parser.nextText()));
+					} else if (name.equals("mode")) {
+						currentSong.setMode(parser.nextText());
+					} else if (name.equals("mime")) {
+						currentSong.setMime(parser.nextText());
+					} else if (name.equals("url")) {
+						currentSong.setUrl(parser.nextText());
+					} else if (name.equals("size")) {
+						currentSong.setSize(Integer.parseInt(parser.nextText()));
+					} else if (name.equals("art")) {
+						currentSong.setArt(parser.nextText());
+					}
+				}
+				break;
+			case XmlPullParser.END_TAG:
+				name = parser.getName();
+				if (name.equalsIgnoreCase("song") && currentSong != null) {
+					this.playNow.add(currentSong);
+				}
+			}
+			eventType = parser.next();
+		}
+		Log.d("songs:", this.playNow.toString());
+	}
+	
 	public void parsePlaylists(String urlString) {
 		Log.d("playlists", urlString);
 		Log.d("playlists anzahl", String.valueOf(server.getAmpacheConnection().getPlaylists()));
