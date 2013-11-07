@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.racoon.ampache.ServerConnection;
 import com.racoon.ampache.Song;
@@ -33,6 +34,7 @@ public class CurrentPlaylistView extends Fragment {
 	private Controller controller;
 	private ProgressBar mProgress;
 	private int mProgressStatus = 0;
+	private TextView loadingText;
 
 	/**
 	 * 
@@ -53,6 +55,8 @@ public class CurrentPlaylistView extends Fragment {
 		ListView listview = (ListView) root.findViewById(R.id.playNow_listview);
 		mProgress = (ProgressBar) root.findViewById(R.id.load_progressbar);
 		mProgress.setVisibility(ProgressBar.GONE);
+		loadingText = (TextView) root.findViewById(R.id.load_progressbar_text);
+		loadingText.setVisibility(TextView.GONE);
 		if (controller.getSongs().size() == 0 && controller.isOnline(getActivity())) {
 			/** Sync Files **/
 			new DownloadFilesTask().execute();
@@ -99,6 +103,7 @@ public class CurrentPlaylistView extends Fragment {
 		@Override
 		protected void onPreExecute() {
 			mProgress.setVisibility(ProgressBar.VISIBLE);
+			loadingText.setVisibility(TextView.VISIBLE);
 		}
 
 		/*
@@ -139,6 +144,7 @@ public class CurrentPlaylistView extends Fragment {
 		@Override
 		protected void onPostExecute(Void result) {
 			mProgress.setVisibility(ProgressBar.GONE);
+			loadingText.setVisibility(TextView.GONE);
 			Log.d("sync", "done");
 		}
 
