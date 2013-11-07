@@ -41,8 +41,8 @@ public class SettingsView extends Fragment {
 		final EditText editUser = (EditText) root.findViewById(R.id.input_user);
 		final EditText editPassword = (EditText) root.findViewById(R.id.input_password);
 		if (controller.getServer() != null) {
-			if (!controller.getServer().getServer().equals("")) {
-				editServer.setText(controller.getServer().getServer());
+			if (!controller.getServer().getHost().equals("")) {
+				editServer.setText(controller.getServer().getHost());
 			}
 			if (!controller.getServer().getUser().equals("")) {
 				editUser.setText(controller.getServer().getUser());

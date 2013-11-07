@@ -91,12 +91,12 @@ public class Controller {
 		this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 	}
 
-	public void saveSettings(String password, String user, String server) {
+	public void saveSettings(String password, String user, String host) {
 		Log.d("passwort-raw:", password);
 		Log.d("passwort-raw:", generateShaHash(password));
 		this.server.setPassword(password);
 		this.server.setUser(user);
-		this.server.setServer(server);
+		this.server.setHost(host);
 	}
 
 	/**

@@ -39,7 +39,7 @@ public class ServerConnector implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String user;
 	private String password;
-	private String server;
+	private String host;
 	private String authKey;
 	private ServerConnection ampacheConnection;
 
@@ -47,11 +47,11 @@ public class ServerConnector implements Serializable {
 		super();
 	}
 
-	public ServerConnector(String user, String password, String server) {
+	public ServerConnector(String user, String password, String host) {
 		super();
 		this.user = user;
 		this.password = password;
-		this.server = server;
+		this.host = host;
 	}
 
 	@SuppressLint("SimpleDateFormat")
@@ -63,7 +63,7 @@ public class ServerConnector implements Serializable {
 		String key = password;
 		String passphrase = generateShaHash(time + key);
 
-		String urlString = new String(server + "/server/xml.server.php?action=handshake&auth=" + passphrase
+		String urlString = new String(host + "/server/xml.server.php?action=handshake&auth=" + passphrase
 				+ "&timestamp=" + time + "&version=350001&user=" + user);
 		Log.d("passwort:", key);
 		Log.d("passphrase:", passphrase);
@@ -147,15 +147,15 @@ public class ServerConnector implements Serializable {
 	/**
 	 * @return the server
 	 */
-	public String getServer() {
-		return server;
+	public String getHost() {
+		return host;
 	}
 
 	/**
 	 * @param server the server to set
 	 */
-	public void setServer(String server) {
-		this.server = server;
+	public void setHost(String server) {
+		this.host = server;
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class ServerConnector implements Serializable {
 	}
 
 	public void extendSession() {
-		String urlString = new String(server + "/server/xml.server.php?action=ping&auth=" + authKey);
+		String urlString = new String(host + "/server/xml.server.php?action=ping&auth=" + authKey);
 		URL url;
 		try {
 			url = new URL(urlString);
