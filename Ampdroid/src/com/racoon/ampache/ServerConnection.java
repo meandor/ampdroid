@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ampache;
+package com.racoon.ampache;
 
 import java.io.Serializable;
 
