@@ -630,4 +630,11 @@ public class Controller {
 		return progress;
 	}
 
+	/**
+	 * @param progress the progress to set
+	 */
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+
 }

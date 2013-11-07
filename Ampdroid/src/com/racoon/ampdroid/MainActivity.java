@@ -235,7 +235,7 @@ public class MainActivity extends FragmentActivity {
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
 				
 				/** Sync Files **/
-				if (controller.getSongs().size() == 0 && controller.isOnline(this)) {
+				if (controller.isOnline(this)) {
 					new DownloadFilesTask().execute();
 				}
 			}
@@ -306,6 +306,7 @@ public class MainActivity extends FragmentActivity {
 			mProgress.setVisibility(ProgressBar.GONE);
 			loadingText.setVisibility(TextView.GONE);
 			Log.d("sync", "done");
+			controller.setProgress(0);
 		}
 
 	}
