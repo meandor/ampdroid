@@ -37,9 +37,9 @@ public class SettingsView extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		controller = Controller.getInstance();
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.settings, null);
-		final EditText editServer = (EditText) root.findViewById(R.id.input_server);
-		final EditText editUser = (EditText) root.findViewById(R.id.input_user);
-		final EditText editPassword = (EditText) root.findViewById(R.id.input_password);
+		final EditText editServer = (EditText) root.findViewById(R.id.settingsServer);
+		final EditText editUser = (EditText) root.findViewById(R.id.settingsUser);
+		final EditText editPassword = (EditText) root.findViewById(R.id.settingsPassword);
 		if (controller.getServer() != null) {
 			if (!controller.getServer().getHost().equals("")) {
 				editServer.setText(controller.getServer().getHost());

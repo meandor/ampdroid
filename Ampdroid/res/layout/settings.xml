@@ -5,53 +5,64 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/TextView01"
+        android:id="@+id/settingsServerHeading"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Server" />
+        android:text="@string/settingsServerHeading" />
 
     <EditText
-        android:id="@+id/input_server"
+        android:id="@+id/settingsServer"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="http://server/ampache"
-        android:inputType="textUri" >
-
-        <requestFocus />
-    </EditText>
+        android:hint="@string/settingsServer"
+        android:inputType="textUri" />
 
     <TextView
-        android:id="@+id/TextView02"
+        android:id="@+id/settingsUserHeading"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:text="Benutzer" />
+        android:text="@string/settingsUserHeading" />
 
     <EditText
-        android:id="@+id/input_user"
+        android:id="@+id/settingsUser"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Benutzername"
+        android:hint="@string/settingsUser"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/input_password"
+        android:id="@+id/settingsPassword"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Passwort"
+        android:hint="@string/settingsPassword"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/settings_save"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:gravity="center_vertical|center_horizontal|center"
-        android:onClick="saveSettings"
-        android:text="Speichern" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:onClick="saveSettings"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/reconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:onClick="reconnect"
+            android:text="@string/reconnect" />
+    </LinearLayout>
 
 </LinearLayout>
