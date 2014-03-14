@@ -67,6 +67,7 @@ public class ServerConnector implements Serializable {
 				+ "&timestamp=" + time + "&version=350001&user=" + user);
 		Log.d("passwort:", key);
 		Log.d("passphrase:", passphrase);
+		Log.d("url:", urlString);
 		URL url;
 		try {
 			url = new URL(urlString);
