@@ -21,6 +21,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.racoon.ampache.CachedData;
 import com.racoon.ampache.ServerConnection;
 
 import android.annotation.SuppressLint;
@@ -42,6 +43,7 @@ public class ServerConnector implements Serializable {
 	private String host;
 	private String authKey;
 	private ServerConnection ampacheConnection;
+	private CachedData cachedData;
 
 	public ServerConnector() {
 		super();
@@ -300,5 +302,19 @@ public class ServerConnector implements Serializable {
 	 */
 	public void setAmpacheConnection(ServerConnection ampacheConnection) {
 		this.ampacheConnection = ampacheConnection;
+	}
+
+	/**
+	 * @return the cachedData
+	 */
+	public CachedData getCachedData() {
+		return cachedData;
+	}
+
+	/**
+	 * @param cachedData the cachedData to set
+	 */
+	public void setCachedData(CachedData cachedData) {
+		this.cachedData = cachedData;
 	}
 }

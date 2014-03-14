@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Daniel Schruhl
  * 
  */
-public class cachedData implements Serializable {
+public class CachedData implements Serializable {
 
 	/**
 	 * 
