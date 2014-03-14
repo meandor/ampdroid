@@ -119,6 +119,12 @@ public class MainActivity extends FragmentActivity {
 				getActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
+			
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				getActionBar().setTitle(mTitle);
+				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+			}
 		};
 
 		// Set the drawer toggle as the DrawerListener
@@ -131,25 +137,12 @@ public class MainActivity extends FragmentActivity {
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
-				mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-					@Override
-					public void onDrawerClosed(View drawerView) {
-						super.onDrawerClosed(drawerView);
-						FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-						tx.replace(R.id.content_frame,
-								Fragment.instantiate(MainActivity.this, controller.getFragments()[pos]));
-						tx.commit();
-						getActionBar().setTitle(controller.getFragmentsNames()[pos]);
-						invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-					}
-
-					/** Called when a drawer has settled in a completely open state. */
-					@Override
-					public void onDrawerOpened(View drawerView) {
-						getActionBar().setTitle(mDrawerTitle);
-						invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-					}
-				});
+				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[pos]));
+				tx.commit();
+				mTitle = controller.getFragmentsNames()[pos];
+				getActionBar().setTitle(controller.getFragmentsNames()[pos]);
+				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		});
@@ -202,9 +195,9 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void saveSettings(View view) {
-		String server = ((EditText) findViewById(R.id.input_server)).getText().toString();
-		String user = ((EditText) findViewById(R.id.input_user)).getText().toString();
-		String password = ((EditText) findViewById(R.id.input_password)).getText().toString();
+		String server = ((EditText) findViewById(R.id.settingsServer)).getText().toString();
+		String user = ((EditText) findViewById(R.id.settingsUser)).getText().toString();
+		String password = ((EditText) findViewById(R.id.settingsPassword)).getText().toString();
 		if (controller.getServer() != null && !controller.getServer().getPassword().equals(password)) {
 			password = controller.generateShaHash(password);
 		}
@@ -233,7 +226,7 @@ public class MainActivity extends FragmentActivity {
 				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 				tx.commit();
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
-				
+
 				/** Sync Files **/
 				if (controller.isOnline(this)) {
 					new DownloadFilesTask().execute();
