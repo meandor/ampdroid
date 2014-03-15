@@ -54,7 +54,6 @@ public class ServerConnector implements Serializable {
 		this.host = host;
 	}
 
-	@SuppressLint("SimpleDateFormat")
 	public boolean isConnected(boolean network) {
 		if (!network) {
 			return false;
