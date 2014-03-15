@@ -70,11 +70,7 @@ public class MainActivity extends FragmentActivity {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 			tx.commit();
-			Context context = getApplicationContext();
-			CharSequence text = "Verbindung zum Server hergestellt";
-			int duration = Toast.LENGTH_LONG;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			showToast("Verbindung zum Server hergestellt", Toast.LENGTH_LONG);
 
 			/** Sync Files **/
 			if (controller.getSongs().size() == 0 && controller.isOnline(this)) {
@@ -88,22 +84,14 @@ public class MainActivity extends FragmentActivity {
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
-			Context context = getApplicationContext();
-			CharSequence text = "Verbindung zum Server ist nicht möglich";
-			int duration = Toast.LENGTH_LONG;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			showToast("Verbindung zum Server ist nicht möglich", Toast.LENGTH_LONG);
 		} else {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
-			Context context = getApplicationContext();
-			CharSequence text = "Einstellungen sind noch nicht gesetzt";
-			int duration = Toast.LENGTH_LONG;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			showToast("Einstellungen sind noch nicht gesetzt", Toast.LENGTH_LONG);
 		}
 
 		// just styling option add shadow the right edge of the drawer
@@ -119,7 +107,7 @@ public class MainActivity extends FragmentActivity {
 				getActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
-			
+
 			@Override
 			public void onDrawerClosed(View drawerView) {
 				getActionBar().setTitle(mTitle);
@@ -203,25 +191,13 @@ public class MainActivity extends FragmentActivity {
 		}
 		controller.saveSettings(password, user, server);
 		if (!controller.saveServer(getApplicationContext())) {
-			Context context = getApplicationContext();
-			CharSequence text = "Einstellungen konnten nicht gespeichert werden";
-			int duration = Toast.LENGTH_LONG;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			showToast("Einstellungen konnten nicht gespeichert werden", Toast.LENGTH_LONG);
 		} else {
-			Context context = getApplicationContext();
-			CharSequence text = "Einstellungen wurden gespeichert";
-			int duration = Toast.LENGTH_SHORT;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			showToast("Einstellungen wurden gespeichert", Toast.LENGTH_SHORT);
 			if (!this.controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
-				text = "Verbindung konnte nicht hergestellt werden";
-				toast = Toast.makeText(context, text, duration);
-				toast.show();
+				showToast("Verbindung konnte nicht hergestellt werden", Toast.LENGTH_SHORT);
 			} else {
-				text = "Verbindung wurde hergestellt";
-				toast = Toast.makeText(context, text, duration);
-				toast.show();
+				showToast("Verbindung wurde hergestellt", Toast.LENGTH_SHORT);
 				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 				tx.commit();
@@ -302,6 +278,24 @@ public class MainActivity extends FragmentActivity {
 			controller.setProgress(0);
 		}
 
+	}
+
+	public void reconnect(View view) {
+		try {
+			if (controller.isOnline(getApplicationContext())) {
+
+			} else {
+
+			}
+		} catch (NullPointerException e) {
+			Log.d("bug", "Server Verbindung nicht vorhanden");
+		}
+	}
+
+	public void showToast(String message, int duration) {
+		Context context = getApplicationContext();
+		Toast toast = Toast.makeText(context, message, duration);
+		toast.show();
 	}
 
 	/**
