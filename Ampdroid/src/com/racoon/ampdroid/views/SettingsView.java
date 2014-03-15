@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
@@ -40,6 +41,8 @@ public class SettingsView extends Fragment {
 		final EditText editServer = (EditText) root.findViewById(R.id.settingsServer);
 		final EditText editUser = (EditText) root.findViewById(R.id.settingsUser);
 		final EditText editPassword = (EditText) root.findViewById(R.id.settingsPassword);
+		final TextView connectionInfo = (TextView) root.findViewById(R.id.settingsConnectionInfo);
+		final TextView connectionInfoText = (TextView) root.findViewById(R.id.settingsConnectionInfoText);
 		if (controller.getServer() != null) {
 			if (!controller.getServer().getHost().equals("")) {
 				editServer.setText(controller.getServer().getHost());
@@ -49,6 +52,10 @@ public class SettingsView extends Fragment {
 			}
 			if (!controller.getServer().getPassword().equals("")) {
 				editPassword.setText(controller.getServer().getPassword());
+			}
+			if (controller.getServer().isConnected(controller.isOnline(root.getContext()))) {
+				connectionInfoText.setText("Sitzung gültig bis ");
+				connectionInfo.setText(controller.getServer().getAmpacheConnection().getSession_expire());
 			}
 		}
 		return root;
