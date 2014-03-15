@@ -666,7 +666,7 @@ public class Controller {
 	public Song getPlayingNow() {
 		return playingNow;
 	}
-
+	
 	/**
 	 * @param playingNow the playingNow to set
 	 */

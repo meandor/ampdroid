@@ -100,6 +100,9 @@ public class CurrentPlaylistView extends Fragment {
 							if (controller.getMediaPlayer() != null) {
 								int mCurrentPosition = controller.getMediaPlayer().getCurrentPosition();
 								seekBar.setProgress(mCurrentPosition);
+								if (controller.getMediaPlayer().getCurrentPosition() == controller.getMediaPlayer().getDuration()) {
+									
+								}
 								Log.d("seekbar", String.valueOf(seekBar.getProgress()));
 							}
 							mHandler.postDelayed(this, 1000);
