@@ -14,19 +14,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+
 import com.racoon.ampache.CachedData;
 import com.racoon.ampache.ServerConnection;
-
-import android.annotation.SuppressLint;
-import android.net.ParseException;
-import android.util.Log;
 
 /**
  * @author Daniel Schruhl
@@ -93,20 +91,13 @@ public class ServerConnector implements Serializable {
 			}
 			if (this.ampacheConnection != null) {
 				Log.d("ampache connection:", this.ampacheConnection.getAuth());
-				Date currentDate = new Date();
-				Date date = new Date();
-				try {
-					String rawDate;
-					SimpleDateFormat sdfToDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss+01:00");
-					rawDate = ampacheConnection.getSession_expire().replace("T", " ");
-					date = sdfToDate.parse(rawDate);
-				} catch (ParseException ex2) {
-					ex2.printStackTrace();
-				}
-				Log.d("expire:", this.ampacheConnection.getSession_expire());
+				Calendar today = Calendar.getInstance();
+				Calendar expire = this.ampacheConnection.getSessionExpire();
+				Log.d("expire:", this.ampacheConnection.getSessionExpire().toString());
 				Log.d("token:", this.authKey);
-				Log.d("dates:", date.toString() + ", " + currentDate.toString() + " - " + String.valueOf(date.compareTo(currentDate)));
-				if (date.compareTo(currentDate) <= 0) {
+				Log.d("dates:",
+						expire.toString() + ", " + today.toString() + " - " + String.valueOf(expire.compareTo(today)));
+				if (expire.compareTo(today) <= 0) {
 					extendSession();
 				}
 				return true;
@@ -256,7 +247,16 @@ public class ServerConnector implements Serializable {
 					} else if (name.equals("api")) {
 						serverConnection.setApi(parser.nextText());
 					} else if (name.equals("session_expire")) {
-						serverConnection.setSession_expire(parser.nextText());
+						/** Date Format: yyyy-MM-ddTHH:mm:ss+01:00 **/
+						String rawExpire = parser.nextText();
+						Calendar expire = Calendar.getInstance();
+						expire.set(Calendar.YEAR, Integer.parseInt(rawExpire.substring(0, 4)));
+						expire.set(Calendar.MONTH, Integer.parseInt(rawExpire.substring(5, 7)));
+						expire.set(Calendar.DAY_OF_MONTH, Integer.parseInt(rawExpire.substring(8, 10)));
+						expire.set(Calendar.HOUR_OF_DAY, Integer.parseInt(rawExpire.substring(11, 13)));
+						expire.set(Calendar.MINUTE, Integer.parseInt(rawExpire.substring(14, 16)));
+						expire.set(Calendar.SECOND, Integer.parseInt(rawExpire.substring(17, 19)));
+						serverConnection.setSessionExpire(expire);
 					} else if (name.equals("update")) {
 						serverConnection.setUpdate(parser.nextText());
 					} else if (name.equals("add")) {

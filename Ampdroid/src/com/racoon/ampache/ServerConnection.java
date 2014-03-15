@@ -4,6 +4,7 @@
 package com.racoon.ampache;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * @author Daniel Schruhl
@@ -17,7 +18,7 @@ public class ServerConnection implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String auth;
 	private String api;
-	private String session_expire;
+	private Calendar sessionExpire;
 	private String update;
 	private String add;
 	private String clean;
@@ -32,12 +33,12 @@ public class ServerConnection implements Serializable {
 		super();
 	}
 
-	public ServerConnection(String auth, String api, String session_expire, String update, String add, String clean,
+	public ServerConnection(String auth, String api, Calendar sessionExpire, String update, String add, String clean,
 			int songs, int albums, int artists, int playlists, int videos, int catalogs) {
 		super();
 		this.auth = auth;
 		this.api = api;
-		this.session_expire = session_expire;
+		this.sessionExpire = sessionExpire;
 		this.update = update;
 		this.add = add;
 		this.clean = clean;
@@ -80,15 +81,24 @@ public class ServerConnection implements Serializable {
 	/**
 	 * @return the session_expire
 	 */
-	public String getSession_expire() {
-		return session_expire;
+	public Calendar getSessionExpire() {
+		return sessionExpire;
+	}
+
+	/**
+	 * @return the session_expire String
+	 */
+	public String getSessionExpireString() {
+		return String.valueOf(sessionExpire.get(Calendar.DAY_OF_MONTH)) + "."
+				+ String.valueOf(sessionExpire.get(Calendar.MONTH) + "."
+				+ String.valueOf(sessionExpire.get(Calendar.YEAR)));
 	}
 
 	/**
 	 * @param session_expire the session_expire to set
 	 */
-	public void setSession_expire(String session_expire) {
-		this.session_expire = session_expire;
+	public void setSessionExpire(Calendar sessionExpire) {
+		this.sessionExpire = sessionExpire;
 	}
 
 	/**

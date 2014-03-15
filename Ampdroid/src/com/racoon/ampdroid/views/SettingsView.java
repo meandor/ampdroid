@@ -55,7 +55,7 @@ public class SettingsView extends Fragment {
 			}
 			if (controller.getServer().isConnected(controller.isOnline(root.getContext()))) {
 				connectionInfoText.setText("Sitzung gültig bis ");
-				connectionInfo.setText(controller.getServer().getAmpacheConnection().getSession_expire());
+				connectionInfo.setText(controller.getServer().getAmpacheConnection().getSessionExpireString());
 			}
 		}
 		return root;
