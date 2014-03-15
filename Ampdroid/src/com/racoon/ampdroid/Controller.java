@@ -186,11 +186,18 @@ public class Controller {
 			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			Log.d("bug", "Speichern nicht erfolgreich");
 			return false;
 		}
 		return true;
 	}
 
+	/**
+	 * Returns if online connectivity is given or not.
+	 * 
+	 * @param context ApplicationContext
+	 * @return {@code true} if connected to Internet, {@code false} otherwise
+	 */
 	public boolean isOnline(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -198,6 +205,13 @@ public class Controller {
 			return true;
 		}
 		return false;
+	}
+
+	public void loadCachedFiles() {
+		this.setSongs(this.server.getCachedData().getSongs());
+		this.setAlbums(this.server.getCachedData().getAlbums());
+		this.setArtists(this.server.getCachedData().getArtists());
+		this.setPlaylists(this.server.getCachedData().getPlaylists());
 	}
 
 	public ServerConnector getServerConfig(Context context) {
@@ -361,7 +375,7 @@ public class Controller {
 		}
 		Log.d("songs:", this.playNow.toString());
 	}
-	
+
 	public void parsePlaylists(String urlString) {
 		Log.d("playlists", urlString);
 		Log.d("playlists anzahl", String.valueOf(server.getAmpacheConnection().getPlaylists()));
@@ -666,7 +680,7 @@ public class Controller {
 	public Song getPlayingNow() {
 		return playingNow;
 	}
-	
+
 	/**
 	 * @param playingNow the playingNow to set
 	 */

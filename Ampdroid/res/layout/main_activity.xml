@@ -19,7 +19,7 @@
             android:id="@+id/load_progressbar_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lade alle Dateien vom Server"
+            android:text="Lade Songs"
             android:textColor="#969696" />
     </LinearLayout>
 

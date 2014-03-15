@@ -39,6 +39,12 @@ public class MainActivity extends FragmentActivity {
 	private int mProgressStatus = 0;
 	private ProgressBar mProgress;
 	private TextView loadingText;
+	private boolean syncAlbums;
+	private boolean syncArtists;
+	private boolean syncPlaylists;
+	private boolean syncSongs;
+	private int syncFilesCount;
+	private String syncText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +77,9 @@ public class MainActivity extends FragmentActivity {
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 			tx.commit();
 			showToast("Verbindung zum Server hergestellt", Toast.LENGTH_LONG);
-
+			controller.loadCachedFiles();
 			/** Sync Files **/
-			if (controller.getSongs().size() == 0 && controller.isOnline(this)) {
-				new DownloadFilesTask().execute();
-			}
+			synchronize();
 
 		} else if (controller.getServerConfig(this) != null
 				&& !controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
@@ -204,9 +208,7 @@ public class MainActivity extends FragmentActivity {
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
 
 				/** Sync Files **/
-				if (controller.isOnline(this)) {
-					new DownloadFilesTask().execute();
-				}
+				synchronize();
 			}
 		}
 	}
@@ -227,6 +229,40 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
+	/**
+	 * Synchronizes the files if the corresponding boolean is true and starts an AsyncTask.
+	 */
+	public void synchronize() {
+		syncFilesCount = 0;
+		ServerConnection ampache = controller.getServer().getAmpacheConnection();
+		Log.d("bug songs anzahl", controller.getServer().getCachedData().getSongs().size() + ", " + controller.getServer().getAmpacheConnection()
+				.getSongs());
+		if (controller.getServer().getCachedData().getAlbums().size() != controller.getServer().getAmpacheConnection()
+				.getAlbums()) {
+			syncAlbums = true;
+			syncFilesCount += ampache.getAlbums();
+		}
+		if (controller.getServer().getCachedData().getArtists().size() != controller.getServer().getAmpacheConnection()
+				.getArtists()) {
+			syncArtists = true;
+			syncFilesCount += ampache.getArtists();
+		}
+		if (controller.getServer().getCachedData().getPlaylists().size() != controller.getServer()
+				.getAmpacheConnection().getPlaylists()) {
+			syncPlaylists = true;
+			syncFilesCount += ampache.getPlaylists();
+		}
+		if (controller.getServer().getCachedData().getSongs().size() != controller.getServer().getAmpacheConnection()
+				.getSongs()) {
+			syncSongs = true;
+			syncFilesCount += ampache.getSongs();
+		}
+		
+		if (syncAlbums || syncArtists || syncPlaylists || syncSongs) {
+			new DownloadFilesTask().execute();
+		}
+	}
+
 	private class DownloadFilesTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -241,30 +277,54 @@ public class MainActivity extends FragmentActivity {
 		 */
 		@Override
 		protected Void doInBackground(Void... params) {
-			String urlString = controller.getServer().getHost() + "/server/xml.server.php?action=songs&auth="
-					+ controller.getServer().getAuthKey();
-			controller.parseSongs(urlString);
-			publishProgress();
-			urlString = controller.getServer().getHost() + "/server/xml.server.php?action=albums&auth="
-					+ controller.getServer().getAuthKey();
-			controller.parseAlbums(urlString);
-			publishProgress();
-			urlString = controller.getServer().getHost() + "/server/xml.server.php?action=playlists&auth="
-					+ controller.getServer().getAuthKey();
-			controller.parsePlaylists(urlString);
-			publishProgress();
-			urlString = controller.getServer().getHost() + "/server/xml.server.php?action=artists&auth="
-					+ controller.getServer().getAuthKey();
-			controller.parseArtists(urlString);
-			publishProgress();
+			String urlString = "";
+			if (syncSongs) {
+				syncText = "Lade Songs";
+				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=songs&auth="
+						+ controller.getServer().getAuthKey();
+				controller.parseSongs(urlString);
+				controller.getServer().getCachedData().setSongs(controller.getSongs());
+				Log.d("bug", "cached songs sind " + controller.getSongs().size());
+				publishProgress();
+			}
+
+			if (syncAlbums) {
+				syncText = "Lade Alben";
+				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=albums&auth="
+						+ controller.getServer().getAuthKey();
+				controller.parseAlbums(urlString);
+				controller.getServer().getCachedData().setAlbums(controller.getAlbums());
+				publishProgress();
+			}
+
+			if (syncPlaylists) {
+				syncText = "Lade Playlists";
+				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=playlists&auth="
+						+ controller.getServer().getAuthKey();
+				controller.parsePlaylists(urlString);
+				controller.getServer().getCachedData().setPlaylists(controller.getPlaylists());
+				publishProgress();
+			}
+
+			if (syncArtists) {
+				syncText = "Lade Interpreten";
+				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=artists&auth="
+						+ controller.getServer().getAuthKey();
+				controller.parseArtists(urlString);
+				controller.getServer().getCachedData().setArtists(controller.getArtists());
+				publishProgress();
+			}
+			if (controller.saveServer(getApplicationContext())) {
+				Log.d("bug", "sync erfolgreich gespeichert.");
+				Log.d("bug", "songs hat jetzt " + controller.getServer().getCachedData().getSongs().size() + " Dateien");
+			}
 			return null;
 		}
 
 		@Override
 		protected void onProgressUpdate(Void... params) {
-			ServerConnection ampache = controller.getServer().getAmpacheConnection();
-			int count = ampache.getAlbums() + ampache.getSongs() + ampache.getPlaylists() + ampache.getArtists();
-			mProgressStatus = ((int) ((((double) (controller.getProgress()) / ((double) (count))) * 100)));
+			loadingText.setText(syncText);
+			mProgressStatus = ((int) ((((double) (controller.getProgress()) / ((double) (syncFilesCount))) * 100)));
 			Log.d("progress", String.valueOf(controller.getProgress()));
 			Log.d("progress prozent", String.valueOf(mProgressStatus));
 			mProgress.setProgress(mProgressStatus);
@@ -283,9 +343,15 @@ public class MainActivity extends FragmentActivity {
 	public void reconnect(View view) {
 		try {
 			if (controller.isOnline(getApplicationContext())) {
-
+				if (this.controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
+					showToast("Verbindung wurde hergestellt", Toast.LENGTH_SHORT);
+					/** Sync Files **/
+					synchronize();
+				} else {
+					showToast("Verbindung konnte nicht hergestellt werden", Toast.LENGTH_SHORT);
+				}
 			} else {
-
+				showToast("Internetverbindung nicht vorhanden", Toast.LENGTH_SHORT);
 			}
 		} catch (NullPointerException e) {
 			Log.d("bug", "Server Verbindung nicht vorhanden");

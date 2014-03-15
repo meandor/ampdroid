@@ -21,6 +21,14 @@ public class CachedData implements Serializable {
 	private ArrayList<Artist> artists;
 	private ArrayList<Album> albums;
 
+	public CachedData() {
+		super();
+		this.playlists = new ArrayList<Playlist>();
+		this.songs = new ArrayList<Song>();
+		this.artists = new ArrayList<Artist>();
+		this.albums = new ArrayList<Album>();
+	}
+
 	/**
 	 * @return the playlists
 	 */

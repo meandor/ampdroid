@@ -3,12 +3,18 @@
  */
 package com.racoon.ampache;
 
+import java.io.Serializable;
+
 /**
  * @author Daniel Schruhl
  * 
  */
-public class Artist {
+public class Artist implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private int albums;

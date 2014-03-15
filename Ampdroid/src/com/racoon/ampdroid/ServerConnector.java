@@ -62,7 +62,7 @@ public class ServerConnector implements Serializable {
 		String key = password;
 		String passphrase = generateShaHash(time + key);
 
-		String urlString = new String(host + "/server/xml.server.php?action=handshake&auth=" + passphrase
+		String urlString = new String(this.host + "/server/xml.server.php?action=handshake&auth=" + passphrase
 				+ "&timestamp=" + time + "&version=350001&user=" + user);
 		Log.d("passwort:", key);
 		Log.d("passphrase:", passphrase);
@@ -99,6 +99,12 @@ public class ServerConnector implements Serializable {
 				if (expire.compareTo(today) <= 0) {
 					extendSession();
 				}
+				
+				/** start caching file**/
+				if (this.cachedData == null) {
+					this.cachedData = new CachedData();
+				}
+				
 				return true;
 			}
 			return false;
