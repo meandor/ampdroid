@@ -86,12 +86,15 @@ public class ServerConnection implements Serializable {
 	}
 
 	/**
-	 * @return the session_expire String
+	 * @return the session_expire String in German locale
 	 */
 	public String getSessionExpireString() {
-		return String.valueOf(sessionExpire.get(Calendar.DAY_OF_MONTH)) + "."
-				+ String.valueOf(sessionExpire.get(Calendar.MONTH) + "."
-				+ String.valueOf(sessionExpire.get(Calendar.YEAR)));
+		return String.format("%02d", sessionExpire.get(Calendar.DAY_OF_MONTH)) + "."
+				+ String.format("%02d", sessionExpire.get(Calendar.MONTH)) + "."
+				+ String.valueOf(sessionExpire.get(Calendar.YEAR)) + " - "
+				+ String.format("%02d", sessionExpire.get(Calendar.HOUR_OF_DAY)) + ":"
+				+ String.format("%02d", sessionExpire.get(Calendar.MINUTE)) + ":"
+				+ String.format("%02d", sessionExpire.get(Calendar.SECOND));
 	}
 
 	/**

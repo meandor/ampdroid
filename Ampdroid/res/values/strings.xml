@@ -14,6 +14,7 @@
     <string name="settingsUserHeading">Benutzer</string>
     <string name="settingsUser">Benutzername</string>
     <string name="settingsPassword">Passwort</string>
+    <string name="settingsExpireText">Sitzung gültig bis </string>
 
     <string-array name="menu_array">
         <item>Spielt gerade</item>

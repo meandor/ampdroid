@@ -54,7 +54,7 @@ public class SettingsView extends Fragment {
 				editPassword.setText(controller.getServer().getPassword());
 			}
 			if (controller.getServer().isConnected(controller.isOnline(root.getContext()))) {
-				connectionInfoText.setText("Sitzung gültig bis ");
+				connectionInfoText.setText(R.string.settingsExpireText);
 				connectionInfo.setText(controller.getServer().getAmpacheConnection().getSessionExpireString());
 			}
 		}
