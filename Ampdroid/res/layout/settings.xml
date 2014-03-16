@@ -63,6 +63,13 @@
             android:gravity="center_vertical|center_horizontal|center"
             android:onClick="reconnect"
             android:text="@string/reconnect" />
+        <Button
+            android:id="@+id/resync"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:onClick="forceSync"
+            android:text="@string/forceSync" />
     </LinearLayout>
 
     <TextView

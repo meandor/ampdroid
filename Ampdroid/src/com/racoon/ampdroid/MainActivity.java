@@ -231,6 +231,7 @@ public class MainActivity extends FragmentActivity {
 
 	/**
 	 * Synchronizes the files if the corresponding boolean is true and starts an AsyncTask.
+	 * 
 	 * @param force boolean True if a synchronization is forced to synchronize everything
 	 */
 	public void synchronize(boolean force) {
@@ -245,26 +246,30 @@ public class MainActivity extends FragmentActivity {
 		Log.d("bug playlists anzahl", controller.getServer().getCachedData().getPlaylists().size() + ", "
 				+ controller.getServer().getAmpacheConnection().getPlaylists());
 		if (controller.getServer().getCachedData().getAlbums().size() != controller.getServer().getAmpacheConnection()
-				.getAlbums() || force) {
+				.getAlbums()
+				|| force) {
 			syncAlbums = true;
 			syncFilesCount += ampache.getAlbums();
 		}
 		if (controller.getServer().getCachedData().getArtists().size() != controller.getServer().getAmpacheConnection()
-				.getArtists() || force) {
+				.getArtists()
+				|| force) {
 			syncArtists = true;
 			syncFilesCount += ampache.getArtists();
 		}
 		if (controller.getServer().getCachedData().getPlaylists().size() != controller.getServer()
-				.getAmpacheConnection().getPlaylists() || force) {
+				.getAmpacheConnection().getPlaylists()
+				|| force) {
 			syncPlaylists = true;
 			syncFilesCount += ampache.getPlaylists();
 		}
 		if (controller.getServer().getCachedData().getSongs().size() != controller.getServer().getAmpacheConnection()
-				.getSongs() || force) {
+				.getSongs()
+				|| force) {
 			syncSongs = true;
 			syncFilesCount += ampache.getSongs();
 		}
-		
+
 		if (syncAlbums || syncArtists || syncPlaylists || syncSongs || force) {
 			new DownloadFilesTask().execute();
 		}
@@ -354,6 +359,11 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
+	/**
+	 * Reconnects the server connection and gets new session or prolongs it.
+	 * 
+	 * @param view View
+	 */
 	public void reconnect(View view) {
 		try {
 			if (controller.isOnline(getApplicationContext())) {
@@ -376,6 +386,29 @@ public class MainActivity extends FragmentActivity {
 		Context context = getApplicationContext();
 		Toast toast = Toast.makeText(context, message, duration);
 		toast.show();
+	}
+
+	/**
+	 * Forces a sync of all files.
+	 * 
+	 * @param view View
+	 */
+	public void forceSync(View view) {
+		try {
+			if (controller.isOnline(getApplicationContext())) {
+				if (this.controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
+					showToast("Verbindung wurde hergestellt", Toast.LENGTH_SHORT);
+					/** Sync Files **/
+					synchronize(true);
+				} else {
+					showToast("Verbindung konnte nicht hergestellt werden", Toast.LENGTH_SHORT);
+				}
+			} else {
+				showToast("Internetverbindung nicht vorhanden", Toast.LENGTH_SHORT);
+			}
+		} catch (NullPointerException e) {
+			Log.d("bug", "Server Verbindung nicht vorhanden");
+		}
 	}
 
 	/**
