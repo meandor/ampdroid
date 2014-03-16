@@ -79,7 +79,7 @@ public class MainActivity extends FragmentActivity {
 			showToast("Verbindung zum Server hergestellt", Toast.LENGTH_LONG);
 			controller.loadCachedFiles();
 			/** Sync Files **/
-			synchronize();
+			synchronize(false);
 
 		} else if (controller.getServerConfig(this) != null
 				&& !controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
@@ -208,7 +208,7 @@ public class MainActivity extends FragmentActivity {
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
 
 				/** Sync Files **/
-				synchronize();
+				synchronize(true);
 			}
 		}
 	}
@@ -231,8 +231,9 @@ public class MainActivity extends FragmentActivity {
 
 	/**
 	 * Synchronizes the files if the corresponding boolean is true and starts an AsyncTask.
+	 * @param force boolean True if a synchronization is forced to synchronize everything
 	 */
-	public void synchronize() {
+	public void synchronize(boolean force) {
 		syncFilesCount = 0;
 		ServerConnection ampache = controller.getServer().getAmpacheConnection();
 		Log.d("bug songs anzahl", controller.getServer().getCachedData().getSongs().size() + ", "
@@ -244,27 +245,27 @@ public class MainActivity extends FragmentActivity {
 		Log.d("bug playlists anzahl", controller.getServer().getCachedData().getPlaylists().size() + ", "
 				+ controller.getServer().getAmpacheConnection().getPlaylists());
 		if (controller.getServer().getCachedData().getAlbums().size() != controller.getServer().getAmpacheConnection()
-				.getAlbums()) {
+				.getAlbums() || force) {
 			syncAlbums = true;
 			syncFilesCount += ampache.getAlbums();
 		}
 		if (controller.getServer().getCachedData().getArtists().size() != controller.getServer().getAmpacheConnection()
-				.getArtists()) {
+				.getArtists() || force) {
 			syncArtists = true;
 			syncFilesCount += ampache.getArtists();
 		}
 		if (controller.getServer().getCachedData().getPlaylists().size() != controller.getServer()
-				.getAmpacheConnection().getPlaylists()) {
+				.getAmpacheConnection().getPlaylists() || force) {
 			syncPlaylists = true;
 			syncFilesCount += ampache.getPlaylists();
 		}
 		if (controller.getServer().getCachedData().getSongs().size() != controller.getServer().getAmpacheConnection()
-				.getSongs()) {
+				.getSongs() || force) {
 			syncSongs = true;
 			syncFilesCount += ampache.getSongs();
 		}
 		
-		if (syncAlbums || syncArtists || syncPlaylists || syncSongs) {
+		if (syncAlbums || syncArtists || syncPlaylists || syncSongs || force) {
 			new DownloadFilesTask().execute();
 		}
 	}
@@ -359,7 +360,7 @@ public class MainActivity extends FragmentActivity {
 				if (this.controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
 					showToast("Verbindung wurde hergestellt", Toast.LENGTH_SHORT);
 					/** Sync Files **/
-					synchronize();
+					synchronize(false);
 				} else {
 					showToast("Verbindung konnte nicht hergestellt werden", Toast.LENGTH_SHORT);
 				}
