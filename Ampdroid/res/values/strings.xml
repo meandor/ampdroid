@@ -8,7 +8,8 @@
     <string name="connect">Verbinden</string>
     <string name="save">Speichern</string>
     <string name="reconnect">Wiederverbinden</string>
-    
+    <string name="forceSync">Daten zurücksetzen</string>
+
     <string name="settingsServerHeading">Speichern</string>
     <string name="settingsServer">http://server/ampache</string>
     <string name="settingsUserHeading">Benutzer</string>
