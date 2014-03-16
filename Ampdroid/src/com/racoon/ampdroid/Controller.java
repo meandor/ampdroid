@@ -49,6 +49,7 @@ public class Controller {
 	private ArrayList<Artist> artists;
 	private ArrayList<Album> albums;
 	private ArrayList<Song> playNow;
+	private int playNowPosition;
 	private Song playingNow;
 	private MediaPlayer mediaPlayer;
 	private int progress = 0;
@@ -728,6 +729,20 @@ public class Controller {
 	 */
 	public void setProgress(int progress) {
 		this.progress = progress;
+	}
+
+	/**
+	 * @return the playNowPosition
+	 */
+	public int getPlayNowPosition() {
+		return playNowPosition;
+	}
+
+	/**
+	 * @param playNowPosition the playNowPosition to set
+	 */
+	public void setPlayNowPosition(int playNowPosition) {
+		this.playNowPosition = playNowPosition;
 	}
 
 }
