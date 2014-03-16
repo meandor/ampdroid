@@ -53,7 +53,7 @@ public class StableArrayAdapter extends ArrayAdapter<String> implements SectionI
 	}
 
 	public int getPositionForSection(int section) {
-		return mIdMap.get(sections[section]);
+		return mIdMap.get(sections[section - 1]);
 	}
 
 	public int getSectionForPosition(int position) {
