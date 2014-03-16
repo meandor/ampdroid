@@ -20,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,12 +41,14 @@ public class MainActivity extends FragmentActivity {
 	private int mProgressStatus = 0;
 	private ProgressBar mProgress;
 	private TextView loadingText;
+	private LinearLayout progressLinearLayout;
 	private boolean syncAlbums;
 	private boolean syncArtists;
 	private boolean syncPlaylists;
 	private boolean syncSongs;
 	private int syncFilesCount;
 	private String syncText;
+	private FrameLayout contentFrame;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,9 @@ public class MainActivity extends FragmentActivity {
 		mProgress.setVisibility(ProgressBar.GONE);
 		loadingText = (TextView) findViewById(R.id.load_progressbar_text);
 		loadingText.setVisibility(TextView.GONE);
+		progressLinearLayout = (LinearLayout) findViewById(R.id.progressbar_layout);
+		progressLinearLayout.setVisibility(LinearLayout.GONE);
+		contentFrame = (FrameLayout) findViewById(R.id.content_frame);
 
 		/** Media Control **/
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -279,8 +286,13 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		protected void onPreExecute() {
+			progressLinearLayout.setVisibility(LinearLayout.VISIBLE);
 			mProgress.setVisibility(ProgressBar.VISIBLE);
 			loadingText.setVisibility(TextView.VISIBLE);
+			float scale = getResources().getDisplayMetrics().density;
+			int dpAsPixels = (int) (48 * scale + 0.5f);
+			int dpAsPixelsDim = (int) (16 * scale + 0.5f);
+			contentFrame.setPadding(dpAsPixelsDim, dpAsPixels, dpAsPixelsDim, dpAsPixelsDim);
 		}
 
 		/*
@@ -345,6 +357,7 @@ public class MainActivity extends FragmentActivity {
 		protected void onPostExecute(Void result) {
 			mProgress.setVisibility(ProgressBar.GONE);
 			loadingText.setVisibility(TextView.GONE);
+			progressLinearLayout.setVisibility(LinearLayout.GONE);
 			Log.d("sync", "done");
 			Log.d("bug songs anzahl", controller.getServer().getCachedData().getSongs().size() + ", "
 					+ controller.getServer().getAmpacheConnection().getSongs());
@@ -355,6 +368,9 @@ public class MainActivity extends FragmentActivity {
 			Log.d("bug playlists anzahl", controller.getServer().getCachedData().getPlaylists().size() + ", "
 					+ controller.getServer().getAmpacheConnection().getPlaylists());
 			controller.setProgress(0);
+			float scale = getResources().getDisplayMetrics().density;
+			int dpAsPixels = (int) (16 * scale + 0.5f);
+			contentFrame.setPadding(dpAsPixels, dpAsPixels, dpAsPixels, dpAsPixels);
 		}
 
 	}
