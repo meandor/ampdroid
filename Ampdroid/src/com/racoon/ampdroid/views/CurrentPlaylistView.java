@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -51,7 +52,9 @@ public class CurrentPlaylistView extends Fragment {
 		controller = Controller.getInstance();
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.current_playlist, null);
 		ListView listview = (ListView) root.findViewById(R.id.playNow_listview);
-
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			listview.setFastScrollAlwaysVisible(true);
+		}
 		seekBar = (SeekBar) root.findViewById(R.id.playNow_seekbar);
 
 		ArrayList<String> list = new ArrayList<String>();

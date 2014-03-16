@@ -6,6 +6,7 @@ package com.racoon.ampdroid.views;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -49,6 +50,9 @@ public class ArtistsView extends Fragment {
 		controller = Controller.getInstance();
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.ampache_songs, null);
 		ListView listview = (ListView) root.findViewById(R.id.songs_listview);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			listview.setFastScrollAlwaysVisible(true);
+		}
 		if (controller.getServer() != null) {
 			// ServerConnector server = controller.getServer();
 			// urlString = server.getServer() + "/server/xml.server.php?action=artists&auth=" + server.getAuthKey();

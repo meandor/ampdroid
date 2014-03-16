@@ -6,6 +6,7 @@ package com.racoon.ampdroid.views;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -49,12 +50,10 @@ public class PlaylistsView extends Fragment {
 		controller = Controller.getInstance();
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.ampache_playlists, null);
 		ListView listview = (ListView) root.findViewById(R.id.playlists_listview);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			listview.setFastScrollAlwaysVisible(true);
+		}
 		if (controller.getServer() != null) {
-			// ServerConnector server = controller.getServer();
-			// urlString = server.getServer() + "/server/xml.server.php?action=playlists&auth=" + server.getAuthKey();
-			// if (controller.getPlaylists().size() != controller.getServer().getAmpacheConnection().getPlaylists()) {
-			// controller.parsePlaylists(urlString);
-			// }
 			ArrayList<String> list = new ArrayList<String>();
 			for (Playlist p : controller.getPlaylists()) {
 				list.add(p.toString());
