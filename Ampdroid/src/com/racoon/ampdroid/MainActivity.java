@@ -72,7 +72,7 @@ public class MainActivity extends FragmentActivity {
 		/** Connection established **/
 		if (controller.getServerConfig(this) != null
 				&& controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
-			Log.d("bugs", controller.getServer().getAmpacheConnection().getAuth());
+			Log.d("bug", controller.getServer().getAmpacheConnection().getAuth());
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 			tx.commit();
@@ -235,8 +235,14 @@ public class MainActivity extends FragmentActivity {
 	public void synchronize() {
 		syncFilesCount = 0;
 		ServerConnection ampache = controller.getServer().getAmpacheConnection();
-		Log.d("bug songs anzahl", controller.getServer().getCachedData().getSongs().size() + ", " + controller.getServer().getAmpacheConnection()
-				.getSongs());
+		Log.d("bug songs anzahl", controller.getServer().getCachedData().getSongs().size() + ", "
+				+ controller.getServer().getAmpacheConnection().getSongs());
+		Log.d("bug albums anzahl", controller.getServer().getCachedData().getAlbums().size() + ", "
+				+ controller.getServer().getAmpacheConnection().getAlbums());
+		Log.d("bug artists anzahl", controller.getServer().getCachedData().getArtists().size() + ", "
+				+ controller.getServer().getAmpacheConnection().getArtists());
+		Log.d("bug playlists anzahl", controller.getServer().getCachedData().getPlaylists().size() + ", "
+				+ controller.getServer().getAmpacheConnection().getPlaylists());
 		if (controller.getServer().getCachedData().getAlbums().size() != controller.getServer().getAmpacheConnection()
 				.getAlbums()) {
 			syncAlbums = true;
@@ -284,7 +290,6 @@ public class MainActivity extends FragmentActivity {
 						+ controller.getServer().getAuthKey();
 				controller.parseSongs(urlString);
 				controller.getServer().getCachedData().setSongs(controller.getSongs());
-				Log.d("bug", "cached songs sind " + controller.getSongs().size());
 				publishProgress();
 			}
 
@@ -335,6 +340,14 @@ public class MainActivity extends FragmentActivity {
 			mProgress.setVisibility(ProgressBar.GONE);
 			loadingText.setVisibility(TextView.GONE);
 			Log.d("sync", "done");
+			Log.d("bug songs anzahl", controller.getServer().getCachedData().getSongs().size() + ", "
+					+ controller.getServer().getAmpacheConnection().getSongs());
+			Log.d("bug albums anzahl", controller.getServer().getCachedData().getAlbums().size() + ", "
+					+ controller.getServer().getAmpacheConnection().getAlbums());
+			Log.d("bug artists anzahl", controller.getServer().getCachedData().getArtists().size() + ", "
+					+ controller.getServer().getAmpacheConnection().getArtists());
+			Log.d("bug playlists anzahl", controller.getServer().getCachedData().getPlaylists().size() + ", "
+					+ controller.getServer().getAmpacheConnection().getPlaylists());
 			controller.setProgress(0);
 		}
 
