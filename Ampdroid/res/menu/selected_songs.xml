@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/edit_add_all"
+        android:icon="@drawable/ic_action_add_to_queue"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/selectedSongs_add_to_queue"/>
+
+</menu>

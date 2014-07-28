@@ -6,11 +6,11 @@ package com.racoon.ampdroid.views;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -67,19 +67,26 @@ public class AlbumsView extends Fragment {
 					controller.getAlbums());
 			listview.setAdapter(adapter);
 			registerForContextMenu(listview);
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 					Album a = controller.getAlbums().get(position);
-					Log.d("gesuchte Songs", controller.findSongs(a).toString());
+					controller.getSelectedSongs().clear();
 					for (Song s : controller.findSongs(a)) {
-						controller.getPlayNow().add(s);
+						controller.getSelectedSongs().add(s);
 					}
-					Context context = view.getContext();
-					CharSequence text = getResources().getString(R.string.albumsViewAlbumsAdded);
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
+					// Create new fragment and transaction
+					SelectedSongsView newFragment = new SelectedSongsView();
+					FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+					// Replace whatever is in the fragment_container view with this fragment,
+					// and add the transaction to the back stack
+					transaction.replace(R.id.content_frame, newFragment);
+					transaction.addToBackStack(null);
+
+					// Commit the transaction
+					transaction.commit();
 				}
 
 			});
@@ -97,10 +104,9 @@ public class AlbumsView extends Fragment {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Album a = controller.getAlbums().get((int) info.id);
 		switch (item.getItemId()) {
 		case R.id.contextMenuAdd:
-			Album a = controller.getAlbums().get((int)info.id);
-			Log.d("gesuchte Songs", controller.findSongs(a).toString());
 			for (Song s : controller.findSongs(a)) {
 				controller.getPlayNow().add(s);
 			}
@@ -111,7 +117,21 @@ public class AlbumsView extends Fragment {
 			toast.show();
 			return true;
 		case R.id.contextMenuOpen:
+			controller.getSelectedSongs().clear();
+			for (Song s : controller.findSongs(a)) {
+				controller.getSelectedSongs().add(s);
+			}
+			// Create new fragment and transaction
+			SelectedSongsView newFragment = new SelectedSongsView();
+			FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
+			// Replace whatever is in the fragment_container view with this fragment,
+			// and add the transaction to the back stack
+			transaction.replace(R.id.content_frame, newFragment);
+			transaction.addToBackStack(null);
+
+			// Commit the transaction
+			transaction.commit();
 			return true;
 		default:
 			return super.onContextItemSelected(item);

@@ -50,6 +50,7 @@ public class Controller {
 	private int playNowPosition;
 	private Song playingNow;
 	private int progress = 0;
+	private ArrayList<Song> selectedSongs;
 
 	/**
 	 * 
@@ -90,6 +91,7 @@ public class Controller {
 		this.playlists = new ArrayList<Playlist>();
 		this.songs = new ArrayList<Song>();
 		this.playNow = new ArrayList<Song>();
+		this.selectedSongs = new ArrayList<Song>();
 		this.artists = new ArrayList<Artist>();
 		this.albums = new ArrayList<Album>();
 		this.server = new ServerConnector("", "", "");
@@ -142,10 +144,9 @@ public class Controller {
 		}
 		return controller;
 	}
-	
+
 	/**
-	 * Allows to get the only Instance of the android controller singleton.
-	 * Also enables localization for the menu items
+	 * Allows to get the only Instance of the android controller singleton. Also enables localization for the menu items
 	 * 
 	 * @param String[] Names of the menu items
 	 * @return the instance of this controller class
@@ -746,6 +747,20 @@ public class Controller {
 	 */
 	public void setPlayNowPosition(int playNowPosition) {
 		this.playNowPosition = playNowPosition;
+	}
+
+	/**
+	 * @return the selectedSongs
+	 */
+	public ArrayList<Song> getSelectedSongs() {
+		return selectedSongs;
+	}
+
+	/**
+	 * @param selectedSongs the selectedSongs to set
+	 */
+	public void setSelectedSongs(ArrayList<Song> selectedSongs) {
+		this.selectedSongs = selectedSongs;
 	}
 
 }

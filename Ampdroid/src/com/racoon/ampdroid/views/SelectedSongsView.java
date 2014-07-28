@@ -5,43 +5,44 @@ package com.racoon.ampdroid.views;
 
 import java.util.ArrayList;
 
+import com.racoon.ampache.Song;
+import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.R;
+import com.racoon.ampdroid.SongArrayAdapter;
+
 import android.annotation.SuppressLint;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.racoon.ampache.Song;
-import com.racoon.ampdroid.Controller;
-import com.racoon.ampdroid.R;
-import com.racoon.ampdroid.SongArrayAdapter;
-
 /**
  * @author Daniel Schruhl
  * 
  */
-public class SongsView extends Fragment {
-
-	// private String urlString;
+public class SelectedSongsView extends Fragment {
 	private Controller controller;
 
 	/**
 	 * 
 	 */
-	public SongsView() {
+	public SelectedSongsView() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public static Fragment newInstance(Context context) {
-		SongsView p = new SongsView();
-		return p;
+		SelectedSongsView f = new SelectedSongsView();
+		return f;
 	}
 
 	@SuppressLint("InflateParams")
@@ -75,6 +76,29 @@ public class SongsView extends Fragment {
 
 			});
 		}
+		setHasOptionsMenu(true);
 		return root;
 	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.selected_songs, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.edit_add_all:
+			controller.getPlayNow().addAll(controller.getSelectedSongs());
+			Context context = getView().getContext();
+			CharSequence text = getResources().getString(R.string.albumsViewAlbumsAdded);
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 }
