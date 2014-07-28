@@ -33,6 +33,7 @@
     <string name="toastSettingsSaved">Einstellungen wurden gespeichert</string>
     
     <string name="albumsViewAlbumsAdded">Album zur Wiedergabe hinzugefügt</string>
+    <string name="albumsViewSongsText"> Lieder</string>
     
     <string name="artistsViewArtistSongsAdded">Interpreten Songs zur Wiedergabe hinzugefügt</string>
     

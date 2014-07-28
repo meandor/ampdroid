@@ -20,10 +20,9 @@ import android.widget.Toast;
 
 import com.racoon.ampache.Album;
 import com.racoon.ampache.Song;
+import com.racoon.ampdroid.AlbumArrayAdapter;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
-//import com.racoon.ampdroid.ServerConnector;
-import com.racoon.ampdroid.StableArrayAdapter;
 
 /**
  * @author Daniel Schruhl
@@ -59,8 +58,8 @@ public class AlbumsView extends Fragment {
 			for (Album a : controller.getAlbums()) {
 				list.add(a.toString());
 			}
-			StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
-					R.layout.content_list_item, list);
+			AlbumArrayAdapter adapter = new AlbumArrayAdapter(getActivity().getApplicationContext(), list,
+					controller.getAlbums());
 			listview.setAdapter(adapter);
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
