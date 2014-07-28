@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Ampdroid</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="drawer_open">Öffnen</string>
+    <string name="drawer_close">Schließen</string>
+    <string name="connect">Verbinden</string>
+    <string name="save">Speichern</string>
+    <string name="reconnect">Wiederverbinden</string>
+    <string name="forceSync">Daten zurücksetzen</string>
+
+    <string name="syncSongs">Lade Songs</string>
+
+    <string name="settingsServerHeading">Speichern</string>
+    <string name="settingsServer">http://server/ampache</string>
+    <string name="settingsUserHeading">Benutzer</string>
+    <string name="settingsUser">Benutzername</string>
+    <string name="settingsPassword">Passwort</string>
+    <string name="settingsExpireText">Sitzung gültig bis </string>
+    
+    <string name="playing">Spielt</string>
+    <string name="paused">Pausiert</string>
+    <string name="stopped">Gestoppt</string>
+
+    <string-array name="menu_array">
+        <item>Spielt gerade</item>
+        <item>Titel</item>
+        <item>Interpreten</item>
+        <item>Alben</item>
+        <item>Playlists</item>
+        <item>Einstellungen</item>
+    </string-array>
+
+</resources>

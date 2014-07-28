@@ -2,30 +2,34 @@
 <resources>
 
     <string name="app_name">Ampdroid</string>
-    <string name="action_settings">Einstellungen</string>
-    <string name="drawer_open">Öffnen</string>
-    <string name="drawer_close">Schließen</string>
-    <string name="connect">Verbinden</string>
-    <string name="save">Speichern</string>
-    <string name="reconnect">Wiederverbinden</string>
-    <string name="forceSync">Daten zurücksetzen</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="connect">Connect</string>
+    <string name="save">Save</string>
+    <string name="reconnect">Reconnect</string>
+    <string name="forceSync">Force Sync</string>
 
-    <string name="syncSongs">Lade Songs</string>
+    <string name="syncSongs">Loading Songs</string>
 
-    <string name="settingsServerHeading">Speichern</string>
+    <string name="settingsServerHeading">Save</string>
     <string name="settingsServer">http://server/ampache</string>
-    <string name="settingsUserHeading">Benutzer</string>
-    <string name="settingsUser">Benutzername</string>
-    <string name="settingsPassword">Passwort</string>
-    <string name="settingsExpireText">Sitzung gültig bis </string>
+    <string name="settingsUserHeading">User</string>
+    <string name="settingsUser">Username</string>
+    <string name="settingsPassword">Password</string>
+    <string name="settingsExpireText">Session valid until </string>
+    
+    <string name="playing">Playing</string>
+    <string name="paused">Paused</string>
+    <string name="stopped">Stopped</string>
 
     <string-array name="menu_array">
-        <item>Spielt gerade</item>
-        <item>Titel</item>
-        <item>Interpreten</item>
-        <item>Alben</item>
+        <item>Now Playing</item>
+        <item>Title</item>
+        <item>Artists</item>
+        <item>Albums</item>
         <item>Playlists</item>
-        <item>Einstellungen</item>
+        <item>Settings</item>
     </string-array>
 
 </resources>
