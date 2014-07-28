@@ -195,7 +195,7 @@ public class Mp3PlayerService extends Service {
 
 		/* 3. Configure Drop-down Action */
 		builder.setContentTitle(getCurrentTitle()).setContentText(getArtist())
-				.setContentInfo(isPlaying() ? "Playing" : "Stopped");
+				.setContentInfo(isPlaying() ? getResources().getString(R.string.playing) : getResources().getString(R.string.stopped));
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent notifIntent = PendingIntent.getActivity(this, 0, intent, 0);
