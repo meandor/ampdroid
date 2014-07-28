@@ -3,23 +3,20 @@ package com.racoon.ampdroid;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.racoon.ampache.Song;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
+
+import com.racoon.ampache.Song;
 
 public class Mp3PlayerService extends Service {
 	private MediaPlayer mediaPlayer;
@@ -28,6 +25,7 @@ public class Mp3PlayerService extends Service {
 	private Song currentSong;
 	private NotificationManager notifManager;
 	public static final int NOTIFICATION_ID = 1556;
+	private boolean pause = false;
 
 	@Override
 	public void onCreate() {
@@ -40,43 +38,71 @@ public class Mp3PlayerService extends Service {
 	@SuppressWarnings("unchecked")
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		String action = intent.getStringExtra("ACTION");
-		if (action != null && intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying") != null) {
-			playList = (ArrayList<Song>) intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying");
-			if (action.equals("play") && !mediaPlayer.isPlaying()) {
-				cursor = intent.getIntExtra("CURSOR", 0);
-				play(cursor);
-			} else if (action.equals("pause")) {
-				pause();
-			} else if (action.equals("next")) {
-				next();
-			} else if (action.equals("previous")) {
-				previous();
-			}
+		if (intent != null) {
+			String action = intent.getStringExtra("ACTION");
+			if (action != null && intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying") != null) {
+				playList = (ArrayList<Song>) intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying");
+				if (action.equals("play") && !mediaPlayer.isPlaying()) {
+					cursor = intent.getIntExtra("CURSOR", 0);
+					play(cursor);
+					Log.d("service", "cursor: " + String.valueOf(cursor));
+				} else if (action.equals("pause")) {
+					pause();
+				} else if (action.equals("next")) {
+					next();
+				} else if (action.equals("previous")) {
+					previous();
+				}
 
-		} else {
-			// TODO error handling
+			} else {
+				// TODO error handling
+			}
 		}
 
 		return 0;
 	}
 
-	private void pause() {
-		mediaPlayer.stop();
+	@Override
+	public void onDestroy() {
+		mediaPlayer.release();
+		mediaPlayer.reset();
+		super.onDestroy();
+	}
+
+	public void pause() {
+		if (pause) {
+			pause = false;
+			mediaPlayer.start();
+		} else {
+			pause = true;
+			mediaPlayer.pause();
+		}
 		setNotifiction();
 	}
 
-	private void stop() {
+	public void stop() {
 		pause();
 		mediaPlayer.reset();
+		this.stopSelf();
 	}
 
-	private void next() {
-		
+	public void next() {
+		int size = playList.size();
+		if ((cursor + 1) < size) {
+			cursor++;
+			play(cursor);
+		} else {
+			stop();
+		}
 	}
 
-	private void previous() {
-		
+	public void previous() {
+		if ((cursor - 1) >= 0) {
+			cursor--;
+			play(cursor);
+		} else {
+			stop();
+		}
 	}
 
 	private void play(int id) {

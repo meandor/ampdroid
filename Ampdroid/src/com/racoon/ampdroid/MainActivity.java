@@ -1,6 +1,5 @@
 package com.racoon.ampdroid;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -54,9 +53,9 @@ public class MainActivity extends FragmentActivity {
 	private int syncFilesCount;
 	private String syncText;
 	private FrameLayout contentFrame;
-	private Activity main_activity;
 	private boolean serviceConnected;
 	private Mp3PlayerService service = null;
+	private Intent Mp3PlayerIntent = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -153,10 +152,6 @@ public class MainActivity extends FragmentActivity {
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		});
-		
-		main_activity = this;
-		Intent i = new Intent(main_activity, Mp3PlayerService.class);
-		main_activity.bindService(i, connection, Context.BIND_AUTO_CREATE);
 	}
 
 	@Override
@@ -206,10 +201,18 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if (main_activity != null) {
-			main_activity.unbindService(connection);
+	protected void onStart() {
+		super.onStart();
+		bindService(new Intent(this, Mp3PlayerService.class), connection, Context.BIND_AUTO_CREATE);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// Unbind from the service
+		if (serviceConnected) {
+			unbindService(connection);
+			serviceConnected = false;
 		}
 	}
 
@@ -240,26 +243,34 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	public void pause() {
-		// service
+	public void pause(View view) {
+		service.pause();
 	}
 
 	public void play(int pos) {
-		main_activity = this;
-		Intent intent = new Intent(main_activity, Mp3PlayerService.class);
-		// Intent intent = new Intent(main_activity, Mp3PlayerService.class);
-		intent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
-		intent.putExtra("CURSOR", pos);
-		intent.putExtra("ACTION", "play");
-		main_activity.startService(intent);
+		Log.d("service", "artist name: " + service.getArtist());
+		service.stop();
+		Mp3PlayerIntent = new Intent(this, Mp3PlayerService.class);
+		Mp3PlayerIntent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
+		Mp3PlayerIntent.putExtra("CURSOR", pos);
+		Mp3PlayerIntent.putExtra("ACTION", "play");
+		startService(Mp3PlayerIntent);
 	}
 
-	public void next() {
-
+	public void play(View view) {
+		service.stop();
+		Mp3PlayerIntent = new Intent(this, Mp3PlayerService.class);
+		Mp3PlayerIntent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
+		Mp3PlayerIntent.putExtra("ACTION", "play");
+		startService(Mp3PlayerIntent);
 	}
 
-	public void previous() {
+	public void next(View view) {
+		service.next();
+	}
 
+	public void previous(View view) {
+		service.previous();
 	}
 
 	/**
