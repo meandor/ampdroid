@@ -20,18 +20,16 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
+
 import com.racoon.ampache.Album;
 import com.racoon.ampache.Artist;
 import com.racoon.ampache.Playlist;
 import com.racoon.ampache.Song;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
 
 /**
  * @author Daniel Schruhl
@@ -51,7 +49,6 @@ public class Controller {
 	private ArrayList<Song> playNow;
 	private int playNowPosition;
 	private Song playingNow;
-	private MediaPlayer mediaPlayer;
 	private int progress = 0;
 
 	/**
@@ -87,9 +84,6 @@ public class Controller {
 		this.artists = new ArrayList<Artist>();
 		this.albums = new ArrayList<Album>();
 		this.server = new ServerConnector("", "", "");
-
-		this.mediaPlayer = new MediaPlayer();
-		this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 	}
 
 	public void saveSettings(String password, String user, String host) {
@@ -701,20 +695,6 @@ public class Controller {
 	 */
 	public void setAlbums(ArrayList<Album> albums) {
 		this.albums = albums;
-	}
-
-	/**
-	 * @return the mediaPlayer
-	 */
-	public MediaPlayer getMediaPlayer() {
-		return mediaPlayer;
-	}
-
-	/**
-	 * @param mediaPlayer the mediaPlayer to set
-	 */
-	public void setMediaPlayer(MediaPlayer mediaPlayer) {
-		this.mediaPlayer = mediaPlayer;
 	}
 
 	/**

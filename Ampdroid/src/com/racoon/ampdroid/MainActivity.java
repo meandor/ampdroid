@@ -1,10 +1,15 @@
 package com.racoon.ampdroid;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -49,6 +54,8 @@ public class MainActivity extends FragmentActivity {
 	private int syncFilesCount;
 	private String syncText;
 	private FrameLayout contentFrame;
+	private Activity main_activity;
+	private boolean serviceConnected;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +152,10 @@ public class MainActivity extends FragmentActivity {
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		});
+
+		main_activity = this;
+		Intent i = new Intent(main_activity, Mp3PlayerService.class);
+		main_activity.bindService(i, connection, Context.BIND_AUTO_CREATE);
 	}
 
 	@Override
@@ -221,11 +232,11 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void pause(View view) {
-		controller.getMediaPlayer().pause();
+		// service
 	}
 
 	public void play(View view) {
-		controller.getMediaPlayer().start();
+		// service
 	}
 
 	public void next(View view) {
@@ -454,5 +465,26 @@ public class MainActivity extends FragmentActivity {
 	public void setLoadingText(TextView loadingText) {
 		this.loadingText = loadingText;
 	}
+
+	private Mp3PlayerService service = null;
+
+	/**
+	 * Create a connection to the Mp3PlayerService
+	 */
+	private ServiceConnection connection = new ServiceConnection() {
+		@Override
+		// Called when connection is made
+		public void onServiceConnected(ComponentName cName, IBinder binder) {
+			service = ((Mp3PlayerService.Mp3Binder) binder).getService();
+			serviceConnected = true;
+		}
+
+		@Override
+		//
+		public void onServiceDisconnected(ComponentName cName) {
+			service = null;
+			serviceConnected = false;
+		}
+	};
 
 }

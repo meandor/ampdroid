@@ -3,9 +3,9 @@
  */
 package com.racoon.ampdroid.views;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,6 +51,7 @@ public class CurrentPlaylistView extends Fragment {
 		return f;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		controller = Controller.getInstance();
@@ -77,90 +78,11 @@ public class CurrentPlaylistView extends Fragment {
 				controller.setPlayingNow(controller.getPlayNow().get(position));
 				try {
 					controller.setPlayNowPosition(position);
-					controller.getMediaPlayer().reset();
-					controller.getMediaPlayer().setDataSource(controller.getPlayingNow().getUrl());
-					controller.getMediaPlayer().prepare(); // might take long! (for buffering, etc)
-					controller.getMediaPlayer().start();
 					String title = controller.getPlayingNow().toString();
 					if (controller.getPlayingNow().getArtist() != null) {
 						title += " - " + controller.getPlayingNow().getArtist().toString();
 					}
 					songTitle.setText(title);
-					int songDuration = controller.getMediaPlayer().getDuration() / 1000;
-					duration.setText(String.format("%02d:%02d", (songDuration % 3600) / 60, (songDuration % 60)));
-					seekBar.setMax(controller.getMediaPlayer().getDuration());
-					seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-						@Override
-						public void onStopTrackingTouch(SeekBar seekBar) {
-
-						}
-
-						@Override
-						public void onStartTrackingTouch(SeekBar seekBar) {
-
-						}
-
-						@Override
-						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-							if (controller.getMediaPlayer() != null && fromUser) {
-								controller.getMediaPlayer().seekTo(progress);
-							}
-						}
-					});
-
-					mHandler = new Handler();
-					mRunnable = new Runnable() {
-						@Override
-						public void run() {
-							if (controller.getMediaPlayer() != null) {
-								int mCurrentPosition = controller.getMediaPlayer().getCurrentPosition();
-								seekBar.setProgress(mCurrentPosition);
-								if (seekBar.getProgress() == seekBar.getMax() && ((controller.getPlayNowPosition() + 1) < controller.getPlayNow().size())) {
-									/** start next song **/
-									controller.setPlayNowPosition(controller.getPlayNowPosition() + 1);
-									controller.setPlayingNow(controller.getPlayNow().get(
-											controller.getPlayNowPosition()));
-									controller.getMediaPlayer().reset();
-									try {
-										controller.getMediaPlayer().setDataSource(controller.getPlayingNow().getUrl());
-										controller.getMediaPlayer().prepare();
-									} catch (IllegalArgumentException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									} catch (SecurityException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									} catch (IllegalStateException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									seekBar.setMax(controller.getMediaPlayer().getDuration());
-									seekBar.setProgress(0);
-									controller.getMediaPlayer().start();
-									String title = controller.getPlayingNow().toString();
-									if (controller.getPlayingNow().getArtist() != null) {
-										title += " - " + controller.getPlayingNow().getArtist().toString();
-									}
-									songTitle.setText(title);
-									int songDuration = controller.getMediaPlayer().getDuration() / 1000;
-									duration.setText(String.format("%02d:%02d", (songDuration % 3600) / 60,
-											(songDuration % 60)));
-								}
-								int songDuration = controller.getMediaPlayer().getCurrentPosition() / 1000;
-								currentDuration.setText(String.format("%02d:%02d", (songDuration % 3600) / 60,
-										(songDuration % 60)));
-								Log.d("seekbar", String.valueOf(seekBar.getProgress()));
-								Log.d("duration", String.valueOf(seekBar.getMax()));
-							}
-							mHandler.postDelayed(this, 1000);
-						}
-					};
-					Log.d("seekbar duration", String.valueOf(controller.getMediaPlayer().getDuration()));
-					mHandler.post(mRunnable);
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -168,9 +90,6 @@ public class CurrentPlaylistView extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
