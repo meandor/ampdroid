@@ -22,6 +22,15 @@
     <string name="playing">Playing</string>
     <string name="paused">Paused</string>
     <string name="stopped">Stopped</string>
+    
+    <string name="toastConnected">Connection established</string>
+    <string name="toastConnectionRefused">Connection refused</string>
+    <string name="toastInternetConnectionLost">No Internetconnection</string>
+    <string name="toastServerConnected">Server Connection established</string>
+    <string name="toastServerConnectionRefused">Server Connection refused</string>
+    <string name="toastSettingsNotSet">Settings are not set</string>
+    <string name="toastSettingsCouldntSave">Couldn't save Settings</string>
+    <string name="toastSettingsSaved">Settings saved</string>
 
     <string-array name="menu_array">
         <item>Now Playing</item>

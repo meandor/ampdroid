@@ -22,6 +22,16 @@
     <string name="playing">Spielt</string>
     <string name="paused">Pausiert</string>
     <string name="stopped">Gestoppt</string>
+    
+    <string name="toastConnected">Verbindung wurde hergestellt</string>
+    <string name="toastConnectionRefused">Verbindung konnte nicht hergestellt werden</string>
+    <string name="toastInternetConnectionLost">Internetverbindung nicht vorhanden</string>
+    <string name="toastServerConnected">Verbindung zum Server hergestellt</string>
+    <string name="toastServerConnectionRefused">Verbindung zum Server ist nicht möglich</string>
+    <string name="toastSettingsNotSet">Einstellungen sind noch nicht gesetzt</string>
+    <string name="toastSettingsCouldntSave">Einstellungen konnten nicht gespeichert werden</string>
+    <string name="toastSettingsSaved">Einstellungen wurden gespeichert</string>
+    
 
     <string-array name="menu_array">
         <item>Spielt gerade</item>

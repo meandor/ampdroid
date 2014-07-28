@@ -90,7 +90,7 @@ public class MainActivity extends FragmentActivity {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 			tx.commit();
-			showToast("Verbindung zum Server hergestellt", Toast.LENGTH_LONG);
+			showToast(getResources().getString(R.string.toastServerConnected), Toast.LENGTH_LONG);
 			controller.loadCachedFiles();
 			/** Sync Files **/
 			synchronize(false);
@@ -102,14 +102,14 @@ public class MainActivity extends FragmentActivity {
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
-			showToast("Verbindung zum Server ist nicht möglich", Toast.LENGTH_LONG);
+			showToast(getResources().getString(R.string.toastServerConnectionRefused), Toast.LENGTH_LONG);
 		} else {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
-			showToast("Einstellungen sind noch nicht gesetzt", Toast.LENGTH_LONG);
+			showToast(getResources().getString(R.string.toastSettingsNotSet), Toast.LENGTH_LONG);
 		}
 
 		// just styling option add shadow the right edge of the drawer
@@ -225,13 +225,13 @@ public class MainActivity extends FragmentActivity {
 		}
 		controller.saveSettings(password, user, server);
 		if (!controller.saveServer(getApplicationContext())) {
-			showToast("Einstellungen konnten nicht gespeichert werden", Toast.LENGTH_LONG);
+			showToast(getResources().getString(R.string.toastSettingsCouldntSave), Toast.LENGTH_LONG);
 		} else {
-			showToast("Einstellungen wurden gespeichert", Toast.LENGTH_SHORT);
+			showToast(getResources().getString(R.string.toastSettingsSaved), Toast.LENGTH_SHORT);
 			if (!this.controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
-				showToast("Verbindung konnte nicht hergestellt werden", Toast.LENGTH_SHORT);
+				showToast(getResources().getString(R.string.toastConnectionRefused), Toast.LENGTH_SHORT);
 			} else {
-				showToast("Verbindung wurde hergestellt", Toast.LENGTH_SHORT);
+				showToast(getResources().getString(R.string.toastConnected), Toast.LENGTH_SHORT);
 				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
 				tx.commit();
@@ -421,14 +421,14 @@ public class MainActivity extends FragmentActivity {
 		try {
 			if (controller.isOnline(getApplicationContext())) {
 				if (this.controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
-					showToast("Verbindung wurde hergestellt", Toast.LENGTH_SHORT);
+					showToast(getResources().getString(R.string.toastConnected), Toast.LENGTH_SHORT);
 					/** Sync Files **/
 					synchronize(false);
 				} else {
-					showToast("Verbindung konnte nicht hergestellt werden", Toast.LENGTH_SHORT);
+					showToast(getResources().getString(R.string.toastConnectionRefused), Toast.LENGTH_SHORT);
 				}
 			} else {
-				showToast("Internetverbindung nicht vorhanden", Toast.LENGTH_SHORT);
+				showToast(getResources().getString(R.string.toastInternetConnectionLost), Toast.LENGTH_SHORT);
 			}
 		} catch (NullPointerException e) {
 			Log.d("bug", "Server Verbindung nicht vorhanden");
@@ -450,14 +450,14 @@ public class MainActivity extends FragmentActivity {
 		try {
 			if (controller.isOnline(getApplicationContext())) {
 				if (this.controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
-					showToast("Verbindung wurde hergestellt", Toast.LENGTH_SHORT);
+					showToast(getResources().getString(R.string.toastConnected), Toast.LENGTH_SHORT);
 					/** Sync Files **/
 					synchronize(true);
 				} else {
-					showToast("Verbindung konnte nicht hergestellt werden", Toast.LENGTH_SHORT);
+					showToast(getResources().getString(R.string.toastConnectionRefused), Toast.LENGTH_SHORT);
 				}
 			} else {
-				showToast("Internetverbindung nicht vorhanden", Toast.LENGTH_SHORT);
+				showToast(getResources().getString(R.string.toastInternetConnectionLost), Toast.LENGTH_SHORT);
 			}
 		} catch (NullPointerException e) {
 			Log.d("bug", "Server Verbindung nicht vorhanden");
