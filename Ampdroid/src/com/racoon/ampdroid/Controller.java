@@ -54,14 +54,23 @@ public class Controller {
 	/**
 	 * 
 	 */
-	public Controller() {
-		init();
+	public Controller(String[] navigationNames) {
+		if (navigationNames == null) {
+			navigationNames = new String[6];
+			navigationNames[0] = "Now Playing";
+			navigationNames[1] = "Songs";
+			navigationNames[2] = "Artists";
+			navigationNames[3] = "Albums";
+			navigationNames[4] = "Playlists";
+			navigationNames[5] = "Settings";
+		}
+		init(navigationNames);
 	}
 
 	/**
 	 * Method to initialize the controller.
 	 */
-	private void init() {
+	private void init(String[] navigationNames) {
 		fragments = new String[6];
 		fragments[0] = "com.racoon.ampdroid.views.CurrentPlaylistView";
 		fragments[1] = "com.racoon.ampdroid.views.SongsView";
@@ -71,12 +80,12 @@ public class Controller {
 		fragments[5] = "com.racoon.ampdroid.views.SettingsView";
 
 		fragmentsNames = new String[6];
-		fragmentsNames[0] = "Spielt gerade";
-		fragmentsNames[1] = "Titel";
-		fragmentsNames[2] = "Interpreten";
-		fragmentsNames[3] = "Alben";
-		fragmentsNames[4] = "Playlists";
-		fragmentsNames[5] = "Einstellungen";
+		fragmentsNames[0] = navigationNames[0];
+		fragmentsNames[1] = navigationNames[1];
+		fragmentsNames[2] = navigationNames[2];
+		fragmentsNames[3] = navigationNames[3];
+		fragmentsNames[4] = navigationNames[4];
+		fragmentsNames[5] = navigationNames[5];
 
 		this.playlists = new ArrayList<Playlist>();
 		this.songs = new ArrayList<Song>();
@@ -129,7 +138,21 @@ public class Controller {
 	 */
 	public static Controller getInstance() {
 		if (controller == null) {
-			controller = new Controller();
+			controller = new Controller(null);
+		}
+		return controller;
+	}
+	
+	/**
+	 * Allows to get the only Instance of the android controller singleton.
+	 * Also enables localization for the menu items
+	 * 
+	 * @param String[] Names of the menu items
+	 * @return the instance of this controller class
+	 */
+	public static Controller getInstance(String[] navigationNames) {
+		if (controller == null) {
+			controller = new Controller(navigationNames);
 		}
 		return controller;
 	}

@@ -43,7 +43,7 @@
 
     <string-array name="menu_array">
         <item>Now Playing</item>
-        <item>Title</item>
+        <item>Songs</item>
         <item>Artists</item>
         <item>Albums</item>
         <item>Playlists</item>

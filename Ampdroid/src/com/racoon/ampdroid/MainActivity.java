@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 
-		controller = Controller.getInstance();
+		controller = Controller.getInstance(getResources().getStringArray(R.array.menu_array));
 		mNavItems = getResources().getStringArray(R.array.menu_array);
 		mDrawerTitle = getResources().getString(R.string.app_name);
 		mTitle = controller.getFragmentsNames()[0];
