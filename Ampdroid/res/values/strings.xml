@@ -12,7 +12,7 @@
 
     <string name="syncSongs">Loading Songs</string>
 
-    <string name="settingsServerHeading">Save</string>
+    <string name="settingsServerHeading">Settings</string>
     <string name="settingsServer">http://server/ampache</string>
     <string name="settingsUserHeading">User</string>
     <string name="settingsUser">Username</string>
