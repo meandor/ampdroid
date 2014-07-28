@@ -191,7 +191,7 @@ public class Mp3PlayerService extends Service {
 		Notification.Builder builder = new Notification.Builder(this);
 
 		/* 2. Configure Notification Alarm */
-		builder.setSmallIcon(R.drawable.play).setWhen(System.currentTimeMillis()).setTicker(getCurrentTitle());
+		builder.setSmallIcon(R.drawable.ic_play_notification).setWhen(System.currentTimeMillis()).setTicker(getCurrentTitle());
 
 		/* 3. Configure Drop-down Action */
 		builder.setContentTitle(getCurrentTitle()).setContentText(getArtist())
