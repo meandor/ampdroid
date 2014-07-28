@@ -11,10 +11,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -61,6 +66,7 @@ public class AlbumsView extends Fragment {
 			AlbumArrayAdapter adapter = new AlbumArrayAdapter(getActivity().getApplicationContext(), list,
 					controller.getAlbums());
 			listview.setAdapter(adapter);
+			registerForContextMenu(listview);
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
@@ -79,5 +85,36 @@ public class AlbumsView extends Fragment {
 			});
 		}
 		return root;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getActivity().getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch (item.getItemId()) {
+		case R.id.contextMenuAdd:
+			Album a = controller.getAlbums().get((int)info.id);
+			Log.d("gesuchte Songs", controller.findSongs(a).toString());
+			for (Song s : controller.findSongs(a)) {
+				controller.getPlayNow().add(s);
+			}
+			Context context = getView().getContext();
+			CharSequence text = getResources().getString(R.string.albumsViewAlbumsAdded);
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return true;
+		case R.id.contextMenuOpen:
+
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
 	}
 }

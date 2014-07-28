@@ -50,5 +50,8 @@
         <item>Playlists</item>
         <item>Settings</item>
     </string-array>
+    
+    <string name="contextMenuAdd">Enqueque in Playlist</string>
+    <string name="contextMenuOpen">Open</string>
 
 </resources>

@@ -50,5 +50,8 @@
         <item>Playlists</item>
         <item>Einstellungen</item>
     </string-array>
+    
+    <string name="contextMenuAdd">In Wiedergabeliste hinzufügen</string>
+    <string name="contextMenuOpen">Öffnen</string>
 
 </resources>

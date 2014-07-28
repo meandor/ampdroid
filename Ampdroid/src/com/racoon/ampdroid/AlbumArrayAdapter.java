@@ -10,7 +10,6 @@ import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,6 @@ public class AlbumArrayAdapter extends ArrayAdapter<String> implements SectionIn
 
 		albumTitle.setText(textValues.get(position));
 		albumArtist.setText(objectValues.get(position).getArtist());
-		Log.d("bugs", String.valueOf(objectValues.get(position).getTracks()) + " " + objectValues.get(position).getArtist());
 		albumSongs.setText(String.valueOf(objectValues.get(position).getTracks()) + " Songs");
 		return rowView;
 	}
