@@ -61,14 +61,9 @@ public class SongArrayAdapter extends ArrayAdapter<String> implements SectionInd
 		View rowView = inflater.inflate(R.layout.song_list_item, parent, false);
 		TextView songTitle = (TextView) rowView.findViewById(R.id.songTitle);
 		TextView songArtist = (TextView) rowView.findViewById(R.id.songArtist);
-		ImageView imageView = (ImageView) rowView.findViewById(R.id.songIcon);
 		
 		songTitle.setText(textValues.get(position));
 		songArtist.setText(objectValues.get(position).getArtist());
-		imageView.setImageResource(R.drawable.ic_action_picture);
-		if (!objectValues.get(position).getArt().equals("")) {
-			Log.d("bug", "art datei: " + objectValues.get(position).getArt());
-		}
 		return rowView;
 	}
 
