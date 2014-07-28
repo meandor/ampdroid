@@ -33,6 +33,7 @@
     <string name="toastSettingsSaved">Settings saved</string>
     
     <string name="albumsViewAlbumsAdded">Album Songs queued</string>
+    <string name="albumsViewSongsText"> Songs</string>
     
     <string name="artistsViewArtistSongsAdded">Artists Songs queued</string>
     
