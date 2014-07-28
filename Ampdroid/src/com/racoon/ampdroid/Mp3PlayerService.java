@@ -41,8 +41,8 @@ public class Mp3PlayerService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		String action = intent.getStringExtra("ACTION");
-		playList = (ArrayList<Song>) intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying");
-		if (action != null && playList != null) {
+		if (action != null && intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying") != null) {
+			playList = (ArrayList<Song>) intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying");
 			if (action.equals("play") && !mediaPlayer.isPlaying()) {
 				cursor = intent.getIntExtra("CURSOR", 0);
 				play(cursor);
