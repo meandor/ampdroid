@@ -56,6 +56,7 @@ public class MainActivity extends FragmentActivity {
 	private FrameLayout contentFrame;
 	private Activity main_activity;
 	private boolean serviceConnected;
+	private Mp3PlayerService service = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +153,7 @@ public class MainActivity extends FragmentActivity {
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		});
-
+		
 		main_activity = this;
 		Intent i = new Intent(main_activity, Mp3PlayerService.class);
 		main_activity.bindService(i, connection, Context.BIND_AUTO_CREATE);
@@ -204,6 +205,14 @@ public class MainActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (main_activity != null) {
+			main_activity.unbindService(connection);
+		}
+	}
+
 	public void saveSettings(View view) {
 		String server = ((EditText) findViewById(R.id.settingsServer)).getText().toString();
 		String user = ((EditText) findViewById(R.id.settingsUser)).getText().toString();
@@ -231,19 +240,25 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	public void pause(View view) {
+	public void pause() {
 		// service
 	}
 
-	public void play(View view) {
-		// service
+	public void play(int pos) {
+		main_activity = this;
+		Intent intent = new Intent(main_activity, Mp3PlayerService.class);
+		// Intent intent = new Intent(main_activity, Mp3PlayerService.class);
+		intent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
+		intent.putExtra("CURSOR", pos);
+		intent.putExtra("ACTION", "play");
+		main_activity.startService(intent);
 	}
 
-	public void next(View view) {
+	public void next() {
 
 	}
 
-	public void previous(View view) {
+	public void previous() {
 
 	}
 
@@ -465,8 +480,6 @@ public class MainActivity extends FragmentActivity {
 	public void setLoadingText(TextView loadingText) {
 		this.loadingText = loadingText;
 	}
-
-	private Mp3PlayerService service = null;
 
 	/**
 	 * Create a connection to the Mp3PlayerService

@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.MainActivity;
 import com.racoon.ampdroid.R;
 import com.racoon.ampdroid.StableArrayAdapter;
 
@@ -83,6 +84,8 @@ public class CurrentPlaylistView extends Fragment {
 						title += " - " + controller.getPlayingNow().getArtist().toString();
 					}
 					songTitle.setText(title);
+					MainActivity main = (MainActivity) getActivity();
+					main.play(position);
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

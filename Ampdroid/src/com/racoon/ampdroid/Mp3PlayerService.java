@@ -1,6 +1,9 @@
 package com.racoon.ampdroid;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import com.racoon.ampache.Song;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -20,11 +23,9 @@ import android.os.IBinder;
 
 public class Mp3PlayerService extends Service {
 	private MediaPlayer mediaPlayer;
-	private int titleColumn;
-	private int artistColumn;
-	private int idColumn;
-	private Cursor cursor;
-	private long idCurrentSong;
+	private ArrayList<Song> playList;
+	private int cursor;
+	private Song currentSong;
 	private NotificationManager notifManager;
 	public static final int NOTIFICATION_ID = 1556;
 
@@ -33,31 +34,18 @@ public class Mp3PlayerService extends Service {
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		mediaPlayer.setOnCompletionListener(new SongComplitionListener());
-		ContentResolver contentResolver = getContentResolver();
-		Uri uri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-
-		cursor = contentResolver.query(uri, null, null, null, null);
-		if (cursor == null) {
-
-		} else if (!cursor.moveToFirst()) {
-
-		} else {
-			titleColumn = cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE);
-			idColumn = cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID);
-			artistColumn = cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST);
-			setNotifiction();
-		}
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		String action = intent.getStringExtra("ACTION");
-		if (action != null) {
+		playList = (ArrayList<Song>) intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying");
+		if (action != null && playList != null) {
 			if (action.equals("play") && !mediaPlayer.isPlaying()) {
-				idCurrentSong = cursor.getLong(idColumn);
-				play(idCurrentSong);
-
+				cursor = intent.getIntExtra("CURSOR", 0);
+				play(cursor);
 			} else if (action.equals("pause")) {
 				pause();
 			} else if (action.equals("next")) {
@@ -84,31 +72,18 @@ public class Mp3PlayerService extends Service {
 	}
 
 	private void next() {
-		if (!cursor.moveToNext()) {
-			cursor.moveToFirst();
-		}
-
-		idCurrentSong = cursor.getLong(idColumn);
-		;
-		stop();
-		play(idCurrentSong);
+		
 	}
 
 	private void previous() {
-		if (!cursor.moveToPrevious()) {
-			cursor.moveToLast();
-		}
-		idCurrentSong = cursor.getLong(idColumn);
-		stop();
-		play(idCurrentSong);
+		
 	}
 
-	private void play(long id) {
-
-		idCurrentSong = id;
-		Uri contentUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+	private void play(int id) {
+		mediaPlayer.reset();
 		try {
-			mediaPlayer.setDataSource(getApplicationContext(), contentUri);
+			mediaPlayer.setDataSource(playList.get(id).getUrl());
+			currentSong = playList.get(id);
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,16 +121,16 @@ public class Mp3PlayerService extends Service {
 
 	public String getCurrentTitle() {
 		String result = "";
-		if (cursor != null && cursor.getColumnCount() > 0) {
-			result = cursor.getString(titleColumn);
+		if (currentSong != null) {
+			result = currentSong.getTitle();
 		}
 		return result;
 	}
 
 	public String getArtist() {
 		String result = "";
-		if (cursor != null && cursor.getColumnCount() > 0) {
-			result = cursor.getString(artistColumn);
+		if (currentSong != null) {
+			result = currentSong.getArtist();
 		}
 		return result;
 	}
