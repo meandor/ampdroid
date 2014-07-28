@@ -8,18 +8,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.racoon.ampache.Song;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.SectionIndexer;
+import android.widget.TextView;
+
+import com.racoon.ampache.Song;
 
 /**
  * @author Daniel Schruhl
@@ -61,7 +59,7 @@ public class SongArrayAdapter extends ArrayAdapter<String> implements SectionInd
 		View rowView = inflater.inflate(R.layout.song_list_item, parent, false);
 		TextView songTitle = (TextView) rowView.findViewById(R.id.songTitle);
 		TextView songArtist = (TextView) rowView.findViewById(R.id.songArtist);
-		
+
 		songTitle.setText(textValues.get(position));
 		songArtist.setText(objectValues.get(position).getArtist());
 		return rowView;

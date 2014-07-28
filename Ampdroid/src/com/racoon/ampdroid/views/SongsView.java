@@ -22,8 +22,6 @@ import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
 import com.racoon.ampdroid.SongArrayAdapter;
-//import com.racoon.ampdroid.ServerConnector;
-import com.racoon.ampdroid.StableArrayAdapter;
 
 /**
  * @author Daniel Schruhl
