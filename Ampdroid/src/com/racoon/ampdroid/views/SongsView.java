@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
+import com.racoon.ampdroid.SongArrayAdapter;
 //import com.racoon.ampdroid.ServerConnector;
 import com.racoon.ampdroid.StableArrayAdapter;
 
@@ -59,8 +60,8 @@ public class SongsView extends Fragment {
 			for (Song s : controller.getSongs()) {
 				list.add(s.toString());
 			}
-			StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
-					R.layout.content_list_item, list);
+			SongArrayAdapter adapter = new SongArrayAdapter(getActivity().getApplicationContext(), list,
+					controller.getSongs());
 			listview.setAdapter(adapter);
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
