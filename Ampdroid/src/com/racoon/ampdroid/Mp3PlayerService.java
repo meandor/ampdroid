@@ -25,13 +25,14 @@ public class Mp3PlayerService extends Service {
 	private Song currentSong;
 	private NotificationManager notifManager;
 	public static final int NOTIFICATION_ID = 1556;
-	private boolean pause = false;
+	private boolean pause;
 
 	@Override
 	public void onCreate() {
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		mediaPlayer.setOnCompletionListener(new SongComplitionListener());
+		pause = false;
 
 	}
 
