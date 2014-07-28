@@ -5,6 +5,7 @@ package com.racoon.ampdroid.views;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class ArtistsView extends Fragment {
 		return p;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		controller = Controller.getInstance();
@@ -54,11 +56,6 @@ public class ArtistsView extends Fragment {
 			listview.setFastScrollAlwaysVisible(true);
 		}
 		if (controller.getServer() != null) {
-			// ServerConnector server = controller.getServer();
-			// urlString = server.getServer() + "/server/xml.server.php?action=artists&auth=" + server.getAuthKey();
-			// if (controller.getArtists().size() != controller.getServer().getAmpacheConnection().getArtists()) {
-			// controller.parseArtists(urlString);
-			// }
 			ArrayList<String> list = new ArrayList<String>();
 			for (Artist a : controller.getArtists()) {
 				list.add(a.toString());
@@ -75,7 +72,7 @@ public class ArtistsView extends Fragment {
 						controller.getPlayNow().add(s);
 					}
 					Context context = view.getContext();
-					CharSequence text = "Interpreten Songs zur Wiedergabe hinzugefügt";
+					CharSequence text = getResources().getString(R.string.artistsViewArtistSongsAdded);
 					int duration = Toast.LENGTH_SHORT;
 					Toast toast = Toast.makeText(context, text, duration);
 					toast.show();

@@ -5,6 +5,7 @@ package com.racoon.ampdroid.views;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,7 +31,6 @@ import com.racoon.ampdroid.StableArrayAdapter;
  */
 public class AlbumsView extends Fragment {
 
-//	private String urlString;
 	private Controller controller;
 
 	/**
@@ -45,6 +45,7 @@ public class AlbumsView extends Fragment {
 		return p;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		controller = Controller.getInstance();
@@ -70,7 +71,7 @@ public class AlbumsView extends Fragment {
 						controller.getPlayNow().add(s);
 					}
 					Context context = view.getContext();
-					CharSequence text = "Album zur Wiedergabe hinzugefügt";
+					CharSequence text = getResources().getString(R.string.albumsViewAlbumsAdded);
 					int duration = Toast.LENGTH_SHORT;
 					Toast toast = Toast.makeText(context, text, duration);
 					toast.show();

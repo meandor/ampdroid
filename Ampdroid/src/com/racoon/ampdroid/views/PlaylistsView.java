@@ -5,6 +5,7 @@ package com.racoon.ampdroid.views;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class PlaylistsView extends Fragment {
 		return p;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		controller = Controller.getInstance();
@@ -73,7 +75,7 @@ public class PlaylistsView extends Fragment {
 					controller.parsePlaylistSongs(urlString);
 
 					Context context = view.getContext();
-					CharSequence text = "Playlist zur Wiedergabe hinzugefügt";
+					CharSequence text = getResources().getString(R.string.playlistsViewPlaylistAdded);
 					int duration = Toast.LENGTH_SHORT;
 					Toast toast = Toast.makeText(context, text, duration);
 					toast.show();

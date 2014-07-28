@@ -32,6 +32,14 @@
     <string name="toastSettingsCouldntSave">Einstellungen konnten nicht gespeichert werden</string>
     <string name="toastSettingsSaved">Einstellungen wurden gespeichert</string>
     
+    <string name="albumsViewAlbumsAdded">Album zur Wiedergabe hinzugefügt</string>
+    
+    <string name="artistsViewArtistSongsAdded">Interpreten Songs zur Wiedergabe hinzugefügt</string>
+    
+    <string name="playlistsViewPlaylistAdded">Playlist zur Wiedergabe hinzugefügt</string>
+    
+    <string name="songsViewSongAdded">Zur Wiedergabe hinzugefügt</string>
+    
 
     <string-array name="menu_array">
         <item>Spielt gerade</item>
