@@ -66,7 +66,7 @@ public class Mp3PlayerService extends Service {
 	@Override
 	public void onDestroy() {
 		mediaPlayer.release();
-		mediaPlayer.reset();
+//		mediaPlayer.reset();
 		super.onDestroy();
 	}
 
