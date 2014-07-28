@@ -42,7 +42,7 @@
     <string name="songsViewSongAdded">Song queued</string>
     
     <string name="selectedSongs_add_to_queue">Add All to Playlist</string>
-
+    <string name="selectedSongsViewAdded">All Songs enqueued</string>
 
     <string-array name="menu_array">
         <item>Now Playing</item>

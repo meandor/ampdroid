@@ -10,11 +10,16 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,8 +27,9 @@ import com.racoon.ampache.Artist;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
-//import com.racoon.ampdroid.ServerConnector;
 import com.racoon.ampdroid.StableArrayAdapter;
+
+//import com.racoon.ampdroid.ServerConnector;
 
 /**
  * @author Daniel Schruhl
@@ -31,7 +37,7 @@ import com.racoon.ampdroid.StableArrayAdapter;
  */
 public class ArtistsView extends Fragment {
 
-//	private String urlString;
+	// private String urlString;
 	private Controller controller;
 
 	/**
@@ -63,23 +69,75 @@ public class ArtistsView extends Fragment {
 			StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
 					R.layout.content_list_item, list);
 			listview.setAdapter(adapter);
+			registerForContextMenu(listview);
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 					Artist a = controller.getArtists().get(position);
-					Log.d("gesuchte Songs", controller.findSongs(a).toString());
+					controller.getSelectedSongs().clear();
 					for (Song s : controller.findSongs(a)) {
-						controller.getPlayNow().add(s);
+						controller.getSelectedSongs().add(s);
 					}
-					Context context = view.getContext();
-					CharSequence text = getResources().getString(R.string.artistsViewArtistSongsAdded);
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
+					// Create new fragment and transaction
+					SelectedSongsView newFragment = new SelectedSongsView();
+					FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+					// Replace whatever is in the fragment_container view with this fragment,
+					// and add the transaction to the back stack
+					transaction.replace(R.id.content_frame, newFragment);
+					transaction.addToBackStack(null);
+
+					// Commit the transaction
+					transaction.commit();
 				}
 
 			});
 		}
 		return root;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getActivity().getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Artist a = controller.getArtists().get((int) info.id);
+		switch (item.getItemId()) {
+		case R.id.contextMenuAdd:
+			for (Song s : controller.findSongs(a)) {
+				controller.getPlayNow().add(s);
+			}
+			Context context = getView().getContext();
+			CharSequence text = getResources().getString(R.string.artistsViewArtistSongsAdded);
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return true;
+		case R.id.contextMenuOpen:
+			controller.getSelectedSongs().clear();
+			for (Song s : controller.findSongs(a)) {
+				controller.getSelectedSongs().add(s);
+			}
+			// Create new fragment and transaction
+			SelectedSongsView newFragment = new SelectedSongsView();
+			FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+			// Replace whatever is in the fragment_container view with this fragment,
+			// and add the transaction to the back stack
+			transaction.replace(R.id.content_frame, newFragment);
+			transaction.addToBackStack(null);
+
+			// Commit the transaction
+			transaction.commit();
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
 	}
 }

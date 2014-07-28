@@ -91,7 +91,7 @@ public class SelectedSongsView extends Fragment {
 		case R.id.edit_add_all:
 			controller.getPlayNow().addAll(controller.getSelectedSongs());
 			Context context = getView().getContext();
-			CharSequence text = getResources().getString(R.string.albumsViewAlbumsAdded);
+			CharSequence text = getResources().getString(R.string.selectedSongsViewAdded);
 			int duration = Toast.LENGTH_SHORT;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
