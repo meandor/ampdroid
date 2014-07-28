@@ -29,7 +29,7 @@
     <string name="toastServerConnected">Server Connection established</string>
     <string name="toastServerConnectionRefused">Server Connection refused</string>
     <string name="toastSettingsNotSet">Settings are not set</string>
-    <string name="toastSettingsCouldntSave">Couldn't save Settings</string>
+    <string name="toastSettingsCouldntSave">Could not save Settings</string>
     <string name="toastSettingsSaved">Settings saved</string>
 
     <string-array name="menu_array">
