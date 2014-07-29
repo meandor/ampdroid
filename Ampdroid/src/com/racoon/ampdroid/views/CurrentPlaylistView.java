@@ -7,10 +7,12 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.method.HideReturnsTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -44,6 +47,8 @@ public class CurrentPlaylistView extends Fragment {
 	private TextView songTitle;
 	private TextView songArtist;
 	private ListView playlist;
+	private ImageButton togglePlayButton;
+	private boolean togglePlay;
 
 	/**
 	 * 
@@ -71,6 +76,7 @@ public class CurrentPlaylistView extends Fragment {
 		songArtist = (TextView) root.findViewById(R.id.playNow_artist);
 		duration = (TextView) root.findViewById(R.id.playNow_duration);
 		currentDuration = (TextView) root.findViewById(R.id.playNow_duration_current);
+		togglePlayButton = (ImageButton) root.findViewById(R.id.playlist_play_pause);
 		ArrayList<String> list = new ArrayList<String>();
 		for (Song s : controller.getPlayNow()) {
 			list.add(s.toString());
@@ -133,13 +139,33 @@ public class CurrentPlaylistView extends Fragment {
 		duration.setText("");
 		currentDuration.setText("");
 		seekBar.setProgress(0);
+		togglePlayButton.setImageResource(R.drawable.ic_action_play);
+		togglePlay = false;
+	}
+
+	public void togglePlayPauseButton() {
+		Log.d("bugs", "toggle play is activated");
+		if (togglePlay) {
+			MainActivity main = (MainActivity) getActivity();
+			togglePlayButton = (ImageButton) main.findViewById(R.id.playlist_play_pause);
+			togglePlayButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
+			togglePlay = true;
+		} else {
+			MainActivity main = (MainActivity) getActivity();
+			togglePlayButton = (ImageButton) main.findViewById(R.id.playlist_play_pause);
+			togglePlayButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
+			togglePlay = false;
+		}
 	}
 
 	public void updateSongData() {
 		mHandler = new Handler();
 		mRunnable = new Runnable() {
+			int attempts = 0;
+
 			@Override
 			public void run() {
+				Log.d("bugs", "Thread läuft noch");
 				final MainActivity main = (MainActivity) getActivity();
 				if (main != null && main.getService() != null) {
 					if (main.getService().getMediaPlayer().isPlaying()) {
@@ -176,10 +202,16 @@ public class CurrentPlaylistView extends Fragment {
 						});
 						mHandler.postDelayed(this, 1000);
 					} else {
-						cleanView();
-						mHandler.removeCallbacks(mRunnable);
+						Log.d("bugs", "attempt " + String.valueOf(attempts));
+						attempts++;
+						if (attempts > 3) {
+							Log.d("bugs", "thread pause");
+							cleanView();
+							mHandler.removeCallbacks(mRunnable);
+						}
 					}
 				} else {
+					Log.d("bugs", "service ist nicht vorhanden");
 					cleanView();
 					mHandler.removeCallbacks(mRunnable);
 				}

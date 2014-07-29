@@ -96,11 +96,9 @@ public class Mp3PlayerService extends Service {
 	}
 
 	public void stop() {
-		if (mediaPlayer.isPlaying()) {
-			pause();
-		}
 		mediaPlayer.reset();
-		this.stopSelf();
+		currentSong = null;
+		stopSelf();
 	}
 
 	public void next() {

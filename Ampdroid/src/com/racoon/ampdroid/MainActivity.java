@@ -250,11 +250,32 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	public void pause(View view) {
-		service.pause();
+	public void togglePlay(View view) {
+		if (!controller.getPlayNow().isEmpty()) {
+			if (serviceConnected) {
+				CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager()
+						.findFragmentById(R.id.content_frame);
+				if (getService().getCurrentSong() != null) {
+					service.pause();
+				} else {
+					service.stop();
+					Mp3PlayerIntent = new Intent(this, Mp3PlayerService.class);
+					Mp3PlayerIntent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
+					Mp3PlayerIntent.putExtra("ACTION", "play");
+					startService(Mp3PlayerIntent);
+				}
+				instanceFragment.togglePlayPauseButton();
+				instanceFragment.updateSongData();
+			}
+
+		}
+	}
+
+	public void stop(View view) {
+		service.stop();
 		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
 				R.id.content_frame);
-		instanceFragment.updateSongData();
+		instanceFragment.cleanView();
 	}
 
 	public void play(int pos) {
@@ -265,19 +286,6 @@ public class MainActivity extends FragmentActivity {
 		Mp3PlayerIntent.putExtra("CURSOR", pos);
 		Mp3PlayerIntent.putExtra("ACTION", "play");
 		startService(Mp3PlayerIntent);
-	}
-
-	public void play(View view) {
-		service.stop();
-		if (!controller.getPlayNow().isEmpty()) {
-			Mp3PlayerIntent = new Intent(this, Mp3PlayerService.class);
-			Mp3PlayerIntent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
-			Mp3PlayerIntent.putExtra("ACTION", "play");
-			startService(Mp3PlayerIntent);
-		}
-		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
-				R.id.content_frame);
-		instanceFragment.updateSongData();
 	}
 
 	public void next(View view) {

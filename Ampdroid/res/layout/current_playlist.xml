@@ -68,10 +68,10 @@
             android:src="@android:drawable/ic_media_previous" />
 
         <ImageButton
-            android:id="@+id/playlist_pause"
+            android:id="@+id/playlist_play_pause"
             android:layout_column="2"
-            android:onClick="pause"
-            android:src="@android:drawable/ic_media_pause" />
+            android:onClick="togglePlay"
+            android:src="@drawable/ic_action_play" />
 
         <ImageButton
             android:id="@+id/playlist_next"
@@ -80,10 +80,11 @@
             android:src="@android:drawable/ic_media_next" />
 
         <ImageButton
-            android:id="@+id/playlist_play"
+            android:id="@+id/playlist_stop"
             android:layout_column="3"
-            android:onClick="play"
-            android:src="@android:drawable/ic_media_play" />
+            android:onClick="stop"
+            android:src="@drawable/ic_action_stop" />
+
     </GridLayout>
 
 </LinearLayout>
