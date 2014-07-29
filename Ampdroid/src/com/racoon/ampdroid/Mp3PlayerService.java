@@ -84,6 +84,7 @@ public class Mp3PlayerService extends Service {
 
 
 	public void pause() {
+		Log.d("service", "status: " + pause);
 		if (pause) {
 			pause = false;
 			mediaPlayer.start();
@@ -95,7 +96,9 @@ public class Mp3PlayerService extends Service {
 	}
 
 	public void stop() {
-		pause();
+		if (mediaPlayer.isPlaying()) {
+			pause();
+		}
 		mediaPlayer.reset();
 		this.stopSelf();
 	}
@@ -123,7 +126,10 @@ public class Mp3PlayerService extends Service {
 		mediaPlayer.reset();
 		try {
 			mediaPlayer.setDataSource(playList.get(id).getUrl());
+			mediaPlayer.prepare();
 			currentSong = playList.get(id);
+			mediaPlayer.start();
+			setNotifiction();
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,18 +143,6 @@ public class Mp3PlayerService extends Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			mediaPlayer.prepare();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		mediaPlayer.start();
-		setNotifiction();
 	}
 
 	private class SongComplitionListener implements OnCompletionListener {
