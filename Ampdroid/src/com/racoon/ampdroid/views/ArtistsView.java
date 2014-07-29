@@ -25,9 +25,9 @@ import android.widget.Toast;
 
 import com.racoon.ampache.Artist;
 import com.racoon.ampache.Song;
+import com.racoon.ampdroid.ArtistArrayAdapter;
 import com.racoon.ampdroid.Controller;
 import com.racoon.ampdroid.R;
-import com.racoon.ampdroid.StableArrayAdapter;
 
 //import com.racoon.ampdroid.ServerConnector;
 
@@ -66,8 +66,8 @@ public class ArtistsView extends Fragment {
 			for (Artist a : controller.getArtists()) {
 				list.add(a.toString());
 			}
-			StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
-					R.layout.content_list_item, list);
+			ArtistArrayAdapter adapter = new ArtistArrayAdapter(getActivity().getApplicationContext(), list,
+					controller.getArtists());
 			listview.setAdapter(adapter);
 			registerForContextMenu(listview);
 

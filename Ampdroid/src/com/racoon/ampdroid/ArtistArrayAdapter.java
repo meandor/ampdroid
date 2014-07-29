@@ -17,21 +17,21 @@ import android.widget.ArrayAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.racoon.ampache.Album;
+import com.racoon.ampache.Artist;
 
 /**
  * @author Daniel Schruhl
  * 
  */
-public class AlbumArrayAdapter extends ArrayAdapter<String> implements SectionIndexer {
+public class ArtistArrayAdapter extends ArrayAdapter<String> implements SectionIndexer {
 	private final Context context;
 	private final ArrayList<String> textValues;
-	private ArrayList<Album> objectValues;
+	private ArrayList<Artist> objectValues;
 	HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
 	private String[] sections;
 	private String[] sectionsChar;
 
-	public AlbumArrayAdapter(Context context, ArrayList<String> list, ArrayList<Album> objects) {
+	public ArtistArrayAdapter(Context context, ArrayList<String> list, ArrayList<Artist> objects) {
 		super(context, R.layout.album_list_item, list);
 		this.context = context;
 		this.textValues = list;
@@ -57,18 +57,15 @@ public class AlbumArrayAdapter extends ArrayAdapter<String> implements SectionIn
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.album_list_item, parent, false);
-		TextView albumTitle = (TextView) rowView.findViewById(R.id.albumTitle);
-		TextView albumArtist = (TextView) rowView.findViewById(R.id.albumArtist);
-		TextView albumSongs = (TextView) rowView.findViewById(R.id.albumSongNumber);
+		TextView songTitle = (TextView) rowView.findViewById(R.id.albumTitle);
+		TextView songArtist = (TextView) rowView.findViewById(R.id.albumArtist);
 
-		albumTitle.setText(textValues.get(position));
-		albumArtist.setText(objectValues.get(position).getArtist());
-		
+		songTitle.setText(textValues.get(position));
 		String songsText = " Song";
-		if (objectValues.get(position).getTracks() > 1) {
+		if (objectValues.get(position).getSongs() > 1) {
 			songsText = " Songs";
 		}
-		albumSongs.setText(String.valueOf(objectValues.get(position).getTracks()) + songsText);
+		songArtist.setText(String.valueOf(objectValues.get(position).getSongs()) + songsText);
 		return rowView;
 	}
 
