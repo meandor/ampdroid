@@ -493,6 +493,20 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	/**
+	 * @return the service
+	 */
+	public Mp3PlayerService getService() {
+		return service;
+	}
+
+	/**
+	 * @param service the service to set
+	 */
+	public void setService(Mp3PlayerService service) {
+		this.service = service;
+	}
+
+	/**
 	 * Create a connection to the Mp3PlayerService
 	 */
 	private ServiceConnection connection = new ServiceConnection() {

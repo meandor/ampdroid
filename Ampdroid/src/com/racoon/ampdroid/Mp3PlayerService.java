@@ -26,6 +26,7 @@ public class Mp3PlayerService extends Service {
 	private NotificationManager notifManager;
 	public static final int NOTIFICATION_ID = 1556;
 	private boolean pause;
+	private boolean allowRebind;
 
 	@Override
 	public void onCreate() {
@@ -66,9 +67,21 @@ public class Mp3PlayerService extends Service {
 	@Override
 	public void onDestroy() {
 		mediaPlayer.release();
-//		mediaPlayer.reset();
+		// mediaPlayer.reset();
 		super.onDestroy();
 	}
+	
+	@Override
+    public boolean onUnbind(Intent intent) {
+        // All clients have unbound with unbindService()
+        return allowRebind;
+    }
+    @Override
+    public void onRebind(Intent intent) {
+        // A client is binding to the service with bindService(),
+        // after onUnbind() has already been called
+    }
+
 
 	public void pause() {
 		if (pause) {
@@ -171,6 +184,27 @@ public class Mp3PlayerService extends Service {
 	}
 
 	/**
+	 * @return the mediaPlayer
+	 */
+	public MediaPlayer getMediaPlayer() {
+		return mediaPlayer;
+	}
+
+	/**
+	 * @return the currentSong
+	 */
+	public Song getCurrentSong() {
+		return currentSong;
+	}
+
+	/**
+	 * @return the cursor
+	 */
+	public int getCursor() {
+		return cursor;
+	}
+
+	/**
 	 * Binding
 	 */
 	private final IBinder binder = new Mp3Binder();
@@ -191,11 +225,15 @@ public class Mp3PlayerService extends Service {
 		Notification.Builder builder = new Notification.Builder(this);
 
 		/* 2. Configure Notification Alarm */
-		builder.setSmallIcon(R.drawable.ic_play_notification).setWhen(System.currentTimeMillis()).setTicker(getCurrentTitle());
+		builder.setSmallIcon(R.drawable.ic_play_notification).setWhen(System.currentTimeMillis())
+				.setTicker(getCurrentTitle());
 
 		/* 3. Configure Drop-down Action */
-		builder.setContentTitle(getCurrentTitle()).setContentText(getArtist())
-				.setContentInfo(isPlaying() ? getResources().getString(R.string.playing) : getResources().getString(R.string.stopped));
+		builder.setContentTitle(getCurrentTitle())
+				.setContentText(getArtist())
+				.setContentInfo(
+						isPlaying() ? getResources().getString(R.string.playing) : getResources().getString(
+								R.string.stopped));
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent notifIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -206,6 +244,7 @@ public class Mp3PlayerService extends Service {
 		String ns = Context.NOTIFICATION_SERVICE;
 		notifManager = (NotificationManager) getSystemService(ns);
 		notifManager.notify(NOTIFICATION_ID, notification);
+		startForeground(NOTIFICATION_ID, notification);
 	}
 
 }
