@@ -10,18 +10,24 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.racoon.ampache.Playlist;
 import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.PlaylistArrayAdapter;
 import com.racoon.ampdroid.R;
-import com.racoon.ampdroid.StableArrayAdapter;
 
 //import com.racoon.ampdroid.ServerConnector;
 
@@ -60,9 +66,11 @@ public class PlaylistsView extends Fragment {
 			for (Playlist p : controller.getPlaylists()) {
 				list.add(p.toString());
 			}
-			StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
-					R.layout.content_list_item, list);
+			PlaylistArrayAdapter adapter = new PlaylistArrayAdapter(getActivity().getApplicationContext(), list,
+					controller.getPlaylists());
 			listview.setAdapter(adapter);
+			registerForContextMenu(listview);
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
@@ -72,13 +80,18 @@ public class PlaylistsView extends Fragment {
 							+ "/server/xml.server.php?action=playlist_songs&auth="
 							+ controller.getServer().getAuthKey() + "&filter=" + String.valueOf(selected.getId());
 					Log.d("url", urlString);
-					controller.parsePlaylistSongs(urlString);
+					controller.getSelectedSongs().clear();
+					controller.parsePlaylistSongs(urlString, controller.getSelectedSongs());
+					SelectedSongsView newFragment = new SelectedSongsView();
+					FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-					Context context = view.getContext();
-					CharSequence text = getResources().getString(R.string.playlistsViewPlaylistAdded);
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
+					// Replace whatever is in the fragment_container view with this fragment,
+					// and add the transaction to the back stack
+					transaction.replace(R.id.content_frame, newFragment);
+					transaction.addToBackStack(null);
+
+					// Commit the transaction
+					transaction.commit();
 				}
 
 			});
@@ -87,4 +100,48 @@ public class PlaylistsView extends Fragment {
 		}
 		return root;
 	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getActivity().getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Playlist selected = controller.getPlaylists().get((int) info.id);
+		String urlString = controller.getServer().getHost() + "/server/xml.server.php?action=playlist_songs&auth="
+				+ controller.getServer().getAuthKey() + "&filter=" + String.valueOf(selected.getId());
+		Log.d("url", urlString);
+		switch (item.getItemId()) {
+		case R.id.contextMenuAdd:
+			controller.parsePlaylistSongs(urlString, controller.getPlayNow());
+			Context context = getView().getContext();
+			CharSequence text = getResources().getString(R.string.playlistsViewPlaylistAdded);
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return true;
+		case R.id.contextMenuOpen:
+			controller.getSelectedSongs().clear();
+			controller.parsePlaylistSongs(urlString, controller.getSelectedSongs());
+			// Create new fragment and transaction
+			SelectedSongsView newFragment = new SelectedSongsView();
+			FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+			// Replace whatever is in the fragment_container view with this fragment,
+			// and add the transaction to the back stack
+			transaction.replace(R.id.content_frame, newFragment);
+			transaction.addToBackStack(null);
+
+			// Commit the transaction
+			transaction.commit();
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+
 }
