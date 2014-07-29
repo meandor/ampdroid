@@ -25,9 +25,9 @@ import android.widget.TextView;
 
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.CurrentlyPlayingPlaylistArrayAdapter;
 import com.racoon.ampdroid.MainActivity;
 import com.racoon.ampdroid.R;
-import com.racoon.ampdroid.StableArrayAdapter;
 
 /**
  * @author Daniel Schruhl
@@ -76,8 +76,8 @@ public class CurrentPlaylistView extends Fragment {
 			list.add(s.toString());
 		}
 		Log.d("songs:", list.toString());
-		StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
-				R.layout.content_list_item, list);
+		CurrentlyPlayingPlaylistArrayAdapter adapter = new CurrentlyPlayingPlaylistArrayAdapter(getActivity()
+				.getApplicationContext(), list, controller.getPlayNow());
 		playlist.setAdapter(adapter);
 		playlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -118,15 +118,15 @@ public class CurrentPlaylistView extends Fragment {
 			for (Song s : controller.getPlayNow()) {
 				list.add(s.toString());
 			}
-			StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
-					R.layout.content_list_item, list);
+			CurrentlyPlayingPlaylistArrayAdapter adapter = new CurrentlyPlayingPlaylistArrayAdapter(getActivity()
+					.getApplicationContext(), list, controller.getPlayNow());
 			playlist.setAdapter(adapter);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	public void cleanView() {
 		songTitle.setText("");
 		songArtist.setText("");
