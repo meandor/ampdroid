@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.racoon.ampache.ServerConnection;
+import com.racoon.ampdroid.views.CurrentPlaylistView;
 
 public class MainActivity extends FragmentActivity {
 
@@ -245,6 +246,9 @@ public class MainActivity extends FragmentActivity {
 
 	public void pause(View view) {
 		service.pause();
+		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
+				R.id.content_frame);
+		instanceFragment.updateSongData();
 	}
 
 	public void play(int pos) {
@@ -259,18 +263,29 @@ public class MainActivity extends FragmentActivity {
 
 	public void play(View view) {
 		service.stop();
-		Mp3PlayerIntent = new Intent(this, Mp3PlayerService.class);
-		Mp3PlayerIntent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
-		Mp3PlayerIntent.putExtra("ACTION", "play");
-		startService(Mp3PlayerIntent);
+		if (!controller.getPlayNow().isEmpty()) {
+			Mp3PlayerIntent = new Intent(this, Mp3PlayerService.class);
+			Mp3PlayerIntent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
+			Mp3PlayerIntent.putExtra("ACTION", "play");
+			startService(Mp3PlayerIntent);
+		}
+		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
+				R.id.content_frame);
+		instanceFragment.updateSongData();
 	}
 
 	public void next(View view) {
 		service.next();
+		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
+				R.id.content_frame);
+		instanceFragment.updateSongData();
 	}
 
 	public void previous(View view) {
 		service.previous();
+		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
+				R.id.content_frame);
+		instanceFragment.updateSongData();
 	}
 
 	/**

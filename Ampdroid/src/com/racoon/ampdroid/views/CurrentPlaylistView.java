@@ -22,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
@@ -43,6 +42,7 @@ public class CurrentPlaylistView extends Fragment {
 	private TextView duration;
 	private TextView currentDuration;
 	private TextView songTitle;
+	private TextView songArtist;
 	private ListView playlist;
 
 	/**
@@ -68,6 +68,7 @@ public class CurrentPlaylistView extends Fragment {
 		}
 		seekBar = (SeekBar) root.findViewById(R.id.playNow_seekbar);
 		songTitle = (TextView) root.findViewById(R.id.playNow_song);
+		songArtist = (TextView) root.findViewById(R.id.playNow_artist);
 		duration = (TextView) root.findViewById(R.id.playNow_duration);
 		currentDuration = (TextView) root.findViewById(R.id.playNow_duration_current);
 		ArrayList<String> list = new ArrayList<String>();
@@ -81,16 +82,10 @@ public class CurrentPlaylistView extends Fragment {
 		playlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-				controller.setPlayingNow(controller.getPlayNow().get(position));
 				try {
-					controller.setPlayNowPosition(position);
-					String title = controller.getPlayingNow().toString();
-					if (controller.getPlayingNow().getArtist() != null) {
-						title += " - " + controller.getPlayingNow().getArtist().toString();
-					}
-					songTitle.setText(title);
 					MainActivity main = (MainActivity) getActivity();
 					main.play(position);
+					updateSongData();
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -101,10 +96,10 @@ public class CurrentPlaylistView extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				Log.d("Playing now:", controller.getPlayingNow().toString());
 			}
 
 		});
+		updateSongData();
 		setHasOptionsMenu(true);
 		return root;
 	}
@@ -131,4 +126,67 @@ public class CurrentPlaylistView extends Fragment {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	public void cleanView() {
+		songTitle.setText("");
+		songArtist.setText("");
+		duration.setText("");
+		currentDuration.setText("");
+		seekBar.setProgress(0);
+	}
+
+	public void updateSongData() {
+		mHandler = new Handler();
+		mRunnable = new Runnable() {
+			@Override
+			public void run() {
+				final MainActivity main = (MainActivity) getActivity();
+				if (main != null && main.getService() != null) {
+					if (main.getService().getMediaPlayer().isPlaying()) {
+						controller.setPlayingNow(main.getService().getCurrentSong());
+						songTitle.setText(main.getService().getCurrentSong().toString());
+						String artist = "Unknown";
+						if (controller.getPlayingNow().getArtist() != null) {
+							artist = controller.getPlayingNow().getArtist().toString();
+						}
+						songArtist.setText(artist);
+						int songDuration = main.getService().getMediaPlayer().getDuration() / 1000;
+						duration.setText(String.format("%02d:%02d", (songDuration % 3600) / 60, (songDuration % 60)));
+						songDuration = main.getService().getMediaPlayer().getCurrentPosition() / 1000;
+						currentDuration.setText(String.format("%02d:%02d", (songDuration % 3600) / 60,
+								(songDuration % 60)));
+						int mCurrentPosition = main.getService().getMediaPlayer().getCurrentPosition();
+						seekBar.setMax(main.getService().getMediaPlayer().getDuration());
+						seekBar.setProgress(mCurrentPosition);
+						seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+							@Override
+							public void onStopTrackingTouch(SeekBar seekBar) {
+								main.getService().getMediaPlayer().seekTo(seekBar.getProgress());
+							}
+
+							@Override
+							public void onStartTrackingTouch(SeekBar seekBar) {
+
+							}
+
+							@Override
+							public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+							}
+						});
+						mHandler.postDelayed(this, 1000);
+					} else {
+						cleanView();
+						mHandler.removeCallbacks(mRunnable);
+					}
+				} else {
+					cleanView();
+					mHandler.removeCallbacks(mRunnable);
+				}
+
+			}
+		};
+		mHandler.post(mRunnable);
+	}
+
 }
