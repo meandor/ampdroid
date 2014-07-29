@@ -43,6 +43,7 @@
     
     <string name="selectedSongs_add_to_queue">Add All to Playlist</string>
     <string name="selectedSongsViewAdded">All Songs enqueued</string>
+    <string name="selectedSongsDiscard">Discard Playlist</string>
 
     <string-array name="menu_array">
         <item>Now Playing</item>
@@ -53,7 +54,7 @@
         <item>Settings</item>
     </string-array>
     
-    <string name="contextMenuAdd">Enqueque in Playlist</string>
+    <string name="contextMenuAdd">Enqueue in Playlist</string>
     <string name="contextMenuOpen">Show Songs</string>
 
 </resources>

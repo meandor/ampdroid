@@ -43,6 +43,7 @@
     
     <string name="selectedSongs_add_to_queue">Alle hinzufügen</string>
     <string name="selectedSongsViewAdded">Alle Lieder hinzugefügt</string>
+    <string name="selectedSongsDiscard">Playlist leeren</string>
 
     <string-array name="menu_array">
         <item>Spielt gerade</item>
