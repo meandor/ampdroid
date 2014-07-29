@@ -66,7 +66,7 @@ public class SelectedSongsView extends Fragment {
 				@Override
 				public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 					Log.d("Play now added:", controller.getSongs().get(position).toString());
-					controller.getPlayNow().add(controller.getSongs().get(position));
+					controller.getPlayNow().add(controller.getSelectedSongs().get(position));
 					Context context = view.getContext();
 					CharSequence text = getResources().getString(R.string.songsViewSongAdded);
 					int duration = Toast.LENGTH_SHORT;
