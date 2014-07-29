@@ -316,7 +316,7 @@ public class Controller {
 		}
 	}
 
-	public void parsePlaylistSongs(String urlString) {
+	public void parsePlaylistSongs(String urlString, ArrayList<Song> playlist) {
 		Log.d("playlist Songs", urlString);
 		URL url;
 		try {
@@ -330,7 +330,7 @@ public class Controller {
 				InputStream in_s = con.getInputStream();
 				parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 				parser.setInput(in_s, null);
-				parsePlaylistSongsXML(parser);
+				parsePlaylistSongsXML(parser, playlist);
 			} catch (XmlPullParserException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -342,7 +342,7 @@ public class Controller {
 		}
 	}
 
-	private void parsePlaylistSongsXML(XmlPullParser parser) throws XmlPullParserException, IOException {
+	private void parsePlaylistSongsXML(XmlPullParser parser, ArrayList<Song> songlist) throws XmlPullParserException, IOException {
 		int eventType = parser.getEventType();
 		Song currentSong = null;
 		while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -387,12 +387,12 @@ public class Controller {
 			case XmlPullParser.END_TAG:
 				name = parser.getName();
 				if (name.equalsIgnoreCase("song") && currentSong != null) {
-					this.playNow.add(currentSong);
+					songlist.add(currentSong);
 				}
 			}
 			eventType = parser.next();
 		}
-		Log.d("songs:", this.playNow.toString());
+		Log.d("songs:", songlist.toString());
 	}
 
 	public void parsePlaylists(String urlString) {
