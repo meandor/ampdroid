@@ -103,7 +103,7 @@ public class Playlist implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return name + " (" + String.valueOf(id) + ")";
+		return name;
 	}
 
 }
