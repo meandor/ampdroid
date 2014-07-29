@@ -55,11 +55,11 @@ public class SongsView extends Fragment {
 		}
 		if (controller.getServer() != null) {
 			ArrayList<String> list = new ArrayList<String>();
-			for (Song s : controller.getSelectedSongs()) {
+			for (Song s : controller.getSongs()) {
 				list.add(s.toString());
 			}
 			SongArrayAdapter adapter = new SongArrayAdapter(getActivity().getApplicationContext(), list,
-					controller.getSelectedSongs());
+					controller.getSongs());
 			listview.setAdapter(adapter);
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
