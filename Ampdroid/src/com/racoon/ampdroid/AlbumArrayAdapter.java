@@ -63,7 +63,12 @@ public class AlbumArrayAdapter extends ArrayAdapter<String> implements SectionIn
 
 		albumTitle.setText(textValues.get(position));
 		albumArtist.setText(objectValues.get(position).getArtist());
-		albumSongs.setText(String.valueOf(objectValues.get(position).getTracks()) + " Songs");
+		
+		String songsText = " Song";
+		if (objectValues.get(position).getTracks() > 1) {
+			songsText = " Songs";
+		}
+		albumSongs.setText(String.valueOf(objectValues.get(position).getTracks()) + songsText);
 		return rowView;
 	}
 
