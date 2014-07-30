@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -44,6 +45,8 @@ public class CurrentPlaylistView extends Fragment {
 	private TextView songTitle;
 	private TextView songArtist;
 	private ListView playlist;
+	private ImageButton togglePlayButton;
+	private int updateAttempts;
 
 	/**
 	 * 
@@ -71,7 +74,8 @@ public class CurrentPlaylistView extends Fragment {
 		songArtist = (TextView) root.findViewById(R.id.playNow_artist);
 		duration = (TextView) root.findViewById(R.id.playNow_duration);
 		currentDuration = (TextView) root.findViewById(R.id.playNow_duration_current);
-
+		togglePlayButton = (ImageButton) root.findViewById(R.id.playlist_play_pause);
+		
 		ArrayList<String> list = new ArrayList<String>();
 		for (Song s : controller.getPlayNow()) {
 			list.add(s.toString());
@@ -134,13 +138,18 @@ public class CurrentPlaylistView extends Fragment {
 		duration.setText("");
 		currentDuration.setText("");
 		seekBar.setProgress(0);
+		togglePlayButton.setBackground(getResources().getDrawable(R.drawable.ic_action_play));
+		updateAttempts = 0;
+	}
+	
+	public void pauseView() {
+		togglePlayButton.setBackground(getResources().getDrawable(R.drawable.ic_action_play));
+		updateAttempts = 0;
 	}
 
 	public void updateSongData() {
 		mHandler = new Handler();
 		mRunnable = new Runnable() {
-			int attempts = 0;
-
 			@Override
 			public void run() {
 				Log.d("bugs", "Thread läuft noch");
@@ -154,6 +163,7 @@ public class CurrentPlaylistView extends Fragment {
 							artist = controller.getPlayingNow().getArtist().toString();
 						}
 						songArtist.setText(artist);
+						togglePlayButton.setBackground(getResources().getDrawable(R.drawable.ic_action_pause));
 						int songDuration = main.getService().getMediaPlayer().getDuration() / 1000;
 						duration.setText(String.format("%02d:%02d", (songDuration % 3600) / 60, (songDuration % 60)));
 						songDuration = main.getService().getMediaPlayer().getCurrentPosition() / 1000;
@@ -180,11 +190,11 @@ public class CurrentPlaylistView extends Fragment {
 						});
 						mHandler.postDelayed(this, 1000);
 					} else {
-						Log.d("bugs", "attempt " + String.valueOf(attempts));
-						attempts++;
-						if (attempts > 3) {
+						updateAttempts++;
+						Log.d("bugs", "attempt " + String.valueOf(updateAttempts));
+						if (updateAttempts >= 3) {
 							Log.d("bugs", "thread pause");
-							cleanView();
+							pauseView();
 							mHandler.removeCallbacks(mRunnable);
 						}
 					}

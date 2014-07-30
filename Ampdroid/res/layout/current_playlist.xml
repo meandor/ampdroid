@@ -22,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:textSize="13sp"
-        android:textColor="#939393" />
+        android:textColor="#939393"
+        android:textSize="13sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,8 +50,9 @@
     </LinearLayout>
 
     <GridLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_gravity="center"
         android:columnCount="5" >
 
         <ImageView
@@ -63,28 +64,35 @@
 
         <ImageButton
             android:id="@+id/playlist_previous"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_column="1"
-            android:onClick="previous"
-            android:src="@android:drawable/ic_media_previous" />
+            android:background="@drawable/ic_action_previous"
+            android:onClick="previous" />
 
         <ImageButton
             android:id="@+id/playlist_play_pause"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_column="2"
-            android:onClick="togglePlay"
-            android:src="@drawable/ic_action_play" />
+            android:background="@drawable/ic_action_play"
+            android:onClick="togglePlay" />
 
         <ImageButton
             android:id="@+id/playlist_next"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_column="4"
-            android:onClick="next"
-            android:src="@android:drawable/ic_media_next" />
+            android:background="@drawable/ic_action_next"
+            android:onClick="next" />
 
         <ImageButton
             android:id="@+id/playlist_stop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_column="3"
-            android:onClick="stop"
-            android:src="@drawable/ic_action_stop" />
-
+            android:background="@drawable/ic_action_stop"
+            android:onClick="stop" />
     </GridLayout>
 
 </LinearLayout>

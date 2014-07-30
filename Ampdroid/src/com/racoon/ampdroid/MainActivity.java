@@ -25,7 +25,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -58,8 +57,6 @@ public class MainActivity extends FragmentActivity {
 	private boolean serviceConnected;
 	private Mp3PlayerService service = null;
 	private Intent Mp3PlayerIntent = null;
-	private boolean togglePlay;
-	private ImageButton togglePlayButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -267,7 +264,6 @@ public class MainActivity extends FragmentActivity {
 					Mp3PlayerIntent.putExtra("ACTION", "play");
 					startService(Mp3PlayerIntent);
 				}
-				togglePlayPauseButton();
 				instanceFragment.updateSongData();
 			}
 
@@ -278,7 +274,6 @@ public class MainActivity extends FragmentActivity {
 		service.stop();
 		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
 				R.id.content_frame);
-		togglePlayPauseButton();
 		instanceFragment.cleanView();
 	}
 
@@ -290,36 +285,23 @@ public class MainActivity extends FragmentActivity {
 		Mp3PlayerIntent.putExtra("CURSOR", pos);
 		Mp3PlayerIntent.putExtra("ACTION", "play");
 		startService(Mp3PlayerIntent);
-		togglePlayPauseButton();
 	}
 
 	public void next(View view) {
-		service.next();
-		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
-				R.id.content_frame);
-		instanceFragment.updateSongData();
+		if (service != null) {
+			service.next();
+			CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
+					R.id.content_frame);
+			instanceFragment.updateSongData();
+		}
 	}
 
 	public void previous(View view) {
-		service.previous();
-		CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
-				R.id.content_frame);
-		instanceFragment.updateSongData();
-	}
-
-	public void togglePlayPauseButton() {
-		Log.d("bugs", "toggle play is activated");
-		togglePlayButton = (ImageButton) findViewById(R.id.playlist_play_pause);
-		if (togglePlay) {
-			//togglePlayButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
-			//togglePlayButton.setImageResource(R.drawable.ic_action_pause);
-			togglePlayButton.setBackground(getResources().getDrawable(R.drawable.play));
-			togglePlay = true;
-		} else {
-			//togglePlayButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
-			//togglePlayButton.setImageResource(R.drawable.ic_action_play);
-			togglePlayButton.setBackground(getResources().getDrawable(R.drawable.play));
-			togglePlay = false;
+		if (service != null) {
+			service.previous();
+			CurrentPlaylistView instanceFragment = (CurrentPlaylistView) getSupportFragmentManager().findFragmentById(
+					R.id.content_frame);
+			instanceFragment.updateSongData();
 		}
 	}
 

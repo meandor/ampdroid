@@ -70,18 +70,18 @@ public class Mp3PlayerService extends Service {
 		// mediaPlayer.reset();
 		super.onDestroy();
 	}
-	
-	@Override
-    public boolean onUnbind(Intent intent) {
-        // All clients have unbound with unbindService()
-        return allowRebind;
-    }
-    @Override
-    public void onRebind(Intent intent) {
-        // A client is binding to the service with bindService(),
-        // after onUnbind() has already been called
-    }
 
+	@Override
+	public boolean onUnbind(Intent intent) {
+		// All clients have unbound with unbindService()
+		return allowRebind;
+	}
+
+	@Override
+	public void onRebind(Intent intent) {
+		// A client is binding to the service with bindService(),
+		// after onUnbind() has already been called
+	}
 
 	public void pause() {
 		Log.d("service", "status: " + pause);
@@ -102,12 +102,14 @@ public class Mp3PlayerService extends Service {
 	}
 
 	public void next() {
-		int size = playList.size();
-		if ((cursor + 1) < size) {
-			cursor++;
-			play(cursor);
-		} else {
-			stop();
+		if (playList != null) {
+			int size = playList.size();
+			if ((cursor + 1) < size) {
+				cursor++;
+				play(cursor);
+			} else {
+				stop();
+			}
 		}
 	}
 
