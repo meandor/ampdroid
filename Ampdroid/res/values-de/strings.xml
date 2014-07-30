@@ -9,7 +9,8 @@
     <string name="save">Speichern</string>
     <string name="reconnect">Wiederverbinden</string>
     <string name="forceSync">Daten zurücksetzen</string>
-
+	<string name="search_title">Suchen</string>
+	<string name="search_hint">Suchbegriff eingeben</string>
     <string name="syncSongs">Lade Songs</string>
 
     <string name="settingsServerHeading">Speichern</string>

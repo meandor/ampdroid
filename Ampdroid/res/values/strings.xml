@@ -9,7 +9,8 @@
     <string name="save">Save</string>
     <string name="reconnect">Reconnect</string>
     <string name="forceSync">Force Sync</string>
-
+	<string name="search_title">Search</string>
+	<string name="search_hint">Type your search here</string>
     <string name="syncSongs">Loading Songs</string>
 
     <string name="settingsServerHeading">Settings</string>
