@@ -46,7 +46,11 @@ public class CurrentlyPlayingPlaylistArrayAdapter extends ArrayAdapter<String> {
 		int rawTime = objectValues.get(position).getTime();
 		long minute = TimeUnit.SECONDS.toMinutes(rawTime) - (TimeUnit.SECONDS.toHours(rawTime) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(rawTime) - (TimeUnit.SECONDS.toMinutes(rawTime) * 60);
-		songDuration.setText(String.valueOf(minute) + ":" + String.valueOf(second));
+		String seconds = String.valueOf(second);
+		if (second < 10) {
+			seconds = "0" + String.valueOf(second);
+		}
+		songDuration.setText(String.valueOf(minute) + ":" + seconds);
 		return rowView;
 	}
 }
