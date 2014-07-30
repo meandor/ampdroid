@@ -36,11 +36,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.racoon.ampache.Album;
 import com.racoon.ampache.Artist;
 import com.racoon.ampache.Playlist;
 import com.racoon.ampache.ServerConnection;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.views.CurrentPlaylistView;
+import com.racoon.ampdroid.views.SelectedAlbumsView;
 import com.racoon.ampdroid.views.SelectedArtistsView;
 import com.racoon.ampdroid.views.SelectedPlaylistsView;
 import com.racoon.ampdroid.views.SelectedSongsView;
@@ -603,6 +605,26 @@ public class MainActivity extends FragmentActivity {
 				controller.setSelectedPlaylists(result);
 				// Create new fragment and transaction
 				SelectedPlaylistsView newFragment = new SelectedPlaylistsView();
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.content_frame, newFragment);
+				transaction.addToBackStack(null);
+				// Commit the transaction
+				transaction.commit();
+			}
+			/** find album **/
+			else if (activeFragment == 3) {
+				ArrayList<Album> result = new ArrayList<Album>();
+				for (int i = 0; i < controller.getAlbums().size(); i++) {
+					if (controller.getAlbums().get(i).getName().toLowerCase().contains(query.toLowerCase())) {
+						result.add(controller.getAlbums().get(i));
+					}
+				}
+				controller.setSelectedAlbums(result);
+				// Create new fragment and transaction
+				SelectedAlbumsView newFragment = new SelectedAlbumsView();
 				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
 				// Replace whatever is in the fragment_container view with this fragment,
