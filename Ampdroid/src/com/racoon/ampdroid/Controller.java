@@ -95,6 +95,9 @@ public class Controller {
 		this.songs = new ArrayList<Song>();
 		this.playNow = new ArrayList<Song>();
 		this.selectedSongs = new ArrayList<Song>();
+		this.selectedAlbums = new ArrayList<Album>();
+		this.selectedArtists = new ArrayList<Artist>();
+		this.selectedPlaylists = new ArrayList<Playlist>();
 		this.artists = new ArrayList<Artist>();
 		this.albums = new ArrayList<Album>();
 		this.server = new ServerConnector("", "", "");
