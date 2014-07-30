@@ -3,10 +3,13 @@
  */
 package com.racoon.ampdroid.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -34,6 +37,7 @@ public class SettingsView extends Fragment {
 		return s;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		controller = Controller.getInstance();
@@ -58,6 +62,14 @@ public class SettingsView extends Fragment {
 				connectionInfo.setText(controller.getServer().getAmpacheConnection().getSessionExpireString());
 			}
 		}
+		setHasOptionsMenu(true);
 		return root;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (menu != null) {
+			menu.removeItem(R.id.search);
+		}
 	}
 }
