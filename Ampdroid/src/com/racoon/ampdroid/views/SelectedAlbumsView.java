@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,6 +93,7 @@ public class SelectedAlbumsView extends Fragment {
 
 			});
 		}
+		setHasOptionsMenu(true);
 		return root;
 	}
 
@@ -136,6 +138,31 @@ public class SelectedAlbumsView extends Fragment {
 			return true;
 		default:
 			return super.onContextItemSelected(item);
+		}
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.selected_songs, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.edit_add_all:
+			for (Album a : controller.getSelectedAlbums()) {
+				for (Song s : controller.findSongs(a)) {
+					controller.getPlayNow().add(s);
+				}
+			}
+			Context context = getView().getContext();
+			CharSequence text = getResources().getString(R.string.albumsViewAlbumsAdded);
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
