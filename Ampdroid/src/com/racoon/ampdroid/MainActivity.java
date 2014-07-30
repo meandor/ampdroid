@@ -159,6 +159,7 @@ public class MainActivity extends FragmentActivity {
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		});
+		handleIntent(getIntent());
 	}
 
 	@Override
@@ -227,6 +228,12 @@ public class MainActivity extends FragmentActivity {
 			unbindService(connection);
 			serviceConnected = false;
 		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		handleIntent(intent);
 	}
 
 	public void saveSettings(View view) {
@@ -563,5 +570,12 @@ public class MainActivity extends FragmentActivity {
 			serviceConnected = false;
 		}
 	};
+
+	private void handleIntent(Intent intent) {
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			Log.d("search", "searchquery " + query);
+		}
+	}
 
 }
