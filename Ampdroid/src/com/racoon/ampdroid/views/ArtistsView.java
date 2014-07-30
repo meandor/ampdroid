@@ -23,11 +23,11 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.racoon.ampache.Album;
 import com.racoon.ampache.Artist;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.ArtistArrayAdapter;
 import com.racoon.ampdroid.Controller;
-import com.racoon.ampdroid.MainActivity;
 import com.racoon.ampdroid.R;
 
 //import com.racoon.ampdroid.ServerConnector;
@@ -75,20 +75,28 @@ public class ArtistsView extends Fragment {
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-					Artist a = controller.getArtists().get(position);
-					controller.getSelectedSongs().clear();
-					for (Song s : controller.findSongs(a)) {
-						controller.getSelectedSongs().add(s);
+					Artist artist = controller.getArtists().get(position);
+
+					controller.getSelectedAlbums().clear();
+					for (Album a : controller.findAlbums(artist)) {
+						controller.getSelectedAlbums().add(a);
 					}
 					// Create new fragment and transaction
-					SelectedSongsView newFragment = new SelectedSongsView();
+					SelectedAlbumsView newFragment = new SelectedAlbumsView();
+
+					// controller.getSelectedSongs().clear();
+					// for (Song s : controller.findSongs(a)) {
+					// controller.getSelectedSongs().add(s);
+					// }
+					// // Create new fragment and transaction
+					// SelectedSongsView newFragment = new SelectedSongsView();
 					FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
 					// Replace whatever is in the fragment_container view with this fragment,
 					// and add the transaction to the back stack
 					transaction.replace(R.id.content_frame, newFragment);
 					transaction.addToBackStack(null);
-					((MainActivity) getActivity()).setActiveFragment(6);
+					// ((MainActivity) getActivity()).setActiveFragment(6);
 					// Commit the transaction
 					transaction.commit();
 				}

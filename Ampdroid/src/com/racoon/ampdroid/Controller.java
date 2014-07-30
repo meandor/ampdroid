@@ -277,6 +277,16 @@ public class Controller {
 		}
 		return result;
 	}
+	
+	public ArrayList<Album> findAlbums(Artist artist) {
+		ArrayList<Album> result = new ArrayList<Album>();
+		for (Album a : albums) {
+			if (a.getArtist().equals(artist.getName())) {
+				result.add(a);
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * @return the server
