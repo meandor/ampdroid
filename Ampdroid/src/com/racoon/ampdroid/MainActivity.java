@@ -41,6 +41,7 @@ import com.racoon.ampache.Artist;
 import com.racoon.ampache.ServerConnection;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.views.CurrentPlaylistView;
+import com.racoon.ampdroid.views.SelectedArtistsView;
 import com.racoon.ampdroid.views.SelectedSongsView;
 
 public class MainActivity extends FragmentActivity {
@@ -541,8 +542,6 @@ public class MainActivity extends FragmentActivity {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			ArrayList<Song> searchableSongs = new ArrayList<Song>();
-			ArrayList<Album> searchableAlbums = new ArrayList<Album>();
-			ArrayList<Artist> searchableArtist = new ArrayList<Artist>();
 			Log.d("bugs", "active fragment " + String.valueOf(activeFragment));
 			/** find song **/
 			if (activeFragment < 2 || activeFragment == 6) {
@@ -573,9 +572,25 @@ public class MainActivity extends FragmentActivity {
 				transaction.commit();
 			}
 			/** find artist **/
-//			else if (activeFragment == 2) {
-//				searchableArtist = 
-//			}
+			else if (activeFragment == 2) {
+				ArrayList<Artist> result = new ArrayList<Artist>();
+				for (int i = 0; i < controller.getArtists().size(); i++) {
+					if (controller.getArtists().get(i).getName().toLowerCase().contains(query.toLowerCase())) {
+						result.add(controller.getArtists().get(i));
+					}
+				}
+				controller.setSelectedArtists(result);
+				// Create new fragment and transaction
+				SelectedArtistsView newFragment = new SelectedArtistsView();
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.content_frame, newFragment);
+				transaction.addToBackStack(null);
+				// Commit the transaction
+				transaction.commit();
+			}
 			/** find playlist **/
 			Log.d("search", "searchquery " + query);
 		}

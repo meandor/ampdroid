@@ -51,6 +51,9 @@ public class Controller {
 	private Song playingNow;
 	private int progress = 0;
 	private ArrayList<Song> selectedSongs;
+	private ArrayList<Artist> selectedArtists;
+	private ArrayList<Album> selectedAlbums;
+	private ArrayList<Playlist> selectedPlaylists;
 
 	/**
 	 * 
@@ -761,6 +764,48 @@ public class Controller {
 	 */
 	public void setSelectedSongs(ArrayList<Song> selectedSongs) {
 		this.selectedSongs = selectedSongs;
+	}
+
+	/**
+	 * @return the selectedArtists
+	 */
+	public ArrayList<Artist> getSelectedArtists() {
+		return selectedArtists;
+	}
+
+	/**
+	 * @param selectedArtists the selectedArtists to set
+	 */
+	public void setSelectedArtists(ArrayList<Artist> selectedArtists) {
+		this.selectedArtists = selectedArtists;
+	}
+
+	/**
+	 * @return the selectedAlbums
+	 */
+	public ArrayList<Album> getSelectedAlbums() {
+		return selectedAlbums;
+	}
+
+	/**
+	 * @param selectedAlbums the selectedAlbums to set
+	 */
+	public void setSelectedAlbums(ArrayList<Album> selectedAlbums) {
+		this.selectedAlbums = selectedAlbums;
+	}
+
+	/**
+	 * @return the selectedPlaylists
+	 */
+	public ArrayList<Playlist> getSelectedPlaylists() {
+		return selectedPlaylists;
+	}
+
+	/**
+	 * @param selectedPlaylists the selectedPlaylists to set
+	 */
+	public void setSelectedPlaylists(ArrayList<Playlist> selectedPlaylists) {
+		this.selectedPlaylists = selectedPlaylists;
 	}
 
 }
