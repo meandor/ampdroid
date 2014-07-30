@@ -27,6 +27,7 @@ import com.racoon.ampache.Album;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.AlbumArrayAdapter;
 import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.MainActivity;
 import com.racoon.ampdroid.R;
 
 /**
@@ -84,7 +85,7 @@ public class AlbumsView extends Fragment {
 					// and add the transaction to the back stack
 					transaction.replace(R.id.content_frame, newFragment);
 					transaction.addToBackStack(null);
-
+					((MainActivity) getActivity()).setActiveFragment(6);
 					// Commit the transaction
 					transaction.commit();
 				}

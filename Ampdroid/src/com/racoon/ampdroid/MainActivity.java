@@ -1,5 +1,8 @@
 package com.racoon.ampdroid;
 
+import java.util.ArrayList;
+
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -33,8 +36,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.racoon.ampache.Album;
+import com.racoon.ampache.Artist;
 import com.racoon.ampache.ServerConnection;
+import com.racoon.ampache.Song;
 import com.racoon.ampdroid.views.CurrentPlaylistView;
+import com.racoon.ampdroid.views.SelectedSongsView;
 
 public class MainActivity extends FragmentActivity {
 
@@ -59,6 +66,7 @@ public class MainActivity extends FragmentActivity {
 	private boolean serviceConnected;
 	private Mp3PlayerService service = null;
 	private Intent Mp3PlayerIntent = null;
+	private int activeFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +99,10 @@ public class MainActivity extends FragmentActivity {
 				&& controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
 			Log.d("bug", controller.getServer().getAmpacheConnection().getAuth());
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
-//			tx.addToBackStack(null);
+			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]),
+					controller.getFragmentsNames()[0]);
+			activeFragment = 0;
+			// tx.addToBackStack(null);
 			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			showToast(getResources().getString(R.string.toastServerConnected), Toast.LENGTH_LONG);
@@ -103,8 +113,10 @@ public class MainActivity extends FragmentActivity {
 		} else if (controller.getServerConfig(this) != null
 				&& !controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
-			//tx.addToBackStack(null);
+			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]),
+					controller.getFragmentsNames()[5]);
+			activeFragment = 5;
+			// tx.addToBackStack(null);
 			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
@@ -112,8 +124,10 @@ public class MainActivity extends FragmentActivity {
 			showToast(getResources().getString(R.string.toastServerConnectionRefused), Toast.LENGTH_LONG);
 		} else {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
-			//tx.addToBackStack(null);
+			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]),
+					controller.getFragmentsNames()[5]);
+			activeFragment = 5;
+			// tx.addToBackStack(null);
 			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
@@ -153,8 +167,10 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
 				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[pos]));
-				//tx.addToBackStack(null);
+				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[pos]),
+						controller.getFragmentsNames()[pos]);
+				activeFragment = pos;
+				// tx.addToBackStack(null);
 				getSupportFragmentManager().popBackStack();
 				tx.commit();
 				mTitle = controller.getFragmentsNames()[pos];
@@ -210,8 +226,10 @@ public class MainActivity extends FragmentActivity {
 		// Handle your other action bar items...
 		if (item.toString().equals(getResources().getString(R.string.action_settings))) {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
-			//tx.addToBackStack(null);
+			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]),
+					controller.getFragmentsNames()[5]);
+			activeFragment = 5;
+			// tx.addToBackStack(null);
 			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			getActionBar().setTitle(R.string.action_settings);
@@ -258,8 +276,10 @@ public class MainActivity extends FragmentActivity {
 			} else {
 				showToast(getResources().getString(R.string.toastConnected), Toast.LENGTH_SHORT);
 				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
-				//tx.addToBackStack(null);
+				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]),
+						controller.getFragmentsNames()[0]);
+				activeFragment = 0;
+				// tx.addToBackStack(null);
 				getSupportFragmentManager().popBackStack();
 				tx.commit();
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
@@ -516,6 +536,49 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	@SuppressLint("DefaultLocale")
+	private void handleIntent(Intent intent) {
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			ArrayList<Song> searchableSongs = new ArrayList<Song>();
+			ArrayList<Album> searchableAlbums = new ArrayList<Album>();
+			ArrayList<Artist> searchableArtist = new ArrayList<Artist>();
+			Log.d("bugs", "active fragment " + String.valueOf(activeFragment));
+			/** find song **/
+			if (activeFragment < 2 || activeFragment == 6) {
+				ArrayList<Song> result = new ArrayList<Song>();
+				if (activeFragment == 0) {
+					searchableSongs = controller.getPlayNow();
+				} else if (activeFragment == 1) {
+					searchableSongs = controller.getSongs();
+				} else if (activeFragment == 6) {
+					searchableSongs = controller.getSelectedSongs();
+				}
+				for (int i = 0; i < searchableSongs.size(); i++) {
+					if (searchableSongs.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) {
+						result.add(searchableSongs.get(i));
+					}
+				}
+				controller.setSelectedSongs(result);
+				// Create new fragment and transaction
+				SelectedSongsView newFragment = new SelectedSongsView();
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.content_frame, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
+			}
+			
+			/** find artist **/
+			/** find playlist **/
+			Log.d("search", "searchquery " + query);
+		}
+	}
+
 	/**
 	 * @return the mProgress
 	 */
@@ -559,6 +622,13 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	/**
+	 * @param activeFragment the activeFragment to set
+	 */
+	public void setActiveFragment(int activeFragment) {
+		this.activeFragment = activeFragment;
+	}
+
+	/**
 	 * Create a connection to the Mp3PlayerService
 	 */
 	private ServiceConnection connection = new ServiceConnection() {
@@ -576,12 +646,5 @@ public class MainActivity extends FragmentActivity {
 			serviceConnected = false;
 		}
 	};
-
-	private void handleIntent(Intent intent) {
-		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			Log.d("search", "searchquery " + query);
-		}
-	}
 
 }

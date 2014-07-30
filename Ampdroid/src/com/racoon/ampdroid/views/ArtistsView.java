@@ -27,6 +27,7 @@ import com.racoon.ampache.Artist;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.ArtistArrayAdapter;
 import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.MainActivity;
 import com.racoon.ampdroid.R;
 
 //import com.racoon.ampdroid.ServerConnector;
@@ -87,7 +88,7 @@ public class ArtistsView extends Fragment {
 					// and add the transaction to the back stack
 					transaction.replace(R.id.content_frame, newFragment);
 					transaction.addToBackStack(null);
-
+					((MainActivity) getActivity()).setActiveFragment(6);
 					// Commit the transaction
 					transaction.commit();
 				}

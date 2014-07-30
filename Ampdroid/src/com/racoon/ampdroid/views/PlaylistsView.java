@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.racoon.ampache.Playlist;
 import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.MainActivity;
 import com.racoon.ampdroid.PlaylistArrayAdapter;
 import com.racoon.ampdroid.R;
 
@@ -89,7 +90,7 @@ public class PlaylistsView extends Fragment {
 					// and add the transaction to the back stack
 					transaction.replace(R.id.content_frame, newFragment);
 					transaction.addToBackStack(null);
-
+					((MainActivity) getActivity()).setActiveFragment(6);
 					// Commit the transaction
 					transaction.commit();
 				}

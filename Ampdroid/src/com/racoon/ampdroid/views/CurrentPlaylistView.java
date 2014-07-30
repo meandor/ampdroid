@@ -138,7 +138,11 @@ public class CurrentPlaylistView extends Fragment {
 		duration.setText("");
 		currentDuration.setText("");
 		seekBar.setProgress(0);
-		togglePlayButton.setBackground(getResources().getDrawable(R.drawable.ic_action_play));
+		try {
+			togglePlayButton.setBackground(getResources().getDrawable(R.drawable.ic_action_play));
+		} catch (IllegalStateException e) {
+			Log.d("error", e.getStackTrace().toString());
+		}
 		updateAttempts = 0;
 	}
 	
