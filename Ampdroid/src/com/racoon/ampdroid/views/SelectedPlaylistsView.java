@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,6 +100,7 @@ public class SelectedPlaylistsView extends Fragment {
 		} else {
 			Log.d("bugs", "server null");
 		}
+		setHasOptionsMenu(true);
 		return root;
 	}
 
@@ -142,6 +144,32 @@ public class SelectedPlaylistsView extends Fragment {
 			return true;
 		default:
 			return super.onContextItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.selected_songs, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.edit_add_all:
+			for (Playlist playlist : controller.getSelectedPlaylists()) {
+				String urlString = controller.getServer().getHost()
+						+ "/server/xml.server.php?action=playlist_songs&auth=" + controller.getServer().getAuthKey()
+						+ "&filter=" + String.valueOf(playlist.getId());
+				controller.parsePlaylistSongs(urlString, controller.getPlayNow());
+			}
+			Context context = getView().getContext();
+			CharSequence text = getResources().getString(R.string.playlistsViewPlaylistAdded);
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
