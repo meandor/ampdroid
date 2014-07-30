@@ -92,7 +92,8 @@ public class MainActivity extends FragmentActivity {
 			Log.d("bug", controller.getServer().getAmpacheConnection().getAuth());
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
-			tx.addToBackStack(null);
+//			tx.addToBackStack(null);
+			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			showToast(getResources().getString(R.string.toastServerConnected), Toast.LENGTH_LONG);
 			controller.loadCachedFiles();
@@ -103,7 +104,8 @@ public class MainActivity extends FragmentActivity {
 				&& !controller.getServer().isConnected(controller.isOnline(getApplicationContext()))) {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
-			tx.addToBackStack(null);
+			//tx.addToBackStack(null);
+			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
@@ -111,7 +113,8 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
-			tx.addToBackStack(null);
+			//tx.addToBackStack(null);
+			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
@@ -151,7 +154,8 @@ public class MainActivity extends FragmentActivity {
 			public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
 				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[pos]));
-				tx.addToBackStack(null);
+				//tx.addToBackStack(null);
+				getSupportFragmentManager().popBackStack();
 				tx.commit();
 				mTitle = controller.getFragmentsNames()[pos];
 				getActionBar().setTitle(controller.getFragmentsNames()[pos]);
@@ -207,7 +211,8 @@ public class MainActivity extends FragmentActivity {
 		if (item.toString().equals(getResources().getString(R.string.action_settings))) {
 			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 			tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[5]));
-			tx.addToBackStack(null);
+			//tx.addToBackStack(null);
+			getSupportFragmentManager().popBackStack();
 			tx.commit();
 			getActionBar().setTitle(R.string.action_settings);
 		}
@@ -254,7 +259,8 @@ public class MainActivity extends FragmentActivity {
 				showToast(getResources().getString(R.string.toastConnected), Toast.LENGTH_SHORT);
 				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 				tx.replace(R.id.content_frame, Fragment.instantiate(MainActivity.this, controller.getFragments()[0]));
-				tx.addToBackStack(null);
+				//tx.addToBackStack(null);
+				getSupportFragmentManager().popBackStack();
 				tx.commit();
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
 
