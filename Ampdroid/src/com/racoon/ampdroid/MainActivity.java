@@ -36,12 +36,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.racoon.ampache.Album;
 import com.racoon.ampache.Artist;
+import com.racoon.ampache.Playlist;
 import com.racoon.ampache.ServerConnection;
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.views.CurrentPlaylistView;
 import com.racoon.ampdroid.views.SelectedArtistsView;
+import com.racoon.ampdroid.views.SelectedPlaylistsView;
 import com.racoon.ampdroid.views.SelectedSongsView;
 
 public class MainActivity extends FragmentActivity {
@@ -592,6 +593,25 @@ public class MainActivity extends FragmentActivity {
 				transaction.commit();
 			}
 			/** find playlist **/
+			else if (activeFragment == 4) {
+				ArrayList<Playlist> result = new ArrayList<Playlist>();
+				for (int i = 0; i < controller.getPlaylists().size(); i++) {
+					if (controller.getPlaylists().get(i).getName().toLowerCase().contains(query.toLowerCase())) {
+						result.add(controller.getPlaylists().get(i));
+					}
+				}
+				controller.setSelectedPlaylists(result);
+				// Create new fragment and transaction
+				SelectedPlaylistsView newFragment = new SelectedPlaylistsView();
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.content_frame, newFragment);
+				transaction.addToBackStack(null);
+				// Commit the transaction
+				transaction.commit();
+			}
 			Log.d("search", "searchquery " + query);
 		}
 	}
