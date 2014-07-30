@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity {
 					controller.getFragmentsNames()[0]);
 			activeFragment = 0;
 			// tx.addToBackStack(null);
-			getSupportFragmentManager().popBackStack();
+			clearBackStack();
 			tx.commit();
 			showToast(getResources().getString(R.string.toastServerConnected), Toast.LENGTH_LONG);
 			controller.loadCachedFiles();
@@ -117,7 +117,7 @@ public class MainActivity extends FragmentActivity {
 					controller.getFragmentsNames()[5]);
 			activeFragment = 5;
 			// tx.addToBackStack(null);
-			getSupportFragmentManager().popBackStack();
+			clearBackStack();
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
@@ -128,7 +128,7 @@ public class MainActivity extends FragmentActivity {
 					controller.getFragmentsNames()[5]);
 			activeFragment = 5;
 			// tx.addToBackStack(null);
-			getSupportFragmentManager().popBackStack();
+			clearBackStack();
 			tx.commit();
 			mTitle = controller.getFragmentsNames()[5];
 			getActionBar().setTitle(mTitle);
@@ -171,7 +171,7 @@ public class MainActivity extends FragmentActivity {
 						controller.getFragmentsNames()[pos]);
 				activeFragment = pos;
 				// tx.addToBackStack(null);
-				getSupportFragmentManager().popBackStack();
+				clearBackStack();
 				tx.commit();
 				mTitle = controller.getFragmentsNames()[pos];
 				getActionBar().setTitle(controller.getFragmentsNames()[pos]);
@@ -230,7 +230,7 @@ public class MainActivity extends FragmentActivity {
 					controller.getFragmentsNames()[5]);
 			activeFragment = 5;
 			// tx.addToBackStack(null);
-			getSupportFragmentManager().popBackStack();
+			clearBackStack();
 			tx.commit();
 			getActionBar().setTitle(R.string.action_settings);
 		}
@@ -280,7 +280,7 @@ public class MainActivity extends FragmentActivity {
 						controller.getFragmentsNames()[0]);
 				activeFragment = 0;
 				// tx.addToBackStack(null);
-				getSupportFragmentManager().popBackStack();
+				clearBackStack();
 				tx.commit();
 				getActionBar().setTitle(controller.getFragmentsNames()[0]);
 
@@ -568,14 +568,22 @@ public class MainActivity extends FragmentActivity {
 				// and add the transaction to the back stack
 				transaction.replace(R.id.content_frame, newFragment);
 				transaction.addToBackStack(null);
-
+				activeFragment = 6;
 				// Commit the transaction
 				transaction.commit();
 			}
-			
 			/** find artist **/
+//			else if (activeFragment == 2) {
+//				searchableArtist = 
+//			}
 			/** find playlist **/
 			Log.d("search", "searchquery " + query);
+		}
+	}
+
+	private void clearBackStack() {
+		for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+			getSupportFragmentManager().popBackStack();
 		}
 	}
 
