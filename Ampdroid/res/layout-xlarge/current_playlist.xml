@@ -54,27 +54,35 @@
 
         <ImageButton
             android:id="@+id/playlist_previous"
-            android:layout_column="1"
-            android:onClick="previous"
-            android:src="@android:drawable/ic_media_previous" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_column="0"
+            android:background="@drawable/ic_action_previous"
+            android:onClick="previous" />
 
         <ImageButton
             android:id="@+id/playlist_play_pause"
-            android:layout_column="2"
-            android:onClick="togglePlay"
-            android:src="@drawable/ic_action_play" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_column="1"
+            android:background="@drawable/ic_action_play"
+            android:onClick="togglePlay" />
 
         <ImageButton
             android:id="@+id/playlist_next"
-            android:layout_column="4"
-            android:onClick="next"
-            android:src="@android:drawable/ic_media_next" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_column="2"
+            android:background="@drawable/ic_action_next"
+            android:onClick="next" />
 
         <ImageButton
             android:id="@+id/playlist_stop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_column="3"
-            android:onClick="stop"
-            android:src="@drawable/ic_action_stop" />
+            android:background="@drawable/ic_action_stop"
+            android:onClick="stop" />
     </GridLayout>
 
 </LinearLayout>
