@@ -97,6 +97,7 @@ public class Mp3PlayerService extends Service {
 
 	public void stop() {
 		mediaPlayer.reset();
+		setNotifiction();
 		currentSong = null;
 		stopSelf();
 	}
@@ -172,7 +173,11 @@ public class Mp3PlayerService extends Service {
 	public boolean isPlaying() {
 		boolean result = false;
 		if (mediaPlayer != null) {
-			result = mediaPlayer.isPlaying();
+			try {
+				result = mediaPlayer.isPlaying();
+			} catch (IllegalStateException e) {
+				Log.d("error", e.getStackTrace().toString());
+			}
 		}
 		return result;
 	}

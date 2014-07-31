@@ -159,7 +159,7 @@ public class CurrentPlaylistView extends Fragment {
 				Log.d("bugs", "Thread läuft noch");
 				final MainActivity main = (MainActivity) getActivity();
 				if (main != null && main.getService() != null) {
-					if (main.getService().getMediaPlayer().isPlaying()) {
+					if (main.getService().isPlaying()) {
 						controller.setPlayingNow(main.getService().getCurrentSong());
 						songTitle.setText(main.getService().getCurrentSong().toString());
 						String artist = "Unknown";
