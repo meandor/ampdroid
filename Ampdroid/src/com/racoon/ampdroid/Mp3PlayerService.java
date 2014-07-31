@@ -15,6 +15,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.racoon.ampache.Song;
 
@@ -220,23 +221,21 @@ public class Mp3PlayerService extends Service {
 	}
 
 	private void setNotifiction() {
+		RemoteViews notificationView = new RemoteViews(this.getPackageName(), R.layout.player_notification);
+		notificationView.setTextViewText(R.id.notificationSongArtist, getArtist());
+		notificationView.setTextViewText(R.id.notificationSongTitle, getCurrentTitle());
 		/* 1. Setup Notification Builder */
 		Notification.Builder builder = new Notification.Builder(this);
 
 		/* 2. Configure Notification Alarm */
-		builder.setSmallIcon(R.drawable.ic_play_notification).setWhen(System.currentTimeMillis())
-				.setTicker(getCurrentTitle());
+		builder.setSmallIcon(R.drawable.ic_play_notification).setAutoCancel(true);
 
-		/* 3. Configure Drop-down Action */
-		builder.setContentTitle(getCurrentTitle())
-				.setContentText(getArtist())
-				.setContentInfo(
-						isPlaying() ? getResources().getString(R.string.playing) : getResources().getString(
-								R.string.stopped));
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent notifIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
 		builder.setContentIntent(notifIntent);
+		builder.setContent(notificationView);
 
 		/* 4. Create Notification and use Manager to launch it */
 		Notification notification = builder.build();

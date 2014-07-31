@@ -2,52 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="64dp"
-    android:gravity="center"
-    android:orientation="horizontal" >
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp" >
 
     <ImageView
         android:id="@+id/notificationSongAlbumArt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/ic_play_notification" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="190dp"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="8dp" >
 
         <TextView
             android:id="@+id/notificationSongTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="190dp"
+            android:layout_height="30dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/notificationSongArtist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_width="190dp"
+            android:layout_height="14dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#888888"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <ImageButton
         android:id="@+id/notificationPlayPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_stat_pause"
-        android:onClick="" />
+        android:layout_marginRight="8dp"
+        android:background="@drawable/ic_stat_pause" />
 
     <ImageButton
         android:id="@+id/notificationNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_stat_next"
-        android:onClick="next" />
+        android:layout_marginRight="8dp"
+        android:background="@drawable/ic_stat_next" />
 
     <ImageButton
         android:id="@+id/notificationClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_stat_cancel"
-        android:onClick="stop" />
+        android:background="@drawable/ic_stat_cancel" />
 
 </LinearLayout>
