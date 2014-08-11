@@ -83,7 +83,7 @@ public class ServerConnector implements Serializable {
 		String passphrase = generateShaHash(time + key);
 
 		String urlString = new String(this.host + "/server/xml.server.php?action=handshake&auth=" + passphrase
-				+ "&timestamp=" + time + "&version=350001&user=" + user);
+				+ "&timestamp=" + time + "&version=370001&user=" + user);
 		Log.d("passwort:", key);
 		Log.d("passphrase:", passphrase);
 		Log.d("url:", urlString);
