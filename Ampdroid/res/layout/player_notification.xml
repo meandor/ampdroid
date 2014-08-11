@@ -10,7 +10,7 @@
         android:id="@+id/notificationSongAlbumArt"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/ic_play_notification" />
+        android:src="@drawable/ic_stat_notify" />
 
     <LinearLayout
         android:layout_width="190dp"
