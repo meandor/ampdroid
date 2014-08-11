@@ -1,4 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/edit_play_all"
+        android:icon="@drawable/ic_action_play"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:title="@string/contextMenuSongsOpen"/>
     <item
         android:id="@+id/edit_add_all"
         android:icon="@drawable/ic_action_add_to_queue"

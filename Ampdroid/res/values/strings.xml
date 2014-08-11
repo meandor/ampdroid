@@ -57,5 +57,6 @@
     
     <string name="contextMenuAdd">Enqueue in Playlist</string>
     <string name="contextMenuOpen">Show Songs</string>
+    <string name="contextMenuSongsOpen">Play</string>
 
 </resources>

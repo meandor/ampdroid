@@ -57,5 +57,6 @@
     
     <string name="contextMenuAdd">In Wiedergabeliste hinzufügen</string>
     <string name="contextMenuOpen">Lieder anzeigen</string>
+    <string name="contextMenuSongsOpen">Abspielen</string>
 
 </resources>

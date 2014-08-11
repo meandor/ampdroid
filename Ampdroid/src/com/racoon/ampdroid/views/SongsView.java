@@ -31,12 +31,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
@@ -70,6 +75,8 @@ public class SongsView extends Fragment {
 		controller = Controller.getInstance();
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.ampache_songs, null);
 		ListView listview = (ListView) root.findViewById(R.id.songs_listview);
+		registerForContextMenu(listview);
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			listview.setFastScrollAlwaysVisible(true);
 		}
@@ -96,5 +103,34 @@ public class SongsView extends Fragment {
 			});
 		}
 		return root;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getActivity().getMenuInflater();
+		inflater.inflate(R.menu.context_menu_songs, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+
+		switch (item.getItemId()) {
+		case R.id.contextMenuAdd:
+			controller.getPlayNow().add(controller.getSongs().get((int) info.id));
+			Context context = getView().getContext();
+			CharSequence text = getResources().getString(R.string.songsViewSongAdded);
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return true;
+		case R.id.contextMenuSongsOpen:
+			controller.getPlayNow().clear();
+			controller.getPlayNow().add(controller.getSongs().get((int) info.id));
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
 	}
 }
