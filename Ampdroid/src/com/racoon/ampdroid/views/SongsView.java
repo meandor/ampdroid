@@ -45,6 +45,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.racoon.ampache.Song;
 import com.racoon.ampdroid.Controller;
+import com.racoon.ampdroid.MainActivity;
 import com.racoon.ampdroid.R;
 import com.racoon.ampdroid.SongArrayAdapter;
 
@@ -128,6 +129,7 @@ public class SongsView extends Fragment {
 		case R.id.contextMenuSongsOpen:
 			controller.getPlayNow().clear();
 			controller.getPlayNow().add(controller.getSongs().get((int) info.id));
+			((MainActivity) getActivity()).play(0);
 			return true;
 		default:
 			return super.onContextItemSelected(item);
