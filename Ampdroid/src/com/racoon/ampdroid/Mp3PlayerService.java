@@ -274,7 +274,7 @@ public class Mp3PlayerService extends Service {
 		Notification.Builder builder = new Notification.Builder(this);
 
 		/* 2. Configure Notification Alarm */
-		builder.setSmallIcon(R.drawable.ic_play_notification).setAutoCancel(true).setWhen(System.currentTimeMillis())
+		builder.setSmallIcon(R.drawable.ic_stat_notify).setAutoCancel(true).setWhen(System.currentTimeMillis())
 				.setTicker(getCurrentTitle());
 
 		Intent intent = new Intent(this, MainActivity.class);
