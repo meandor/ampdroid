@@ -2,9 +2,9 @@
 
     <item
         android:id="@+id/edit_play_all"
-        android:icon="@drawable/ic_action_play"
-        android:orderInCategory="101"
-        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_stat_play"
+        android:orderInCategory="100"
+        android:showAsAction="always"
         android:title="@string/contextMenuSongsOpen"/>
     <item
         android:id="@+id/edit_add_all"

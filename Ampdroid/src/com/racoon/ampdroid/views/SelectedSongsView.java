@@ -122,6 +122,11 @@ public class SelectedSongsView extends Fragment {
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 			return true;
+		case R.id.edit_play_all:
+			controller.getPlayNow().clear();
+			controller.getPlayNow().addAll(controller.getSelectedSongs());
+			((MainActivity) getActivity()).play(0);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
