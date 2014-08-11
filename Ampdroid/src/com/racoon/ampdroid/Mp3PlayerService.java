@@ -43,6 +43,7 @@ import android.widget.RemoteViews;
 import com.racoon.ampache.Song;
 
 public class Mp3PlayerService extends Service {
+
 	private MediaPlayer mediaPlayer;
 	private ArrayList<Song> playList;
 	private int cursor;
@@ -51,6 +52,7 @@ public class Mp3PlayerService extends Service {
 	public static final int NOTIFICATION_ID = 1556;
 	private boolean pause;
 	private boolean allowRebind;
+	private String session;
 
 	@Override
 	public void onCreate() {
@@ -58,6 +60,7 @@ public class Mp3PlayerService extends Service {
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		mediaPlayer.setOnCompletionListener(new SongComplitionListener());
 		pause = false;
+		session = "";
 
 	}
 
@@ -70,6 +73,7 @@ public class Mp3PlayerService extends Service {
 				playList = (ArrayList<Song>) intent.getSerializableExtra("com.racoon.ampdroid.NowPlaying");
 				if (action.equals("play") && !mediaPlayer.isPlaying()) {
 					cursor = intent.getIntExtra("CURSOR", 0);
+					session = intent.getStringExtra("SESSION");
 					play(cursor);
 					Log.d("service", "cursor: " + String.valueOf(cursor));
 				} else if (action.equals("pause")) {
@@ -150,7 +154,12 @@ public class Mp3PlayerService extends Service {
 	private void play(int id) {
 		mediaPlayer.reset();
 		try {
-			mediaPlayer.setDataSource(playList.get(id).getUrl());
+			Log.d("bugs", "song url " + playList.get(id).getUrl());
+			String pattern = "ssid=([a-z]|[0-9])*&";
+			String dataUrl = playList.get(id).getUrl().replaceAll(pattern, "ssid=" + session + "&");
+			Log.d("bugs", "session " + session);
+			Log.d("bugs", "data url " + dataUrl);
+			mediaPlayer.setDataSource(dataUrl);
 			mediaPlayer.prepare();
 			currentSong = playList.get(id);
 			mediaPlayer.start();
@@ -228,6 +237,20 @@ public class Mp3PlayerService extends Service {
 	}
 
 	/**
+	 * @return the session
+	 */
+	public String getSession() {
+		return session;
+	}
+
+	/**
+	 * @param session the session to set
+	 */
+	public void setSession(String session) {
+		this.session = session;
+	}
+
+	/**
 	 * Binding
 	 */
 	private final IBinder binder = new Mp3Binder();
@@ -251,7 +274,8 @@ public class Mp3PlayerService extends Service {
 		Notification.Builder builder = new Notification.Builder(this);
 
 		/* 2. Configure Notification Alarm */
-		builder.setSmallIcon(R.drawable.ic_play_notification).setAutoCancel(true);
+		builder.setSmallIcon(R.drawable.ic_play_notification).setAutoCancel(true).setWhen(System.currentTimeMillis())
+				.setTicker(getCurrentTitle());
 
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);

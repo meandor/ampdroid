@@ -350,6 +350,7 @@ public class MainActivity extends FragmentActivity {
 		Mp3PlayerIntent = new Intent(this, Mp3PlayerService.class);
 		Mp3PlayerIntent.putExtra("com.racoon.ampdroid.NowPlaying", this.controller.getPlayNow());
 		Mp3PlayerIntent.putExtra("CURSOR", pos);
+		Mp3PlayerIntent.putExtra("SESSION", this.controller.getServer().getAmpacheConnection().getAuth());
 		Mp3PlayerIntent.putExtra("ACTION", "play");
 		startService(Mp3PlayerIntent);
 	}
