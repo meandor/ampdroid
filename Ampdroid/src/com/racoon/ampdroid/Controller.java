@@ -45,6 +45,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.util.Xml;
 
 import com.racoon.ampache.Album;
 import com.racoon.ampache.Artist;
@@ -626,6 +627,7 @@ public class Controller {
 				XmlPullParser parser = pullParserFactory.newPullParser();
 				InputStream in_s = con.getInputStream();
 				parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+                                parser.setFeature(Xml.FEATURE_RELAXED, true);
 				parser.setInput(in_s, null);
 				parseArtistsXML(parser);
 			} catch (XmlPullParserException e) {

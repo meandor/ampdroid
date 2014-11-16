@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Ampdroid</string>
+    <string name="action_settings">Nastavení</string>
+    <string name="drawer_open">Otevřít</string>
+    <string name="drawer_close">Zavřít</string>
+    <string name="connect">Připojit</string>
+    <string name="save">Uložit</string>
+    <string name="reconnect">Připojit znovu</string>
+    <string name="forceSync">Vynutit synchronizaci</string>
+	<string name="search_title">Hledat</string>
+	<string name="search_hint">sem napište, co hledáte</string>
+    <string name="syncSongs">Načítání skladeb</string>
+
+    <string name="settingsServerHeading">Nastavení</string>
+    <string name="settingsServer">http://server/ampache</string>
+    <string name="settingsUserHeading">Uživatel</string>
+    <string name="settingsUser">Uživatel</string>
+    <string name="settingsPassword">Heslo</string>
+    <string name="settingsExpireText">Sezení aktivní do </string>
+    
+    <string name="playing">Přehrávání</string>
+    <string name="paused">Pozastaveno</string>
+    <string name="stopped">Zastaveno</string>
+    
+    <string name="toastConnected">Spojení navázáno</string>
+    <string name="toastConnectionRefused">Spojení odmítnuto</string>
+    <string name="toastInternetConnectionLost">Žádné připojení k internetu</string>
+    <string name="toastServerConnected">Spojení se serverem navázáno</string>
+    <string name="toastServerConnectionRefused">Spojení se serverem odmítnuto</string>
+    <string name="toastSettingsNotSet">Nastavení nenastaveno</string>
+    <string name="toastSettingsCouldntSave">Nebylo možné uložit nastavení</string>
+    <string name="toastSettingsSaved">Nastavení uloženo</string>
+    
+    <string name="albumsViewAlbumsAdded">Skladby alba přidány</string>
+    <string name="albumsViewSongsText"> Skladby</string>
+    
+    <string name="artistsViewArtistSongsAdded">Skladby umělce přidány</string>
+    
+    <string name="playlistsViewPlaylistAdded">Skladby z playlistu přidány</string>
+    
+    <string name="songsViewSongAdded">Skladba přidána</string>
+    
+    <string name="selectedSongs_add_to_queue">Přidat vše do playlistu</string>
+    <string name="selectedSongsViewAdded">Všechny skladby přidány</string>
+    <string name="selectedSongsDiscard">Odstranit playlist</string>
+
+    <string-array name="menu_array">
+        <item>Přehrává se</item>
+        <item>Skladby</item>
+        <item>Umělci</item>
+        <item>Alba</item>
+        <item>Playlisty</item>
+        <item>Nastavení</item>
+    </string-array>
+    
+    <string name="contextMenuAdd">přidat do playlistu</string>
+    <string name="contextMenuOpen">Ukázat skladby</string>
+    <string name="contextMenuSongsOpen">Přehrát</string>
+
+</resources>
