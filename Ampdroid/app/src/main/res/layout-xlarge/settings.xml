@@ -23,7 +23,7 @@
         android:id="@+id/deactivateSSL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Deactivate SSL validation" />
+        android:text="@string/deactivateSSL" />
 
     <TextView
         android:id="@+id/settingsUserHeading"

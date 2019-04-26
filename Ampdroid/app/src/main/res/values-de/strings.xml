@@ -58,5 +58,8 @@
     <string name="contextMenuAdd">In Wiedergabeliste hinzufügen</string>
     <string name="contextMenuOpen">Lieder anzeigen</string>
     <string name="contextMenuSongsOpen">Abspielen</string>
+    <string name="deactivateSSL">Deaktivieren Sie die SSL-Validierung</string>
+    <string name="artists">Künstler</string>
+    <string name="albums">Alben</string>
 
 </resources>

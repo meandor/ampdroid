@@ -58,5 +58,8 @@
     <string name="contextMenuAdd">přidat do playlistu</string>
     <string name="contextMenuOpen">Ukázat skladby</string>
     <string name="contextMenuSongsOpen">Přehrát</string>
+    <string name="deactivateSSL">Deaktivujte ověření SSL</string>
+    <string name="artists">Umělci</string>
+    <string name="albums">Alba</string>
 
 </resources>

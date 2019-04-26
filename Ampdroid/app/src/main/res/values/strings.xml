@@ -26,7 +26,7 @@
     
     <string name="toastConnected">Connection established</string>
     <string name="toastConnectionRefused">Connection refused</string>
-    <string name="toastInternetConnectionLost">No Internetconnection</string>
+    <string name="toastInternetConnectionLost">No Internet connection</string>
     <string name="toastServerConnected">Server Connection established</string>
     <string name="toastServerConnectionRefused">Server Connection refused</string>
     <string name="toastSettingsNotSet">Settings are not set</string>
@@ -58,5 +58,8 @@
     <string name="contextMenuAdd">Enqueue in Playlist</string>
     <string name="contextMenuOpen">Show Songs</string>
     <string name="contextMenuSongsOpen">Play</string>
+    <string name="deactivateSSL">Deactivate SSL validation</string>
+    <string name="artists">Artists</string>
+    <string name="albums">Albums</string>
 
 </resources>
