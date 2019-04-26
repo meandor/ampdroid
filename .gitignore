@@ -23,3 +23,7 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+#
+Ampdroid/.idea/
+Ampdroid/.gradle/
