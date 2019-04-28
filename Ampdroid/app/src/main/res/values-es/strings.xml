@@ -43,5 +43,9 @@
     <string name="deactivateSSL">"Desactivar la validación SSL "</string>
     <string name="albums">Álbumes</string>
     <string name="artists">Artistas</string>
+    <string name="load_progressbar_text">Sincronización en progreso</string>
+    <string name="syncAlbums">Cargando albumes</string>
+    <string name="syncArtists">Cargando artistas</string>
+    <string name="syncPlaylists">Cargando listas de reproducción</string>
 
 </resources>

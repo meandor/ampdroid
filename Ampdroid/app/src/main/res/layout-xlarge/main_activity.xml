@@ -20,7 +20,7 @@
             android:id="@+id/load_progressbar_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/syncSongs"
+            android:text="@string/load_progressbar_text"
             android:textColor="#969696" />
     </LinearLayout>
 

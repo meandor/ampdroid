@@ -445,7 +445,7 @@ public class MainActivity extends FragmentActivity {
 		protected Void doInBackground(Void... params) {
 			String urlString = "";
 			if (syncSongs) {
-				syncText = "Lade Songs";
+				syncText = getResources().getString(R.string.syncSongs);
 				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=songs&auth="
 						+ controller.getServer().getAuthKey();
 				controller.parseSongs(urlString);
@@ -454,7 +454,7 @@ public class MainActivity extends FragmentActivity {
 			}
 
 			if (syncAlbums) {
-				syncText = "Lade Alben";
+				syncText = getResources().getString(R.string.syncAlbums);
 				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=albums&auth="
 						+ controller.getServer().getAuthKey();
 				controller.parseAlbums(urlString);
@@ -463,7 +463,7 @@ public class MainActivity extends FragmentActivity {
 			}
 
 			if (syncPlaylists) {
-				syncText = "Lade Playlists";
+				syncText = getResources().getString(R.string.syncPlaylists);
 				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=playlists&auth="
 						+ controller.getServer().getAuthKey();
 				controller.parsePlaylists(urlString);
@@ -472,7 +472,7 @@ public class MainActivity extends FragmentActivity {
 			}
 
 			if (syncArtists) {
-				syncText = "Lade Interpreten";
+				syncText = getResources().getString(R.string.syncArtists);
 				urlString = controller.getServer().getHost() + "/server/xml.server.php?action=artists&auth="
 						+ controller.getServer().getAuthKey();
 				controller.parseArtists(urlString);

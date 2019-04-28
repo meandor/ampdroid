@@ -61,5 +61,9 @@
     <string name="deactivateSSL">Deaktivujte ověření SSL</string>
     <string name="artists">Umělci</string>
     <string name="albums">Alba</string>
+    <string name="syncAlbums">Načítání alb</string>
+    <string name="syncArtists">Načítání interpretů</string>
+    <string name="syncPlaylists">Načítání seznamů skladeb</string>
+    <string name="load_progressbar_text">Probíhá synchronizace</string>
 
 </resources>
