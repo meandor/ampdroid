@@ -52,13 +52,6 @@ import com.racoon.ampache.Artist;
 import com.racoon.ampache.Playlist;
 import com.racoon.ampache.Song;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 /**
  * @author Daniel Schruhl
  * 
@@ -335,61 +328,13 @@ public class Controller {
 	}
 
 
-
-	// always verify the host - dont check for certificate
-	final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-		public boolean verify(String hostname, SSLSession session) {
-			return true;
-		}
-	};
-
-	/**
-	 * Trust every server - dont check for any certificate
-	 */
-	private static void trustAllHosts() {
-		// Create a trust manager that does not validate certificate chains
-		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-			@Override
-			public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
-
-			}
-
-			@Override
-			public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
-
-			}
-
-			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-				return new java.security.cert.X509Certificate[] {};
-			}
-		} };
-
-		// Install the all-trusting trust manager
-		try {
-			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, trustAllCerts, new java.security.SecureRandom());
-			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
 	public void parseSongs(String urlString) {
 		Log.d("songs", urlString);
 		Log.d("songs anzahl", String.valueOf(server.getAmpacheConnection().getSongs()));
 		URL url;
 		try {
 			url = new URL(urlString);
-			HttpURLConnection con;
-			if (this.server.getDeactivateSSL()) {
-				trustAllHosts();
-				HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
-				https.setHostnameVerifier(DO_NOT_VERIFY);
-				con = https;
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
+			HttpURLConnection con = HttpService.openConnection(url, this.server.getDeactivateSSL());
 			con.connect();
 			XmlPullParserFactory pullParserFactory;
 			try {
@@ -415,15 +360,7 @@ public class Controller {
 		URL url;
 		try {
 			url = new URL(urlString);
-			HttpURLConnection con;
-			if (this.server.getDeactivateSSL()) {
-				trustAllHosts();
-				HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
-				https.setHostnameVerifier(DO_NOT_VERIFY);
-				con = https;
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
+			HttpURLConnection con = HttpService.openConnection(url, this.server.getDeactivateSSL());
 			con.connect();
 			XmlPullParserFactory pullParserFactory;
 			try {
@@ -503,15 +440,7 @@ public class Controller {
 		URL url;
 		try {
 			url = new URL(urlString);
-			HttpURLConnection con;
-			if (this.server.getDeactivateSSL()) {
-				trustAllHosts();
-				HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
-				https.setHostnameVerifier(DO_NOT_VERIFY);
-				con = https;
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
+			HttpURLConnection con = HttpService.openConnection(url, this.server.getDeactivateSSL());
 			con.connect();
 			XmlPullParserFactory pullParserFactory;
 			try {
@@ -628,15 +557,7 @@ public class Controller {
 		URL url;
 		try {
 			url = new URL(urlString);
-			HttpURLConnection con;
-			if (this.server.getDeactivateSSL()) {
-				trustAllHosts();
-				HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
-				https.setHostnameVerifier(DO_NOT_VERIFY);
-				con = https;
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
+			HttpURLConnection con = HttpService.openConnection(url, this.server.getDeactivateSSL());
 			con.connect();
 			XmlPullParserFactory pullParserFactory;
 			try {
@@ -700,15 +621,7 @@ public class Controller {
 		URL url;
 		try {
 			url = new URL(urlString);
-			HttpURLConnection con;
-			if (this.server.getDeactivateSSL()) {
-				trustAllHosts();
-				HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
-				https.setHostnameVerifier(DO_NOT_VERIFY);
-				con = https;
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
+			HttpURLConnection con = HttpService.openConnection(url, this.server.getDeactivateSSL());
 			con.connect();
 			XmlPullParserFactory pullParserFactory;
 			try {

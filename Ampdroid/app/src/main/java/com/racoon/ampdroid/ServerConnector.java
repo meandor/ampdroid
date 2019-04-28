@@ -46,15 +46,6 @@ import android.util.Log;
 import com.racoon.ampache.CachedData;
 import com.racoon.ampache.ServerConnection;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.security.cert.CertificateException;
-import javax.security.cert.X509Certificate;
-
 /**
  * @author Daniel Schruhl
  * 
@@ -85,46 +76,6 @@ public class ServerConnector implements Serializable {
 		this.deactivateSSL = deactivateSSL;
 	}
 
-
-	// always verify the host - dont check for certificate
-	final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-		public boolean verify(String hostname, SSLSession session) {
-			return true;
-		}
-	};
-
-	/**
-	 * Trust every server - dont check for any certificate
-	 */
-	private static void trustAllHosts() {
-		// Create a trust manager that does not validate certificate chains
-		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-			@Override
-			public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
-
-			}
-
-			@Override
-			public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
-
-			}
-
-			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-				return new java.security.cert.X509Certificate[] {};
-			}
-		} };
-
-		// Install the all-trusting trust manager
-		try {
-			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, trustAllCerts, new java.security.SecureRandom());
-			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
 	public boolean isConnected(boolean network) {
 		if (!network) {
 			return false;
@@ -141,17 +92,8 @@ public class ServerConnector implements Serializable {
 		URL url;
 		try {
 			url = new URL(urlString);
-			HttpURLConnection con;
-			if (this.deactivateSSL) {
-				trustAllHosts();
-				HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
-				https.setHostnameVerifier(DO_NOT_VERIFY);
-				con = https;
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
+			HttpURLConnection con = HttpService.openConnection(url, this.deactivateSSL);
 			con.connect();
-
 			XmlPullParserFactory pullParserFactory;
 			try {
 				pullParserFactory = XmlPullParserFactory.newInstance();
@@ -269,15 +211,7 @@ public class ServerConnector implements Serializable {
 		URL url;
 		try {
 			url = new URL(urlString);
-			HttpURLConnection con;
-			if (this.deactivateSSL) {
-				trustAllHosts();
-				HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
-				https.setHostnameVerifier(DO_NOT_VERIFY);
-				con = https;
-			} else {
-				con = (HttpURLConnection) url.openConnection();
-			}
+			HttpURLConnection con = HttpService.openConnection(url, this.deactivateSSL);
 			con.connect();
 			BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String line;
