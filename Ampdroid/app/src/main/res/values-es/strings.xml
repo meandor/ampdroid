@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Ampdroid</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="albumsViewAlbumsAdded">Canciones del álbum en cola</string>
+    <string name="albumsViewSongsText">Canciones</string>
+    <string name="artistsViewArtistSongsAdded">Canciones del artista en cola</string>
+    <string name="connect">Conectar</string>
+    <string name="contextMenuAdd">Encolar en lista de reproducción</string>
+    <string name="contextMenuOpen">Mostrar canciones</string>
+    <string name="contextMenuSongsOpen">Reproducir</string>
+    <string name="drawer_close">Cerrar</string>
+    <string name="drawer_open">Abrir</string>
+    <string name="forceSync">Sincronizar</string>
+    <string name="paused">En pausa</string>
+    <string name="playing">Reproduciendo</string>
+    <string name="playlistsViewPlaylistAdded">Canciones de lista de reproducción en cola</string>
+    <string name="reconnect">Reconectar</string>
+    <string name="save">Guardar</string>
+    <string name="search_hint">Escriba su búsqueda aquí</string>
+    <string name="search_title">Buscar</string>
+    <string name="selectedSongsDiscard">Descartar lista de reproducción</string>
+    <string name="selectedSongsViewAdded">Todas las canciones en cola</string>
+    <string name="selectedSongs_add_to_queue">Añadir todo a la lista de reproducción</string>
+    <string name="settingsExpireText">Sesión válida hasta</string>
+    <string name="settingsPassword">Contraseña</string>
+    <string name="settingsServer">http://server/ampache</string>
+    <string name="settingsServerHeading">Ajustes de conexión</string>
+    <string name="settingsUser">Nombre de usuario</string>
+    <string name="settingsUserHeading">Usuario</string>
+    <string name="songsViewSongAdded">Canción en cola</string>
+    <string name="stopped">Detenido</string>
+    <string name="syncSongs">Cargando canciones</string>
+    <string name="toastConnected">Conexión establecida</string>
+    <string name="toastConnectionRefused">Conexión denegada</string>
+    <string name="toastInternetConnectionLost">Sin conexión a Internet</string>
+    <string name="toastServerConnected">Conexión de servidor establecida</string>
+    <string name="toastServerConnectionRefused">Conexión de servidor rechazada</string>
+    <string name="toastSettingsCouldntSave">No se pudo guardar la configuración</string>
+    <string name="toastSettingsNotSet">Los ajustes no están establecidos</string>
+    <string name="toastSettingsSaved">Se guardó la configuración</string>
+    <string name="deactivateSSL">"Desactivar la validación SSL "</string>
+    <string name="albums">Álbumes</string>
+    <string name="artists">Artistas</string>
+    <string name="load_progressbar_text">Sincronización en progreso</string>
+    <string name="syncAlbums">Cargando albumes</string>
+    <string name="syncArtists">Cargando artistas</string>
+    <string name="syncPlaylists">Cargando listas de reproducción</string>
+
+</resources>
